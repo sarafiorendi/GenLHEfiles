@@ -23,20 +23,34 @@ class gridBlock:
 model = "T5Wg"
 process = "GlGl"
 
+period = "Summer16" 
+batch = 1
+
 # Number of events: min(goalLumi*xsec, maxEvents) (always in thousands)
 goalLumi = 1600
-minLumi = 80
+if "16" in period: minLumi = 80
+elif "17" in period: minLumi = 90
 maxEvents = 150
 maxDM = 300
 
 scanBlocks = []
-scanBlocks.append(gridBlock(800, 1000, 100, 100, 100,40))
-scanBlocks.append(gridBlock(1000, 2000, 50, 100, 50,40))
-scanBlocks.append(gridBlock(2000, 2101, 50, 100, 50,20))
-minDM = 10
-ymin, ymed, ymax = 200, 700, 2100
-hlines_below_grid = [10,25,50,100,150]
-hline_xmin = 1000
+if (batch==1): 
+  scanBlocks.append(gridBlock(800, 1000, 100, 100, 100,40))
+  scanBlocks.append(gridBlock(1000, 2000, 50, 100, 50,40))
+  scanBlocks.append(gridBlock(2000, 2101, 50, 100, 50,20)) 
+  minDM = 10
+  ymin, ymed, ymax = 200, 700, 2100
+  hlines_below_grid = [10,25,50,100,150]
+  hline_xmin = 1000
+elif (batch==2): 
+  if period == "Spring16" :
+    scanBlocks.append(gridBlock(2150, 2501, 50, 100, 50,20))
+  elif (period == "Summer16" or period == "Fall17") :
+    scanBlocks.append(gridBlock(2150, 2801, 50, 100, 50,20))
+  minDM = 10
+  ymin, ymed, ymax = 200, 1850, 2500
+  hlines_below_grid = [10,25,50,100,150]
+  hline_xmin = 2100
 
 
 # Number of events for mass point, in thousands
