@@ -25,11 +25,12 @@ model = "T1tttt"
 process = "GlGl"
 
 # Number of events: min(goalLumi*xsec, maxEvents) (always in thousands)
-goalLumi, minLumi, maxEvents = 800, 40, 150
+#goalLumi, minLumi, maxEvents = 800, 40, 150 # 2016
+goalLumi, minLumi, maxEvents = 800, 45, 150 # 2017
 
 scanBlocks = []
 scanBlocks.append(gridBlock(600,  1200, 100, 100, 1000, 50, 10))
-scanBlocks.append(gridBlock(1200, 2301, 50, 100, 1000, 50, 20))
+scanBlocks.append(gridBlock(1200, 2801, 50, 100, 1000, 50, 20))
 minDM = 225
 ymin, ymed, ymax = 0, 300, 1600 
 

@@ -33,7 +33,9 @@ def matchParams(mass, proc):
     elif mass<1799: return 150., 0.267
     elif mass<2099: return 156., 0.290
     elif mass<2301: return 160., 0.315
-    elif mass<2551: return 164., 0.333
+    #elif mass<2551: return 164., 0.333
+    elif mass<2601: return 162., 0.340
+    elif mass<2851: return 168, 0.364
     else: sys.exit("grid_utils::matchParams - Mass out of range %i" % mass)
   elif proc=="StauStau":
     if mass < 199: return 76,0.608
