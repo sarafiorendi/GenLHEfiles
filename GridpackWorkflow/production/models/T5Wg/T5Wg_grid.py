@@ -24,7 +24,7 @@ model = "T5Wg"
 process = "GlGl"
 
 period = "Summer16" 
-batch = 1
+batch = 2
 
 # Number of events: min(goalLumi*xsec, maxEvents) (always in thousands)
 goalLumi = 1600
@@ -45,10 +45,11 @@ if (batch==1):
 elif (batch==2): 
   if period == "Spring16" :
     scanBlocks.append(gridBlock(2150, 2501, 50, 100, 50,20))
+    ymin, ymed, ymax = 200, 1850, 2500    
   elif (period == "Summer16" or period == "Fall17") :
     scanBlocks.append(gridBlock(2150, 2801, 50, 100, 50,20))
+    ymin, ymed, ymax = 200, 1850, 2800
   minDM = 10
-  ymin, ymed, ymax = 200, 1850, 2500
   hlines_below_grid = [10,25,50,100,150]
   hline_xmin = 2100
 
