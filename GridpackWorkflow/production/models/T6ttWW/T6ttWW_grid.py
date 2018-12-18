@@ -22,18 +22,26 @@ class gridBlock:
 model = "T6ttWW"
 process = "SbotSbot"
 
+period = "Summer16"
+
 # Number of events: min(goalLumi*xsec, maxEvents) (always in thousands)
 goalLumi = 3200
-minLumi = 30
+if "16" in period : minLumi = 40
+elif "17" in period : minLumi = 45
 minEvents, maxEvents = 40, 100
 minDM, midDM, maxDM = 90, 200, 300
 bandStep = 50
 
 scanBlocks = []
 scanBlocks.append(gridBlock(300, 500, 50, 100, 25))
-scanBlocks.append(gridBlock(500, 1201, 50, 100, 25))
+if period == "Spring16" :
+  scanBlocks.append(gridBlock(500, 1201, 50, 100, 25))
+  ymin, ymed, ymax = 100, 250, 1200
+elif (period == "Summer16" or period == "Fall17") :
+  scanBlocks.append(gridBlock(500, 1251, 50, 100, 25))
+  scanBlocks.append(gridBlock(1251, 1601, 50, 100, 50))
+  ymin, ymed, ymax = 100, 250, 1600
 
-ymin, ymed, ymax = 100, 250, 1200
 hlines_below_grid = [75,125,150]
 hline_xmin = 500
 

@@ -13,8 +13,11 @@ from grid_utils import *
 model = "T6ttHZ_BR-H_0p6"
 process = "StopStop"
 
+period = "Summer16"
+
 # Number of events for mass point, in thousands
-nevt = 40
+if "16" in period : nevt = 40
+elif "17" in period : nevt = 45
 
 diag_low, diag_high = 100, 10
 xmin, xmax, xstep = 300, 1000, 50
@@ -60,7 +63,7 @@ else: print "\n\nGRID CONTAINS "+str(Npts-Ndiff)+" DUPLICATE POINTS!!\n\n"
 
 Ntot = makePlot([mpoints], 'events', model, process, xmin, xmax, ymin, ymax)
 
-print '\nScan contains '+"{0:,.0f}".format(Ntot*1000)+" events"
+print '\nScan contains '+"{0:.0f}".format(Ntot*1000)+" events"
 print 'Average matching efficiency (for McM and GEN fragment) = '+"{0:.3f}".format(getAveEff(mpoints,process))
 
 print

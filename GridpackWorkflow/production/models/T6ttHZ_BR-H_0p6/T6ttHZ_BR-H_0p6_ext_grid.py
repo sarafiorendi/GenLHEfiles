@@ -13,13 +13,19 @@ from grid_utils import *
 model = "T6ttHZ_BR-H_0p6"
 process = "StopStop"
 
+period = "Summer16"
+
 # Number of events for mass point, in thousands
-nevt = 40
+if "16" in period : nevt = 40
+elif "17" in period : nevt = 45
 
 diag_low, diag_high = 100, 10
-xmin, xmax, xstep = 1050, 1300, 50
-ymin, ymax, ystep_low, ystep_high = 175, 700, 50, 25
-
+if period == "Spring16" :
+  xmin, xmax, xstep = 1050, 1300, 50
+  ymin, ymax, ystep_low, ystep_high = 175, 700, 50, 25
+elif (period == "Summer16" or period == "Fall17") :
+  xmin, xmax, xstep = 1050, 1600, 50
+  ymin, ymax, ystep_low, ystep_high = 175, 1000, 50, 25
 
 # -------------------------------
 #    Constructing grid
