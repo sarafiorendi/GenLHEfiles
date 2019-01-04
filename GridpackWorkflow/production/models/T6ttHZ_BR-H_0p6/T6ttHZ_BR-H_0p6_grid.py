@@ -13,7 +13,7 @@ from grid_utils import *
 model = "T6ttHZ_BR-H_0p6"
 process = "StopStop"
 
-period = "Summer16"
+period = "Fall17"
 
 # Number of events for mass point, in thousands
 if "16" in period : nevt = 40

@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 
+
 ### Script to define scan grid
 
 ### Authors:
@@ -31,10 +32,13 @@ midDM, maxDM = 300, 700
 addDiag = [183, 167] # DeltaM for additional diagonal lines to be added
 
 scanBlocks = []
-if (batch==1): scanBlocks.append(gridBlock(350,  425, 50, 50))
-elif (batch==2): scanBlocks.append(gridBlock(400,  1201, 50, 50))
+if (batch==1): 
+  scanBlocks.append(gridBlock(350,  425, 50, 50))
+  ymin, ymed, ymax = 0, 0, 650 
+elif (batch==2):
+  scanBlocks.append(gridBlock(400,  1201, 50, 50))
+  ymin, ymed, ymax = 0, 0, 1150
 minDM = 85
-ymin, ymed, ymax = 0, 0, 650 
 
 
 

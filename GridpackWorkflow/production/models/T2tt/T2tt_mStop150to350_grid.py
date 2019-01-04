@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 
+
 ### Script to define scan grid
 
 ### Authors:
@@ -18,28 +19,22 @@ class gridBlock:
     self.xstep = xstep
     self.ystep = ystep
     
-model = "T2qq"
-process = "SqSq"
-
-period = "Summer16"
-batch = 2
+model = "T2tt"
+process = "StopStop"
+batch = 1
 
 # Number of events: min(goalLumi*xsec, maxEvents) (always in thousands)
-goalLumi = 3200
-minLumi = 10
-minEvents, maxEvents = 10, 250
-diagStep = 50
-maxDM = 700
+goalLumi = 400
+minLumi = 1e-40 # Skip minimum lumi
+minEvents, maxEvents = 20, 1000
+diagStep, bandStep = 25, 50
+midDM, maxDM = 300, 700
+addDiag = [183, 167] # DeltaM for additional diagonal lines to be added
 
 scanBlocks = []
-if batch == 1 :
-  scanBlocks.append(gridBlock(300,  1801, 50, 100))
-  ymin, ymed, ymax = 0, 200, 1400 
-elif batch == 2 :
-  scanBlocks.append(gridBlock(1850,  2601, 50, 100))
-  ymin, ymed, ymax = 0, 200, 2200
-minDM = 25
-
+scanBlocks.append(gridBlock(150,  351, 50, 50))
+minDM = 87
+ymin, ymed, ymax = 0, 0, 650 
 
 # Number of events for mass point, in thousands
 def events(mass):
@@ -57,22 +52,59 @@ Nevents = []
 xmin, xmax = 9999, 0
 for block in scanBlocks:
   Nbulk, Ndiag = 0, 0
-  for mx in range(block.xmin, block.xmax, diagStep):
+  for mx in range(block.xmin, block.xmax, min(bandStep, diagStep)):
+   mxb = False
+   if batch==1 and mx<251: mxb = True
+   if batch==2 and mx>250 and mx<350: mxb = True
+   if mxb==True :
     xmin = min(xmin, block.xmin)
     xmax = max(xmax, block.xmax)
     col = []
     my = 0
-    begDiag = min(max(ymed, mx-maxDM), mx-minDM)
+    begBand = min(max(ymed, mx-maxDM), mx-minDM)
+    begDiag = min(max(ymed, mx-midDM), mx-minDM)
     # Adding bulk points
     if (mx-block.xmin)%block.xstep == 0 :
-      for my in range(ymin, begDiag, block.ystep):
+      for my in range(ymin, begBand, block.ystep):
         if my > ymax: continue
+        # Adding extra diagonals to the bulk
+        for dm in addDiag:
+          dm_before = mx-block.xstep -my
+          dm_after = mx - my
+          if(dm>dm_before and dm<dm_after):
+            nev = events(my+dm)
+            col.append([my+dm,my, nev])
+            Nbulk += nev
         nev = events(mx)
         col.append([mx,my, nev])
         Nbulk += nev
-    # Adding diagonal points
+    # Adding diagonal points in inside band
+    if (mx-block.xmin)%bandStep == 0 :
+      for my in range(begBand, mx-midDM, bandStep):
+        if my > ymax: continue
+        # Adding extra diagonals to the band
+        for dm in addDiag:
+          dm_before = mx-bandStep -my
+          dm_after = mx - my
+          if(dm>dm_before and dm<dm_after):
+            nev = events(my+dm)
+            col.append([my+dm,my, nev])
+            Ndiag += nev
+        # Adding standard diagonal points
+        nev = events(mx)
+        col.append([mx,my, nev])
+        Ndiag += nev
+    # Adding diagonal points in band closest to outer diagonal
     for my in range(begDiag, mx-minDM+1, diagStep):
       if my > ymax: continue
+      # Adding extra diagonals to the band
+      for dm in addDiag:
+        dm_before = mx-diagStep -my
+        dm_after = mx - my
+        if(dm>dm_before and dm<dm_after):
+          nev = events(my+dm)
+          col.append([my+dm,my, nev])
+          Ndiag += nev
       nev = events(mx)
       col.append([mx,my, nev])
       Ndiag += nev
@@ -85,7 +117,13 @@ for block in scanBlocks:
   Nevents.append([Nbulk, Ndiag])
 
 mpoints = []
-for col in cols: mpoints.extend(col)
+for col in cols: 
+  for ipt in col:
+    #if batch==1 :
+     # if (ipt[0]<251): mpoints.append(ipt)
+    #elif batch==2:
+     # if (ipt[0]>250 and ipt[0]<350): mpoints.append(ipt)
+    mpoints.append(ipt)
 
 ## Test print out for repeated points
 mset = set()
@@ -99,13 +137,10 @@ else: print "\n\nGRID CONTAINS "+str(Ntot-Ndiff)+" DUPLICATE POINTS!!\n\n"
 
 makePlot(cols, 'events', model, process, xmin, xmax, ymin, ymax)
 Ntot = makePlot(cols, 'lumi', model, process, xmin, xmax, ymin, ymax)
-# Plotting equivalent lumi for 8 times the cross-section
-model = "T2qq_8flavor"
-makePlot(cols, 'lumix8', model, process, xmin, xmax, ymin, ymax)
 
 
 Ntot = Ntot/1e3
-print '\nScan contains '+"{0:.6f}".format(Ntot)+" million events\n"
+print '\nScan contains '+"{0:,.0f}".format(Ntot*1e6)+" events\n"
 print 'Average matching efficiency (for McM and GEN fragment) = '+"{0:.3f}".format(getAveEff(mpoints,process))
 print
 

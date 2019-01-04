@@ -22,7 +22,7 @@ class gridBlock:
 model = "T6ttWW"
 process = "SbotSbot"
 
-period = "Summer16"
+period = "Fall17"
 
 # Number of events: min(goalLumi*xsec, maxEvents) (always in thousands)
 goalLumi = 3200
@@ -38,8 +38,8 @@ if period == "Spring16" :
   scanBlocks.append(gridBlock(500, 1201, 50, 100, 25))
   ymin, ymed, ymax = 100, 250, 1200
 elif (period == "Summer16" or period == "Fall17") :
-  scanBlocks.append(gridBlock(500, 1251, 50, 100, 25))
-  scanBlocks.append(gridBlock(1251, 1601, 50, 100, 50))
+  scanBlocks.append(gridBlock(500, 1250, 50, 100, 25))
+  scanBlocks.append(gridBlock(1250, 1601, 50, 100, 50))
   ymin, ymed, ymax = 100, 250, 1600
 
 hlines_below_grid = [75,125,150]
