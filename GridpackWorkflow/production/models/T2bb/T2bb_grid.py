@@ -21,7 +21,7 @@ class gridBlock:
 model = "T2bb"
 process = "SbotSbot"
 
-period = "Summer16"
+period = "Fall17"
 batch = 1
 
 # Number of events: min(goalLumi*xsec, maxEvents) (always in thousands)
@@ -36,10 +36,9 @@ scanBlocks = []
 if batch == 1 :
   scanBlocks.append(gridBlock(300,  500, 100, 100))
   scanBlocks.append(gridBlock(500,  1601, 50, 100))
-  ymin, ymed, ymax = 0, 250, 1100
 elif bacth == 2 : # to be fixed
   scanBlocks.append(gridBlock(1650,  2601, 50, 100))
-  ymin, ymed, ymax = 0, 250, 2100
+ymin, ymed, ymax = 0, 250, 2100
 minDM = 25
 
 # Number of events for mass point, in thousands
