@@ -14,7 +14,7 @@ import pprint
 model = "T8bbllnunu_XCha0p5"
 process = "StopStop"
 
-period = "Summer16"
+period = "Fall17"
 
 # Number of events: min(goalLumi*xsec, maxEvents) (always in thousands)
 goalLumi = 400

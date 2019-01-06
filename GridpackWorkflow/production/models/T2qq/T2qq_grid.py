@@ -21,12 +21,13 @@ class gridBlock:
 model = "T2qq"
 process = "SqSq"
 
-period = "Summer16"
+period = "Fall17"
 batch = 2
 
 # Number of events: min(goalLumi*xsec, maxEvents) (always in thousands)
 goalLumi = 3200
-minLumi = 10
+if "16" in period : minLumi = 10
+elif "17" in period : minLumi = 12
 minEvents, maxEvents = 10, 250
 diagStep = 50
 maxDM = 700
@@ -34,10 +35,9 @@ maxDM = 700
 scanBlocks = []
 if batch == 1 :
   scanBlocks.append(gridBlock(300,  1801, 50, 100))
-  ymin, ymed, ymax = 0, 200, 1400 
 elif batch == 2 :
   scanBlocks.append(gridBlock(1850,  2601, 50, 100))
-  ymin, ymed, ymax = 0, 200, 2200
+ymin, ymed, ymax = 0, 200, 2200
 minDM = 25
 
 
