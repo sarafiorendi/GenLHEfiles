@@ -21,7 +21,7 @@ class gridBlock:
 model = "T2qq"
 process = "SqSq"
 
-period = "Summer16"
+period = "Fall17"
 batch = 1
 
 # Number of events: min(goalLumi*xsec, maxEvents) (always in thousands)
