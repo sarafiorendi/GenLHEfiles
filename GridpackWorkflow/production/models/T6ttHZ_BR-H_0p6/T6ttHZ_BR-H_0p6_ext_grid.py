@@ -14,10 +14,11 @@ model = "T6ttHZ_BR-H_0p6"
 process = "StopStop"
 
 period = "Fall17"
+#period = "Summer16"
 
 # Number of events for mass point, in thousands
-if "16" in period : nevt = 40
-elif "17" in period : nevt = 45
+if "16" in period : nevt = 400
+elif "17" in period : nevt = 450
 
 diag_low, diag_high = 100, 10
 if period == "Spring16" :

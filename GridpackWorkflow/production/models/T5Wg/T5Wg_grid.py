@@ -23,8 +23,9 @@ class gridBlock:
 model = "T5Wg"
 process = "GlGl"
 
+#period = "Summer16" 
 period = "Fall17" 
-batch = 2
+batch = 1
 
 # Number of events: min(goalLumi*xsec, maxEvents) (always in thousands)
 goalLumi = 1600
