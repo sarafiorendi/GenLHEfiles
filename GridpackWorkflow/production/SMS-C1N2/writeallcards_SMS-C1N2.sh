@@ -1,13 +1,12 @@
 #!/bin/sh
 JOBS="jobs"
 TEMP="templatecards"
-PROC="SMS-N2N3"
-PART="_mN-"
+PROC="SMS-C1N2"
+PART="_mC1-"
 
 ### Create cards and SLHAs for all mass points
 
-#for MNLSP in {100..1300..25} 126 127; do
-for MNLSP in {1050..1300..25}; do
+for MNLSP in {100..200..10} {225..1300..25} 125; do
     MODEL=${PROC}${PART}${MNLSP}
     mkdir -p "${JOBS}/${MODEL}"
     cp ${TEMP}/${PROC}_run_card.dat "${JOBS}/${MODEL}/${MODEL}_run_card.dat"
