@@ -24,7 +24,7 @@ process = "GlGl"
 # Number of events: min(goalLumi*xsec, maxEvents) (always in thousands)
 goalLumi = 800
 minLumi = 40
-minEvents, maxEvents = 20, 150
+minEvents, maxEvents = 50, 150
 maxDM = 1000
 ymin, ymax = 0, 10 # for the plot
 
