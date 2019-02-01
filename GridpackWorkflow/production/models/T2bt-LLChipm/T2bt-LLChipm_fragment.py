@@ -217,11 +217,12 @@ for point in mpoints:
     qcut, tru_eff = matchParams(mstop)
     wgt = point[2]*(mcm_eff/tru_eff)
     
+    if mlsp==0: mlsp = 1
+
     # ctau = 10cm
     mchi = mlsp + 0.2
     wchi = 1.97327052176253113e-15
 
-    if mlsp==0: mlsp = 1
     slhatable = baseSLHATable.replace('%MSTOP%','%e' % mstop)
     slhatable = slhatable.replace('%MLSP%','%e' % mlsp)
     slhatable = slhatable.replace('%MCHI%','%e' % mchi)
