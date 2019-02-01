@@ -21,6 +21,8 @@ class gridBlock:
 model = "T1qqqqL"
 process = "GlGl"
 
+period = "Fall17"
+
 # Number of events: min(goalLumi*xsec, maxEvents) (always in thousands)
 goalLumi = 800
 minLumi = 40
@@ -28,6 +30,9 @@ minEvents, maxEvents = 50, 150
 maxDM = 1000
 ymin, ymax = 0, 10 # for the plot
 
+if period == "Fall17" :
+    minLumi = 45
+    minEvents = 55
 
 scanBlocks = []
 scanBlocks.append(gridBlock(600,  1200, 100))
