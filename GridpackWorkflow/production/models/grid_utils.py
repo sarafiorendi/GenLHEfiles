@@ -183,7 +183,7 @@ def makePlot(mpoints, type, model, proc, xmin, xmax, ymin, ymax):
         if val>ranges[icol] and val<=ranges[icol+1]: font_col = colors[icol]
       val_s = "{0:.0f}".format(val)
       if val>=1000: 
-        val_s = "{0:.1f}".format(val/1000)
+        val_s = "{0:.1f}".format(float(val)/1000)
       plt.text(mpoint[0],mpoint[1], val_s, fontweight='bold', color=font_col, 
                verticalalignment='center', horizontalalignment='center', fontsize=9)
 
