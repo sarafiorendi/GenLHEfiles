@@ -49,7 +49,7 @@ DECAY   1000004     0.00000000E+00   # scharm_L decays
 DECAY   2000004     0.00000000E+00   # scharm_R decays
 DECAY   1000005     0.00000000E+00   # sbottom1 decays
 DECAY   2000005     0.00000000E+00   # sbottom2 decays
-DECAY   1000006     1.00000000E+00   # stop1 decays
+DECAY   1000006     1.00000000E+00   # stop1 decays # taken from T2bt
     0.00000000E+00    2    1000024      5   # dummy allowed decay, in order to turn on off-shell decays
     0.50000000E+00    2    1000022      6   # do we need a dummy decay for this as well?
     0.50000000E+00    2    1000024      5
@@ -66,8 +66,8 @@ DECAY   2000015     0.00000000E+00   # stau_2 decays
 DECAY   1000016     0.00000000E+00   # snu_tauL decays
 DECAY   1000021     0.00000000E+00   # gluino decays
 DECAY   1000022     0.00000000E+00   # neutralino1 decays
-DECAY   1000023     0.00000000E+00   # neutralino2 decays
-DECAY   1000024     %WCHI%           # chargino1 decays
+DECAY   1000023     0.00000000E+00   # neutralino2 decays 
+DECAY   1000024     %WCHI%           # chargino1 decays # taken from T2bW_X05_dM-10to80 (or better https://github.com/CMS-SUS-XPAG/GenLHEfiles/blob/master/GridpackWorkflow/production/models/T2bt/T2bt_fragment.py#L71-80 ?) 
     0.00000000E+00    3    1000022     -1    2  # dummy allowed decay, in order to turn on off-shell decays
     1.00000000E+00    2    1000022      24
 DECAY   1000025     0.00000000E+00   # neutralino3 decays
@@ -88,6 +88,18 @@ model = "T2bt-LLChipm"
 # weighted average of matching efficiencies for the full scan
 # must equal the number entered in McM generator params
 mcm_eff = 0.265
+
+# ctau = 10cm
+DeltaM = 0.2
+ChiWidth = 1.97327052176253113e-15
+
+# ctau =  50cm
+#DeltaM = 0.2 # to fix
+#ChiWidth = 0.39466403282527335e-15
+
+# ctau = 200cm
+#DeltaM = 0.2 # to fix
+#ChiWidth = 0.9866600820631833e-16
 
 def matchParams(mass):
   if mass>99 and mass<199: return 62., 0.498
@@ -218,15 +230,10 @@ for point in mpoints:
     wgt = point[2]*(mcm_eff/tru_eff)
     
     if mlsp==0: mlsp = 1
-
-    # ctau = 10cm
-    mchi = mlsp + 0.2
-    wchi = 1.97327052176253113e-15
-
     slhatable = baseSLHATable.replace('%MSTOP%','%e' % mstop)
     slhatable = slhatable.replace('%MLSP%','%e' % mlsp)
-    slhatable = slhatable.replace('%MCHI%','%e' % mchi)
-    slhatable = slhatable.replace('%WCHI%','%e' % wchi)
+    slhatable = slhatable.replace('%MCHI%','%e' % mlsp + DeltaM)
+    slhatable = slhatable.replace('%WCHI%','%e' % ChiWidth)
 
     basePythiaParameters = cms.PSet(
         pythia8CommonSettingsBlock,
@@ -244,6 +251,7 @@ for point in mpoints:
             'JetMatching:nJetMax = 2', #number of partons in born matrix element for highest multiplicity
             'JetMatching:doShowerKt = off', #off for MLM matching, turn on for shower-kT matching
             '6:m0 = 172.5',
+            '24:mMin = 0.01',
             'Check:abortIfVeto = on',
         ), 
         parameterSets = cms.vstring('pythia8CommonSettings',

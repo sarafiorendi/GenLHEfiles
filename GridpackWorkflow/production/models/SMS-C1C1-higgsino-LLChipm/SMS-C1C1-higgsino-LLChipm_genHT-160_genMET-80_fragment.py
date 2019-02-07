@@ -98,7 +98,7 @@ mx_list = [ 100, 110, 120, 130, 150, 180, 200, 250, 300, 350, 400, 450, 500, 600
 ev_list = [2500,2000,1500,1000, 600, 400, 200, 120, 100,  80,  60,  50,  40,  30,  20,  20]
 ctau_list = [10, 50, 300]
 dmass_list = [0.2, 0.1, 0.05] # Dummy values
-width_list = [1.97327052176253113e-15, 0.39466403282527335e-15, 0.6577733880421224e-16] 
+width_list = [1.97327052176253113e-15, 0.39466403282527335e-15, 0.9866600820631833e-16] 
 
 # -------------------------------
 #    Constructing grid
@@ -137,12 +137,11 @@ for point in mpoints:
             'JetMatching:nJetMax = 2', #number of partons in born matrix element for highest multiplicity
             'JetMatching:doShowerKt = off', #off for MLM matching, turn on for shower-kT matching
             '6:m0 = 172.5',
-            '24:mMin = 0.1',
+            '24:mMin = 0.01',
             #'24:onMode = off',
             #'24:onIfAny = 11 13 15', # W to leptons
-            '23:mMin = 0.1',
+            '23:mMin = 0.01',
             'Check:abortIfVeto = on',
-            '24:mMin = 0.1',
         ), 
         parameterSets = cms.vstring('pythia8CommonSettings',
                                     'pythia8CP2Settings',
@@ -163,10 +162,9 @@ for point in mpoints:
 #     Filter setup
 # ------------------------
 # https://github.com/cms-sw/cmssw/blob/CMSSW_8_0_X/PhysicsTools/HepMCCandAlgos/python/genParticles_cfi.py
-# Fixed according to https://hypernews.cern.ch/HyperNews/CMS/get/generators/3803/1/1.html
 tmpGenParticles = cms.EDProducer("GenParticleProducer",
     saveBarCodes = cms.untracked.bool(True),
-    src = cms.InputTag("generator", "unsmeared"),
+    src = cms.InputTag("generator","unsmeared"),
     abortOnUnknownPDGCode = cms.untracked.bool(False)
 )
 
@@ -188,13 +186,66 @@ tmpGenParticlesForJetsNoNu = cms.EDProducer("InputGenJetsParticleSelector",
     tausAsJets = cms.bool(False)
 )
 
+# https://github.com/cms-sw/cmssw/blob/CMSSW_8_0_X/RecoJets/JetProducers/python/AnomalousCellParameters_cfi.py
+AnomalousCellParameters = cms.PSet(
+    maxBadEcalCells         = cms.uint32(9999999),
+    maxRecoveredEcalCells   = cms.uint32(9999999),
+    maxProblematicEcalCells = cms.uint32(9999999),
+    maxBadHcalCells         = cms.uint32(9999999),
+    maxRecoveredHcalCells   = cms.uint32(9999999),
+    maxProblematicHcalCells = cms.uint32(9999999)
+)
+
+# https://github.com/cms-sw/cmssw/blob/CMSSW_8_0_X/RecoJets/JetProducers/python/GenJetParameters_cfi.py
+GenJetParameters = cms.PSet(
+    src            = cms.InputTag("tmpGenParticlesForJetsNoNu"),
+    srcPVs         = cms.InputTag(''),
+    jetType        = cms.string('GenJet'),
+    jetPtMin       = cms.double(3.0),
+    inputEtMin     = cms.double(0.0),
+    inputEMin      = cms.double(0.0),
+    doPVCorrection = cms.bool(False),
+    # pileup with offset correction
+    doPUOffsetCorr = cms.bool(False),
+       # if pileup is false, these are not read:
+       nSigmaPU = cms.double(1.0),
+       radiusPU = cms.double(0.5),
+    # fastjet-style pileup
+    doAreaFastjet  = cms.bool(False),
+    doRhoFastjet   = cms.bool(False),
+      # if doPU is false, these are not read:
+      Active_Area_Repeats = cms.int32(5),
+      GhostArea = cms.double(0.01),
+      Ghost_EtaMax = cms.double(6.0),
+    Rho_EtaMax = cms.double(4.5),
+    useDeterministicSeed= cms.bool( True ),
+    minSeed             = cms.uint32( 14327 )
+)
+
+
+# https://github.com/cms-sw/cmssw/blob/CMSSW_8_0_X/RecoJets/JetProducers/python/ak4GenJets_cfi.py
+tmpAk4GenJetsNoNu = cms.EDProducer(
+    "FastjetJetProducer",
+    GenJetParameters,
+    AnomalousCellParameters,
+    jetAlgorithm = cms.string("AntiKt"),
+    rParam       = cms.double(0.4)
+)
+
+genHTFilter = cms.EDFilter("GenHTFilter",
+   src = cms.InputTag("tmpAk4GenJetsNoNu"), #GenJet collection as input
+   jetPtCut = cms.double(30.0), #GenJet pT cut for HT
+   jetEtaCut = cms.double(5.0), #GenJet eta cut for HT
+   genHTcut = cms.double(160.0) #genHT cut
+)
+
+
 tmpGenMetTrue = cms.EDProducer("GenMETProducer",
-                               src = cms.InputTag("tmpGenParticlesForJetsNoNu"),
-                               alias = cms.string('GenMETAllVisible'), 
-                               onlyFiducialParticles = cms.bool(False), ## Use only fiducial GenParticles
-                               globalThreshold = cms.double(0.0), ## Global Threshold for input objects
-                               usePt   = cms.bool(True), ## using Pt instead Et
-                               applyFiducialThresholdForFractions   = cms.bool(False),
+    src = cms.InputTag("tmpGenParticlesForJetsNoNu"),
+    onlyFiducialParticles = cms.bool(False), ## Use only fiducial GenParticles
+    globalThreshold = cms.double(0.0), ## Global Threshold for input objects
+    usePt   = cms.bool(True), ## using Pt instead Et
+    applyFiducialThresholdForFractions   = cms.bool(False),
 )
 
 genMETfilter1 = cms.EDFilter("CandViewSelector",
@@ -207,8 +258,9 @@ genMETfilter2 = cms.EDFilter("CandViewCountFilter",
     minNumber = cms.uint32(1),
 )
 
+
 ProductionFilterSequence = cms.Sequence(generator*
                                         tmpGenParticles * tmpGenParticlesForJetsNoNu *
+                                        tmpAk4GenJetsNoNu * genHTFilter *
                                         tmpGenMetTrue * genMETfilter1 * genMETfilter2
 )
-

@@ -61,7 +61,7 @@ DECAY   1000014     0.00000000E+00   # snu_muL decays
 DECAY   1000015     0.00000000E+00   # stau_1 decays
 DECAY   2000015     0.00000000E+00   # stau_2 decays
 DECAY   1000016     0.00000000E+00   # snu_tauL decays
-DECAY   1000021     1.00000000E+00   # gluino decays
+DECAY   1000021     1.00000000E+00   # gluino decays # taken from T1ttbb
     0.00000000E+00    3    1000024     -2    1 # dummy allowed decay, in order to turn on off-shell decays
     0.25000000E+00    3    1000024     -6    5
     0.25000000E+00    3   -1000024      6   -5
@@ -69,9 +69,9 @@ DECAY   1000021     1.00000000E+00   # gluino decays
     0.25000000E+00    3    1000022      5   -5
 DECAY   1000022     0.00000000E+00   # neutralino1 decays
 DECAY   1000023     0.00000000E+00   # neutralino2 decays
-DECAY   1000024     %WCHI%           # chargino1+ decays
+DECAY   1000024     %WCHI%           # chargino1+ decays # taken from T2bW_X05_dM-10to80
     0.00000000E+00    3    1000022     -1    2 # dummy allowed decay, in order to turn on off-shell decays
-    1.00000000E+00    2    1000022    24
+    1.00000000E+00    2    1000022      24
 DECAY   1000025     0.00000000E+00   # neutralino3 decays
 DECAY   1000035     0.00000000E+00   # neutralino4 decays
 DECAY   1000037     0.00000000E+00   # chargino2+ decays
@@ -86,10 +86,22 @@ generator = cms.EDFilter("Pythia8GeneratorFilter",
     RandomizedParameters = cms.VPSet(),
 )
 
-model = "T1tbtb-LLChipm"
+model = "T1tbtb-LLChipm_ctau-10"
 # weighted average of matching efficiencies for the full scan
 # must equal the number entered in McM generator params
 mcm_eff = 0.299
+
+# ctau =  10cm
+DeltaM = 0.2
+ChiWidth = 1.97327052176253113e-15
+
+# ctau =  50cm
+#DeltaM = 0.2 # to fix
+#ChiWidth = 0.39466403282527335e-15
+
+# ctau = 200cm
+#DeltaM = 0.2 # to fix
+#ChiWidth = 0.9866600820631833e-16
 
 # Parameters that define the grid in the bulk and diagonal
 class gridBlock:
@@ -118,8 +130,6 @@ def matchParams(mass):
     elif mass<2601: return 162., 0.340
     elif mass<2851: return 168, 0.364
     else: return 168., 0.364
-
-
 
 # Number of events: min(goalLumi*xsec, maxEvents) (always in thousands)
 goalLumi, minLumi, maxEvents = 800, 40, 150
@@ -187,15 +197,10 @@ for point in mpoints:
     wgt = point[2]*(mcm_eff/tru_eff)
     
     if mlsp==0: mlsp = 1
-
-    # ctau = 10cm
-    mchi = mlsp + 0.2
-    wchi = 1.97327052176253113e-15
-
     slhatable = baseSLHATable.replace('%MGLU%','%e' % mglu)
     slhatable = slhatable.replace('%MLSP%','%e' % mlsp)
-    slhatable = slhatable.replace('%MCHI%','%e' % mchi)
-    slhatable = slhatable.replace('%WCHI%','%e' % wchi)
+    slhatable = slhatable.replace('%MCHI%','%e' % mlsp + DeltaM)
+    slhatable = slhatable.replace('%WCHI%','%e' % ChiWidth)
 
     basePythiaParameters = cms.PSet(
         pythia8CommonSettingsBlock,
@@ -213,7 +218,7 @@ for point in mpoints:
             'JetMatching:nJetMax = 2', #number of partons in born matrix element for highest multiplicity
             'JetMatching:doShowerKt = off', #off for MLM matching, turn on for shower-kT matching
             '6:m0 = 172.5',
-            '24:mMin = 3.',
+            '24:mMin = 0.01',
             'Check:abortIfVeto = on',
         ), 
         parameterSets = cms.vstring('pythia8CommonSettings',
