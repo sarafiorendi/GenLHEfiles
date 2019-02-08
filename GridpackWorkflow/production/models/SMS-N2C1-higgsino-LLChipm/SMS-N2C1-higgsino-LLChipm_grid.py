@@ -33,7 +33,7 @@ for imN2, mN2 in enumerate(mN2s):
     mN1s.append(mN1)
     mC1 = (mN2+mN1)/2.
     mC1s.append(mC1)
-    mpoints.append([mN2,mC1,nevt[imN2],WidthPmGEV[idM],Width20GEV[idM]])
+    mpoints.append([mN2,mC1,nevt[imN2],Width20GEV[idM],WidthPmGEV[idM]])
     
 
 ## Test print out for repeated points

@@ -61,12 +61,15 @@ DECAY   1000014     0.00000000E+00   # snu_muL decays
 DECAY   1000015     0.00000000E+00   # stau_1 decays
 DECAY   2000015     0.00000000E+00   # stau_2 decays
 DECAY   1000016     0.00000000E+00   # snu_tauL decays
-DECAY   1000021     1.00000000E+00   # gluino decays # taken from T1ttbb
-    0.00000000E+00    3    1000024     -2    1 # dummy allowed decay, in order to turn on off-shell decays
-    0.25000000E+00    3    1000024     -6    5
-    0.25000000E+00    3   -1000024      6   -5
-    0.25000000E+00    3    1000022      6   -6
-    0.25000000E+00    3    1000022      5   -5
+DECAY   1000021     1.00000000E+00   # gluino decays # taken from T5qqqq (but with N1 and not N2)
+    0.12500000E+00    3     1000022        -1        1   #BR(~gl -> N2 q qbar)
+    0.12500000E+00    3     1000022        -2        2   #BR(~gl -> N2 q qbar)
+    0.12500000E+00    3     1000022        -3        3   # BR(~gl -> N2 q qbar)
+    0.12500000E+00    3     1000022        -4        4   # BR(~gl -> N2 q qbar)
+    0.12500000E+00    3     1000024         1       -2   # BR(~gl -> C1 q q'bar)
+    0.12500000E+00    3     1000024         3       -4   #BR(~gl -> C1 q q'bar)
+    0.12500000E+00    3    -1000024        -1        2   # BR(~gl -> C1 qq'bar)
+    0.12500000E+00    3    -1000024        -3        4   #BR(~gl -> C1 qq'bar)
 DECAY   1000022     0.00000000E+00   # neutralino1 decays
 DECAY   1000023     0.00000000E+00   # neutralino2 decays
 DECAY   1000024     %WCHI%           # chargino1+ decays # taken from T2bW_X05_dM-10to80
@@ -86,7 +89,7 @@ generator = cms.EDFilter("Pythia8GeneratorFilter",
     RandomizedParameters = cms.VPSet(),
 )
 
-model = "T1tbtb-LLChipm_ctau-10"
+model = "T1qqqq-LLChipm_ctau-10"
 # weighted average of matching efficiencies for the full scan
 # must equal the number entered in McM generator params
 mcm_eff = 0.299

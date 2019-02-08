@@ -129,7 +129,7 @@ for imN2, mN2 in enumerate(mN2s):
     mN1s.append(mN1)
     mC1 = (mN2+mN1)/2.
     mC1s.append(mC1)
-    mpoints.append([mN2,mC1,nevt[imN2],WidthPmGEV[idM],Width20GEV[idM]])
+    mpoints.append([mN2,mC1,nevt[imN2],Width20GEV[idM],WidthPmGEV[idM]])
     
 
 for point in mpoints:
@@ -185,7 +185,7 @@ for point in mpoints:
     generator.RandomizedParameters.append(
         cms.PSet(
             ConfigWeight = cms.double(wgt),
-            GridpackPath =  cms.string('/cvmfs/cms.cern.ch/phys_generator/gridpacks/slc6_amd64_gcc481/13TeV/madgraph/V5_2.3.3/sus_sms/%s/%s_mN2-%s_mC1-%s_tarball.tar.xz' % (process,process,mn2Str,mc1Str)),
+            GridpackPath =  cms.string('/cvmfs/cms.cern.ch/phys_generator/gridpacks/2017/13TeV/madgraph/V5_2.4.2/sus_sms/LO_PDF/%s/v1/%s_mN2-%s_mC1-%s_tarball.tar.xz' % (process,process,mn2Str,mc1Str)),
             ConfigDescription = cms.string('%s_%s_%s' % (model, mn2Str,mc1Str)),
             SLHATableForPythia8 = cms.string('%s' % slhatable),
             PythiaParameters = basePythiaParameters,
