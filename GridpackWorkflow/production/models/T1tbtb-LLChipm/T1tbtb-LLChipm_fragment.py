@@ -201,9 +201,10 @@ for point in mpoints:
     wgt = point[2]*(mcm_eff/tru_eff)
     
     if mlsp==0: mlsp = 1
+    mchi = mlsp + DeltaM
     slhatable = baseSLHATable.replace('%MGLU%','%e' % mglu)
     slhatable = slhatable.replace('%MLSP%','%e' % mlsp)
-    slhatable = slhatable.replace('%MCHI%','%e' % mlsp + DeltaM)
+    slhatable = slhatable.replace('%MCHI%','%e' % mchi)
     slhatable = slhatable.replace('%WCHI%','%e' % ChiWidth)
 
     basePythiaParameters = cms.PSet(
