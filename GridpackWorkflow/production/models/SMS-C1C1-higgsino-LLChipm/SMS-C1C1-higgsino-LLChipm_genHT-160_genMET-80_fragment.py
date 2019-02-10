@@ -63,7 +63,7 @@ DECAY   1000021     0.00000000E+00   # gluino decays
 DECAY   1000022     0.00000000E+00   # neutralino1 decays
 DECAY   1000023     0.00000000E+00   # neutralino2 decays
 DECAY   1000024     %WC1%            # chargino1+ decays
-    0.00000000E+00   3    1000022   12   -11
+    0.00000000E+00   3    1000022   12   -11   # dummy allowed decay, in order to turn on off-shell decays
     1.00000000E+00   2    1000022   24
 DECAY   1000025     0.00000000E+00   # neutralino3 decays
 DECAY   1000035     0.00000000E+00   # neutralino4 decays

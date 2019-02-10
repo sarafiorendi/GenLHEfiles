@@ -61,12 +61,16 @@ DECAY   1000014     0.00000000E+00   # snu_muL decays
 DECAY   1000015     0.00000000E+00   # stau_1 decays
 DECAY   2000015     0.00000000E+00   # stau_2 decays
 DECAY   1000016     0.00000000E+00   # snu_tauL decays
-DECAY   1000021     1.00000000E+00   # gluino decays # taken from T1ttbb
+DECAY   1000021     1.00000000E+00   # gluino decays
     0.00000000E+00    3    1000024     -2    1 # dummy allowed decay, in order to turn on off-shell decays
-    0.25000000E+00    3    1000024     -6    5
-    0.25000000E+00    3   -1000024      6   -5
-    0.25000000E+00    3    1000022      6   -6
-    0.25000000E+00    3    1000022      5   -5
+    #0.25000000E+00    3    1000024     -6    5 # if taken from T1ttbb
+    #0.25000000E+00    3   -1000024      6   -5
+    #0.25000000E+00    3    1000022      6   -6
+    #0.25000000E+00    3    1000022      5   -5
+    0.33333333E+00    3    1000024     -6    5 # assuming democratic scenario
+    0.33333333E+00    3   -1000024      6   -5
+    0.16666666E+00    3    1000022      6   -6
+    0.1.666666E+00    3    1000022      5   -5
 DECAY   1000022     0.00000000E+00   # neutralino1 decays
 DECAY   1000023     0.00000000E+00   # neutralino2 decays
 DECAY   1000024     %WCHI%           # chargino1+ decays # taken from T2bW_X05_dM-10to80
@@ -91,15 +95,15 @@ model = "T1tbtb-LLChipm_ctau-10"
 # must equal the number entered in McM generator params
 mcm_eff = 0.299
 
-# ctau =  10cm
+ctau =  "10cm"
 DeltaM = 0.32485759
 ChiWidth = 1.97327052176253113e-15
 
-# ctau =  50cm
+# ctau =  "50cm"
 #DeltaM = 0.23638902
 #ChiWidth = 0.39466403282527335e-15
 
-# ctau = 200cm
+# ctau = "200cm"
 #DeltaM = 0.18288376 
 #ChiWidth = 0.9866600820631833e-16
 
@@ -231,7 +235,7 @@ for point in mpoints:
         cms.PSet(
             ConfigWeight = cms.double(wgt),
             GridpackPath =  cms.string('/cvmfs/cms.cern.ch/phys_generator/gridpacks/2017/13TeV/madgraph/V5_2.4.2/sus_sms/LO_PDF/SMS-GlGl/v1/SMS-GlGl_mGl-%i_slc6_amd64_gcc481_CMSSW_7_1_30_tarball.tar.xz' % mglu),
-            ConfigDescription = cms.string('%s_%i_%i' % (model, mglu, mlsp)),
+            ConfigDescription = cms.string('%s_%i_%i_ctau-%s' % (model, mglu, mlsp, ctau)),
             SLHATableForPythia8 = cms.string('%s' % slhatable),
             PythiaParameters = basePythiaParameters,
         ),

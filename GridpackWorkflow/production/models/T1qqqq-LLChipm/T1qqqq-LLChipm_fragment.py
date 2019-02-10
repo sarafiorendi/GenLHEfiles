@@ -62,14 +62,14 @@ DECAY   1000015     0.00000000E+00   # stau_1 decays
 DECAY   2000015     0.00000000E+00   # stau_2 decays
 DECAY   1000016     0.00000000E+00   # snu_tauL decays
 DECAY   1000021     1.00000000E+00   # gluino decays # taken from T5qqqq (but with N1 and not N2)
-    0.12500000E+00    3     1000022        -1        1   #BR(~gl -> N2 q qbar)
-    0.12500000E+00    3     1000022        -2        2   #BR(~gl -> N2 q qbar)
-    0.12500000E+00    3     1000022        -3        3   # BR(~gl -> N2 q qbar)
-    0.12500000E+00    3     1000022        -4        4   # BR(~gl -> N2 q qbar)
-    0.12500000E+00    3     1000024         1       -2   # BR(~gl -> C1 q q'bar)
-    0.12500000E+00    3     1000024         3       -4   #BR(~gl -> C1 q q'bar)
-    0.12500000E+00    3    -1000024        -1        2   # BR(~gl -> C1 qq'bar)
-    0.12500000E+00    3    -1000024        -3        4   #BR(~gl -> C1 qq'bar)
+    0.08333333E+00    3     1000022        -1        1   #BR(~gl -> N2 q qbar)
+    0.08333333E+00    3     1000022        -2        2   #BR(~gl -> N2 q qbar)
+    0.08333333E+00    3     1000022        -3        3   # BR(~gl -> N2 q qbar)
+    0.08333333E+00    3     1000022        -4        4   # BR(~gl -> N2 q qbar)
+    0.16666666E+00    3     1000024         1       -2   # BR(~gl -> C1 q q'bar)
+    0.16666666E+00    3     1000024         3       -4   #BR(~gl -> C1 q q'bar)
+    0.16666666E+00    3    -1000024        -1        2   # BR(~gl -> C1 qq'bar)
+    0.16666666E+00    3    -1000024        -3        4   #BR(~gl -> C1 qq'bar)
 DECAY   1000022     0.00000000E+00   # neutralino1 decays
 DECAY   1000023     0.00000000E+00   # neutralino2 decays
 DECAY   1000024     %WCHI%           # chargino1+ decays # taken from T2bW_X05_dM-10to80
@@ -94,15 +94,15 @@ model = "T1qqqq-LLChipm_ctau-10"
 # must equal the number entered in McM generator params
 mcm_eff = 0.299
 
-# ctau =  10cm
+ctau =  "10cm"
 DeltaM = 0.32485759
 ChiWidth = 1.97327052176253113e-15
 
-# ctau =  50cm
+# ctau =  "50cm"
 #DeltaM = 0.23638902
 #ChiWidth = 0.39466403282527335e-15
 
-# ctau = 200cm
+# ctau = "200cm"
 #DeltaM = 0.18288376 
 #ChiWidth = 0.9866600820631833e-16
 
@@ -234,7 +234,7 @@ for point in mpoints:
         cms.PSet(
             ConfigWeight = cms.double(wgt),
             GridpackPath =  cms.string('/cvmfs/cms.cern.ch/phys_generator/gridpacks/2017/13TeV/madgraph/V5_2.4.2/sus_sms/LO_PDF/SMS-GlGl/v1/SMS-GlGl_mGl-%i_slc6_amd64_gcc481_CMSSW_7_1_30_tarball.tar.xz' % mglu),
-            ConfigDescription = cms.string('%s_%i_%i' % (model, mglu, mlsp)),
+            ConfigDescription = cms.string('%s_%i_%i_ctau-%s' % (model, mglu, mlsp, ctau)),
             SLHATableForPythia8 = cms.string('%s' % slhatable),
             PythiaParameters = basePythiaParameters,
         ),

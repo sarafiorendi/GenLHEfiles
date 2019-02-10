@@ -1,7 +1,7 @@
 import FWCore.ParameterSet.Config as cms
 
 from Configuration.Generator.Pythia8CommonSettings_cfi import *
-from Configuration.Generator.Pythia8CUEP8M1Settings_cfi import *
+from Configuration.Generator.MCTunes2017.PythiaCP2Settings_cfi import *
 
 #import scipy.constants as scc
 #def convertCTauInM_To_WidthInGeV(ctau):
@@ -72,13 +72,9 @@ DECAY   1000022     0.00000000E+00   # neutralino1 decays
 DECAY   1000023     %WIDTH0%   # neutralino2 decays # taken from TChiWZ_ZToLL
     0.00000000E+00   3    1000022   11   -11
     1.00000000E+00   2    1000022   23
-#    0.3334E+00         3    1000022   11   -11  # neutralino2 decays
-#    0.3334E+00         3    1000022   13   -13  # neutralino2 decays
-#    0.3332E+00         3    1000022   15   -15  # neutralino2 decays
 DECAY   1000024     %WIDTHpm%   # chargino1+ decays # taken from T2bW_X05_dM-10to80 (or better https://github.com/CMS-SUS-XPAG/GenLHEfiles/blob/master/GridpackWorkflow/production/models/T2bt/T2bt_fragment.py#L71-80 ?) 
-    0.00000000E+00    3    1000022     -1    2  # dummy allowed decay, in order to turn on off-shell decays
+    0.00000000E+00    3    1000022      12   -11  # dummy allowed decay, in order to turn on off-shell decays
     1.00000000E+00    2    1000022      24
-#    1.00000000E+00    3    1000022      -11   12
 """
 
 generator = cms.EDFilter("Pythia8GeneratorFilter",
@@ -156,7 +152,7 @@ for point in mpoints:
 
     basePythiaParameters = cms.PSet(
         pythia8CommonSettingsBlock,
-        pythia8CUEP8M1SettingsBlock,
+        pythia8CP2SettingsBlock,
         JetMatchingParameters = cms.vstring(
             'JetMatching:setMad = off',
             'JetMatching:scheme = 1',
@@ -177,7 +173,7 @@ for point in mpoints:
             'Check:abortIfVeto = on',
         ), 
         parameterSets = cms.vstring('pythia8CommonSettings',
-                                    'pythia8CUEP8M1Settings',
+                                    'pythia8CP2Settings',
                                     'JetMatchingParameters'
         )
     )
