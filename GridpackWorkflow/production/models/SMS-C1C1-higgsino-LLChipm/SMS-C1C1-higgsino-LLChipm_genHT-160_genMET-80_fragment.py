@@ -82,7 +82,6 @@ generator = cms.EDFilter("Pythia8GeneratorFilter",
 model = "SMS-C1C1-higgsino-LLChipm"
 # weighted average of matching efficiencies for the full scan
 # must equal the number entered in McM generator params
-#mcm_eff = 0.610
 
 def matchParams(mass):
     if mass < 125: return 76,0.63
@@ -111,7 +110,6 @@ for mx in range(len(mx_list)):
 for point in mpoints:
     mc1, mlsp = point[0], point[1]
     qcut, tru_eff = matchParams(mc1)
-    #wgt = point[2]*(mcm_eff/tru_eff)
     wgt = point[2]/tru_eff
     wc1 = point[3]
     
