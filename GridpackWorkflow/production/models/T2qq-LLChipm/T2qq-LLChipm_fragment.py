@@ -149,8 +149,6 @@ class gridBlock:
     self.xmax = xmax
     self.xstep = xstep
     self.ystep = ystep
-    
-model = "T2qq-LLChipm"
 
 # Number of events: min(goalLumi*xsec, maxEvents) (always in thousands)
 goalLumi = 3200
