@@ -87,7 +87,7 @@ generator = cms.EDFilter("Pythia8GeneratorFilter",
 model = "T2bt-LLChipm_ctau-10"
 # weighted average of matching efficiencies for the full scan
 # must equal the number entered in McM generator params
-mcm_eff = 0.265
+mcm_eff = 0.261
 
 ctau =  "10cm"
 DeltaM = 0.32485759
@@ -137,9 +137,9 @@ midDM, maxDM = 300, 700
 addDiag = [183, 167] # DeltaM for additional diagonal lines to be added
 
 scanBlocks = []
-scanBlocks.append(gridBlock(400,  1100, 50, 50))
+scanBlocks.append(gridBlock(400,  1501, 50, 50))
 minDM = 85
-ymin, ymed, ymax = 0, 0, 950
+ymin, ymed, ymax = 0, 0, 1400
 
 # Number of events for mass point, in thousands
 def events(mass):

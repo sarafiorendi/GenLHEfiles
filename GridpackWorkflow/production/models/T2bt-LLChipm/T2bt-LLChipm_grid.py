@@ -30,9 +30,9 @@ midDM, maxDM = 300, 700
 addDiag = [183, 167] # DeltaM for additional diagonal lines to be added
 
 scanBlocks = []
-scanBlocks.append(gridBlock(400,  1100, 50, 50))
+scanBlocks.append(gridBlock(400,  1501, 50, 50))
 minDM = 85
-ymin, ymed, ymax = 0, 0, 950 
+ymin, ymed, ymax = 0, 0, 1400 
 
 
 
