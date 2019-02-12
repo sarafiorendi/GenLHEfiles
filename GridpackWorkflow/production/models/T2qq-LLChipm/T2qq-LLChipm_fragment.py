@@ -108,7 +108,7 @@ generator = cms.EDFilter("Pythia8GeneratorFilter",
 model = "T2qq-LLChipm_ctau-10"
 # weighted average of matching efficiencies for the full scan
 # must equal the number entered in McM generator params
-mcm_eff = 0.259
+mcm_eff = 0.260
 
 ctau =  "10cm"
 DeltaM = 0.32485759
