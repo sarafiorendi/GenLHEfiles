@@ -18,19 +18,18 @@ class gridBlock:
     self.xstep = xstep
     self.ystep = ystep
     
-model = "T2qq"
+model = "T2qq-LLChipm"
 process = "SqSq"
 
 # Number of events: min(goalLumi*xsec, maxEvents) (always in thousands)
 goalLumi = 3200
 minLumi = 45
-minEvents, maxEvents = 10, 250
+minEvents, maxEvents = 20, 250
 diagStep = 50
-maxDM = 700
+maxDM = 425
 
 scanBlocks = []
-scanBlocks.append(gridBlock(300,  1801, 50, 100))
-scanBlocks.append(gridBlock(1850,  2601, 50, 100))
+scanBlocks.append(gridBlock(300, 2601, 100, 100))
 ymin, ymed, ymax = 0, 200, 2200
 minDM = 25
 

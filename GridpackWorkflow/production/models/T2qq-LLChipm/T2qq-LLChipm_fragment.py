@@ -88,7 +88,7 @@ DECAY   1000016     0.00000000E+00   # snu_tauL decays
 DECAY   1000021     0.00000000E+00   # gluino decays
 DECAY   1000022     0.00000000E+00   # neutralino1 decays
 DECAY   1000023     0.00000000E+00   # neutralino2 decays
-DECAY   1000024     %WCHI%           # chargino1 decays # taken from T2bW_X05_dM-10to80 (or better https://github.com/CMS-SUS-XPAG/GenLHEfiles/blob/master/GridpackWorkflow/production/models/T2bt/T2bt_fragment.py#L71-80 ?) 
+DECAY   1000024     %WCHI%           # chargino1 decays 
     0.00000000E+00    3    1000022    12   -11  # dummy allowed decay, in order to turn on off-shell decays
     1.00000000E+00    2    1000022      24
 DECAY   1000025     0.00000000E+00   # neutralino3 decays
@@ -150,18 +150,17 @@ class gridBlock:
     self.xstep = xstep
     self.ystep = ystep
     
-model = "T2qq"
+model = "T2qq-LLChipm"
 
 # Number of events: min(goalLumi*xsec, maxEvents) (always in thousands)
 goalLumi = 3200
 minLumi = 45
-minEvents, maxEvents = 10, 250
+minEvents, maxEvents = 20, 250
 diagStep = 50
-maxDM = 700
+maxDM = 425
 
 scanBlocks = []
-scanBlocks.append(gridBlock(300,  1801, 50, 100))
-scanBlocks.append(gridBlock(1850,  2601, 50, 100))
+scanBlocks.append(gridBlock(300, 2601, 100, 100))
 ymin, ymed, ymax = 0, 200, 2200
 minDM = 25
 
