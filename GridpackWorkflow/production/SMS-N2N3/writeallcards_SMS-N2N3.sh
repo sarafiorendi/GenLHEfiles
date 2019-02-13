@@ -7,7 +7,7 @@ PART="_mN-"
 ### Create cards and SLHAs for all mass points
 
 #for MNLSP in {100..1300..25} 126 127; do
-for MNLSP in {1050..1300..25}; do
+for MNLSP in {150..1300..25}; do
     MODEL=${PROC}${PART}${MNLSP}
     mkdir -p "${JOBS}/${MODEL}"
     cp ${TEMP}/${PROC}_run_card.dat "${JOBS}/${MODEL}/${MODEL}_run_card.dat"

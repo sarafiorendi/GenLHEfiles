@@ -5,6 +5,7 @@ import argparse
 from submitLHECondorJob import submitCondorJob
 
 if __name__ == '__main__':
+    hostname = os.uname()[1]
     parser = argparse.ArgumentParser()
     parser.add_argument('proc', help="Name of physics model")
     parser.add_argument('--cards-dir', dest='cardsDir', help="Path to directory with cards", required=True)
@@ -19,7 +20,12 @@ if __name__ == '__main__':
 
     script_dir = os.path.dirname(os.path.realpath(__file__))
     executable = script_dir+'/runGridpackGeneration.sh'
-    out_dir = '/hadoop/cms/store/user/'+os.environ['USER']+'/mcProduction/GRIDPACKS/'+proc
+    if hostname.count('lxplus'):
+      out_dir = '/eos/home-d/'+os.environ['USER']+'/GRIDPACKS/'+proc
+    elif hostname.count('ucsd'):
+      out_dir = '/hadoop/cms/store/user/'+os.environ['USER']+'/mcProduction/GRIDPACKS/'+proc
+    else:
+      raise NotImplementedError
 
     #gridpack generation script and misc scripts
     infile_list = [script_dir+'/gridpack_generation.sh'] #use modified gridpack generation script 
@@ -27,7 +33,8 @@ if __name__ == '__main__':
     infile_list.append(genproductions_dir+'/bin/MadGraph5_aMCatNLO/cleangridmore.sh')
     #patches needed by gridpack generation script
     #infile_list.append(script_dir+'/ucsdMG5_242.patch') #use the patch committed in this repository
-    infile_list.append(script_dir+'/ucsd_total.patch') #use the patch committed in this repository
+    if hostname.count('ucsd'):
+      infile_list.append(script_dir+'/ucsd_total.patch') #use the patch committed in this repository
     patches = glob.glob(genproductions_dir+'/bin/MadGraph5_aMCatNLO/patches/*.patch')
     infile_list += patches
     #infile_list.append(genproductions_dir+'/bin/MadGraph5_aMCatNLO/patches/mgfixes.patch')
