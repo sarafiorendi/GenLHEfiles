@@ -61,9 +61,15 @@ if __name__ == '__main__':
     infile = args.infile
     rseedStart = args.rseedStart
 
+    hostname = os.uname()[1]
     script_dir = os.path.dirname(os.path.realpath(__file__))
     executable = script_dir+'/runLHEJob.sh'
-    out_dir='/hadoop/cms/store/user/'+os.environ['USER']+'/mcProduction/LHE'
+    if hostname.count('ucsd'):
+      out_dir='/hadoop/cms/store/user/'+os.environ['USER']+'/mcProduction/LHE'
+    elif hostname.count('lxplus'):
+      out_dir='/hadoop/cms/store/user/'+os.environ['USER']+'/mcProduction/LHE'
+    else:
+      raise NotImplementedError
     print "Will generate LHE events using tarball",infile
 
     logDir = os.path.join("logs",proc)

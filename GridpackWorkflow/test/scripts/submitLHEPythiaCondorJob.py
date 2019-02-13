@@ -44,10 +44,17 @@ if __name__ == '__main__':
     qcutList = args.qcutList
     nJetMax = args.nJetMax
     mass = args.mass
+    user      = os.environ['USER']
+    hostname  = os.uname()[1]
 
     script_dir = os.path.dirname(os.path.realpath(__file__))
     #executable = script_dir+'/runLHEPythiaJob.sh'
-    out_dir='/hadoop/cms/store/user/'+os.environ['USER']+'/mcProduction/RAWSIM/'
+    if hostname.count('ucsd'):
+      out_dir='/hadoop/cms/store/user/'+user+'/mcProduction/RAWSIM/'
+    elif hostname.count('lxplus'):
+      out_dir = '/eos/home-%s/'%user[0]+user+'/mcProduction/RAWSIM/'
+    else:
+      raise NotImplementedError
     print "Will generate LHE events using tarball and shower them using Pythia"
 
     #need to transfer gen fragment
@@ -62,6 +69,8 @@ if __name__ == '__main__':
 
 
     outdir = out_dir+'/'+proc
+    if not os.path.isdir(outdir):
+      os.makedirs(outdir)
 
     if len(qcutList)>0: qcutRange=qcutList
 
