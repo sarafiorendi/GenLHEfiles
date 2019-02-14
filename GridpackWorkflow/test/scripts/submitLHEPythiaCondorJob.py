@@ -7,6 +7,7 @@
 import os
 import sys
 import argparse
+import shutil
 
 from submitLHECondorJob import submitCondorJob
 
@@ -25,11 +26,12 @@ if __name__ == '__main__':
     parser.add_argument('--nevents', '-n', help="Number of events per job", type=int, default=25000)
     parser.add_argument('--njobs', '-j', help="Number of condor jobs", type=int, default=1)
     parser.add_argument('--no-sub', dest='noSub', action='store_true', help='Do not submit jobs')
-    parser.add_argument('--proxy', dest="proxy", help="Path to proxy", default='/tmp/x509up_u31156')
+    parser.add_argument('--proxy', dest="proxy", help="Path to proxy", default=os.environ["X509_USER_PROXY"])
     parser.add_argument('--rseed-start', dest='rseedStart', help='Initial value for random seed', 
             type=int, default=500)
     parser.add_argument('--executable', help='Path to executable that should be run', 
         default = script_dir+'/runLHEPythiaJob.sh')
+    parser.add_argument('--mass', default=0)
     args = parser.parse_args()
 
     proc = args.proc
@@ -41,16 +43,34 @@ if __name__ == '__main__':
     qcutRange = range(args.qcutRange[0], args.qcutRange[1]+1, args.qcutStep)
     qcutList = args.qcutList
     nJetMax = args.nJetMax
-
+    mass = args.mass
+    user      = os.environ['USER']
+    hostname  = os.uname()[1]
 
     script_dir = os.path.dirname(os.path.realpath(__file__))
-    out_dir='/hadoop/cms/store/user/'+os.environ['USER']+'/mcProduction/RAWSIM'
+    #executable = script_dir+'/runLHEPythiaJob.sh'
+    if hostname.count('ucsd'):
+      out_dir='/hadoop/cms/store/user/'+user+'/mcProduction/RAWSIM/'
+    elif hostname.count('lxplus'):
+      out_dir = '/eos/home-%s/'%user[0]+user+'/mcProduction/RAWSIM/'
+    else:
+      raise NotImplementedError
     print "Will generate LHE events using tarball and shower them using Pythia"
 
     #need to transfer gen fragment
     fragfile = os.path.basename(fragment)
 
+    logDir = os.path.join("logs",proc)
+    if not os.path.isdir(logDir):
+        os.makedirs(logDir)
+    else:
+        shutil.rmtree(logDir)
+        os.makedirs(logDir)
+
+
     outdir = out_dir+'/'+proc
+    if not os.path.isdir(outdir):
+      os.makedirs(outdir)
 
     if len(qcutList)>0: qcutRange=qcutList
 
@@ -59,7 +79,11 @@ if __name__ == '__main__':
         for j in range(0,njobs):
             rseed = str(rseedStart+j)
             print "Random seed",rseed
-            options = [proc, str(nevents), fragfile, str(qcut), str(nJetMax), outdir, str(j+1)]
+            if mass:
+                options = [proc, str(nevents), fragfile, str(qcut), str(nJetMax), str(mass), outdir, str(j+1)]
+            else:
+                options = [proc, str(nevents), fragfile, str(qcut), str(nJetMax), "0.00000", outdir, str(j+1)]
             print "Options:",(' '.join(options))
             submitCondorJob(proc, executable, options+[rseed], fragment, 
                 label=str(qcut)+'_'+rseed, submit=(not args.noSub), proxy=args.proxy)
+
