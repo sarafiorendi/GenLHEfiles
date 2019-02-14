@@ -108,7 +108,7 @@ cmsRun LHEGS_cfg.py
 
 echo "Hadronization finished. Copy output..."
 #gfal-copy -p -f -t 4200 ${GENFILE} gsiftp://gftp.t2.ucsd.edu/${OUTDIR}/${GENFILE} --checksum ADLER32
-gfal-copy -p -f -t 4200 ${GENFILE} $OUTDIR/SMS-T2qq-LLChipm_ctau-200_mSq-2000 --checksum ADLER32
+gfal-copy -p -f -t 4200 ${GENFILE} $OUTDIR/${GENFILE} --checksum ADLER32
 
 echo "ls in cmssw src dir"
 ls
