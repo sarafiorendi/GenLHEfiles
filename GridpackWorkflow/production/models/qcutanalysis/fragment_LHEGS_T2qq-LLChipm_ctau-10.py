@@ -105,22 +105,22 @@ generator = cms.EDFilter("Pythia8GeneratorFilter",
     RandomizedParameters = cms.VPSet(),
 )
 
-model = "T2qq-LLChipm_ctau-200"
+model = "T2qq-LLChipm_ctau-10"
 # weighted average of matching efficiencies for the full scan
 # must equal the number entered in McM generator params
 mcm_eff = 0.260
 
-#ctau =  "10cm"
-#DeltaM = 0.32485759
-#ChiWidth = 1.97327052176253113e-15
+ctau =  "10cm"
+DeltaM = 0.32485759
+ChiWidth = 1.97327052176253113e-15
 
 #ctau =  "50cm"
 #DeltaM = 0.23638902
 #ChiWidth = 0.39466403282527335e-15
 
-ctau = "200cm"
-DeltaM = 0.18288376 
-ChiWidth = 0.9866600820631833e-16
+#ctau = "200cm"
+#DeltaM = 0.18288376 
+#ChiWidth = 0.9866600820631833e-16
 
 # Fit to squark cross-section in fb
 def xsec(mass):

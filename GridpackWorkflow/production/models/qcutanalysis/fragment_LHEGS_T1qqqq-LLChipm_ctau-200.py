@@ -8,14 +8,14 @@ import math
 baseSLHATable="""
 BLOCK MASS  # Mass Spectrum
 # PDG code           mass       particle
-   1000001     %MSQ%            # ~d_L
-   2000001     %MSQ%            # ~d_R
-   1000002     %MSQ%            # ~u_L
-   2000002     %MSQ%            # ~u_R
-   1000003     %MSQ%            # ~s_L
-   2000003     %MSQ%            # ~s_R
-   1000004     %MSQ%            # ~c_L
-   2000004     %MSQ%            # ~c_R
+   1000001     1.00000000E+05   # ~d_L
+   2000001     1.00000000E+05   # ~d_R
+   1000002     1.00000000E+05   # ~u_L
+   2000002     1.00000000E+05   # ~u_R
+   1000003     1.00000000E+05   # ~s_L
+   2000003     1.00000000E+05   # ~s_R
+   1000004     1.00000000E+05   # ~c_L
+   2000004     1.00000000E+05   # ~c_R
    1000005     1.00000000E+05   # ~b_1
    2000005     1.00000000E+05   # ~b_2
    1000006     1.00000000E+05   # ~t_1
@@ -29,7 +29,7 @@ BLOCK MASS  # Mass Spectrum
    1000015     1.00000000E+05   # ~tau_1
    2000015     1.00000000E+05   # ~tau_2
    1000016     1.00000000E+05   # ~nu_tauL
-   1000021     1.00000000E+05   # ~g
+   1000021     %MGLU%           # ~g
    1000022     %MLSP%           # ~chi_10
    1000023     1.00000000E+05   # ~chi_20
    1000025     1.00000000E+05   # ~chi_30
@@ -39,38 +39,14 @@ BLOCK MASS  # Mass Spectrum
 
 # DECAY TABLE
 #         PDG            Width
-DECAY   1000001     0.10000000E+00   # sdown_L decays
-#          BR         NDA      ID1       ID2
-     5.00000000E-01    2     1000022         1
-     5.00000000E-01    2          2    -1000024
-DECAY   2000001     0.10000000E+00   # sdown_R decays
-#          BR         NDA      ID1       ID2
-     5.00000000E-01    2     1000022         1
-     5.00000000E-01    2          2    -1000024
-DECAY   1000002     0.10000000E+00   # sup_L decays
-#          BR         NDA      ID1       ID2
-     5.00000000E-01    2     1000022         2
-     5.00000000E-01    2          1    1000024
-DECAY   2000002     0.10000000E+00   # sup_R decays
-#          BR         NDA      ID1       ID2
-     5.00000000E-01    2     1000022         2
-     5.00000000E-01    2          1    1000024
-DECAY   1000003     0.10000000E+00   # sstrange_L decays
-#          BR         NDA      ID1       ID2
-     5.00000000E-01    2     1000022         3
-     5.00000000E-01    2          4    -1000024
-DECAY   2000003     0.10000000E+00   # sstrange_R decays
-#          BR         NDA      ID1       ID2
-     5.00000000E-01    2     1000022         3
-     5.00000000E-01    2          4    -1000024
-DECAY   1000004     0.10000000E+00   # scharm_L decays
-#          BR         NDA      ID1       ID2
-     5.00000000E-01    2     1000022         4
-     5.00000000E-01    2          3    1000024
-DECAY   2000004     0.10000000E+00   # scharm_R decays
-#          BR         NDA      ID1       ID2
-     5.00000000E-01    2     1000022         4
-     5.00000000E-01    2          3    1000024
+DECAY   1000001     0.00000000E+00   # sdown_L decays
+DECAY   2000001     0.00000000E+00   # sdown_R decays
+DECAY   1000002     0.00000000E+00   # sup_L decays
+DECAY   2000002     0.00000000E+00   # sup_R decays
+DECAY   1000003     0.00000000E+00   # sstrange_L decays
+DECAY   2000003     0.00000000E+00   # sstrange_R decays
+DECAY   1000004     0.00000000E+00   # scharm_L decays
+DECAY   2000004     0.00000000E+00   # scharm_R decays
 DECAY   1000005     0.00000000E+00   # sbottom1 decays
 DECAY   2000005     0.00000000E+00   # sbottom2 decays
 DECAY   1000006     0.00000000E+00   # stop1 decays
@@ -85,11 +61,19 @@ DECAY   1000014     0.00000000E+00   # snu_muL decays
 DECAY   1000015     0.00000000E+00   # stau_1 decays
 DECAY   2000015     0.00000000E+00   # stau_2 decays
 DECAY   1000016     0.00000000E+00   # snu_tauL decays
-DECAY   1000021     0.00000000E+00   # gluino decays
+DECAY   1000021     1.00000000E+00   # gluino decays # taken from T5qqqq (but with N1 and not N2)
+    0.08333333E+00    3     1000022        -1        1   #BR(~gl -> N2 q qbar)
+    0.08333333E+00    3     1000022        -2        2   #BR(~gl -> N2 q qbar)
+    0.08333333E+00    3     1000022        -3        3   # BR(~gl -> N2 q qbar)
+    0.08333333E+00    3     1000022        -4        4   # BR(~gl -> N2 q qbar)
+    0.16666666E+00    3     1000024         1       -2   # BR(~gl -> C1 q q'bar)
+    0.16666666E+00    3     1000024         3       -4   #BR(~gl -> C1 q q'bar)
+    0.16666666E+00    3    -1000024        -1        2   # BR(~gl -> C1 qq'bar)
+    0.16666666E+00    3    -1000024        -3        4   #BR(~gl -> C1 qq'bar)
 DECAY   1000022     0.00000000E+00   # neutralino1 decays
 DECAY   1000023     0.00000000E+00   # neutralino2 decays
-DECAY   1000024     %WCHI%           # chargino1 decays 
-    0.00000000E+00    3    1000022    12   -11  # dummy allowed decay, in order to turn on off-shell decays
+DECAY   1000024     %WCHI%           # chargino1+ decays # taken from T2bW_X05_dM-10to80
+    0.00000000E+00    3    1000022     -1    2 # dummy allowed decay, in order to turn on off-shell decays
     1.00000000E+00    2    1000022      24
 DECAY   1000025     0.00000000E+00   # neutralino3 decays
 DECAY   1000035     0.00000000E+00   # neutralino4 decays
@@ -105,10 +89,10 @@ generator = cms.EDFilter("Pythia8GeneratorFilter",
     RandomizedParameters = cms.VPSet(),
 )
 
-model = "T2qq-LLChipm_ctau-200"
+model = "T1qqqq-LLChipm_ctau-200"
 # weighted average of matching efficiencies for the full scan
 # must equal the number entered in McM generator params
-mcm_eff = 0.260
+mcm_eff = 0.299
 
 #ctau =  "10cm"
 #DeltaM = 0.32485759
@@ -122,50 +106,46 @@ ctau = "200cm"
 DeltaM = 0.18288376 
 ChiWidth = 0.9866600820631833e-16
 
-# Fit to squark cross-section in fb
-def xsec(mass):
-    if mass < 300: return 319925471928717.38*math.pow(mass, -4.10396285974583*math.exp(mass*0.0001317804474363))
-    else: return 6953884830281245*math.pow(mass, -4.7171617288678069*math.exp(mass*6.1752771466190749e-05))
-
-def matchParams(mass):
-  if mass>99 and mass<199: return 62., 0.498
-  elif mass<299: return 62., 0.361
-  elif mass<399: return 62., 0.302
-  elif mass<499: return 64., 0.275
-  elif mass<599: return 64., 0.254
-  elif mass<1299: return 68., 0.237
-  elif mass<1451: return 70., 0.243
-  elif mass<1801: return 74., 0.246
-  elif mass<2001: return 76., 0.267
-  elif mass<2201: return 78., 0.287
-  elif mass<2601: return 80., 0.320
-  elif mass<2801: return 84., 0.347
-  else: return 84., 0.347 # should not happen
-
-
 # Parameters that define the grid in the bulk and diagonal
 class gridBlock:
-  def __init__(self, xmin, xmax, xstep, ystep):
+  def __init__(self, xmin, xmax, xstep, ystep, maxDM, dstep, minEvents):
     self.xmin = xmin
     self.xmax = xmax
     self.xstep = xstep
     self.ystep = ystep
+    self.maxDM = maxDM
+    self.dstep = dstep
+    self.minEvents = minEvents
+
+# Fit to gluino cross-section in fb
+def xsec(mass):
+    return 4.563e+17*math.pow(mass, -4.761*math.exp(5.848e-05*mass))
+
+def matchParams(mass):
+    if mass>599 and  mass<799: return 118., 0.235
+    elif mass<999: return 128., 0.235
+    elif mass<1199: return 140., 0.235
+    elif mass<1399: return 143., 0.245
+    elif mass<1499: return 147., 0.255
+    elif mass<1799: return 150., 0.267
+    elif mass<2099: return 156., 0.290
+    elif mass<2301: return 160., 0.315
+    elif mass<2601: return 162., 0.340
+    elif mass<2851: return 168, 0.364
+    else: return 168., 0.364
 
 # Number of events: min(goalLumi*xsec, maxEvents) (always in thousands)
-goalLumi = 3200
-minLumi = 45
-minEvents, maxEvents = 20, 250
-diagStep = 50
-maxDM = 425
+goalLumi, minLumi, maxEvents = 800, 40, 150
 
 massXi = %MGL%
 massXf = massXi + 1
 
 scanBlocks = []
-scanBlocks.append(gridBlock(massXi, massXf, 100, 100))
-#scanBlocks.append(gridBlock(300, 2601, 100, 100))
-ymin, ymed, ymax = 0, 200, 2200
+scanBlocks.append(gridBlock(massXi,  massXf, 200, 200, 1000, 100, 40))
 minDM = 25
+ymin, ymed, ymax = 0, 800, 2800 
+hlines_below_grid = [25,50,75,150]
+hline_xmin = 1600
 
 # Number of events for mass point, in thousands
 def events(mass):
@@ -183,12 +163,13 @@ Nevents = []
 xmin, xmax = 9999, 0
 for block in scanBlocks:
   Nbulk, Ndiag = 0, 0
-  for mx in range(block.xmin, block.xmax, diagStep):
+  minEvents = block.minEvents
+  for mx in range(block.xmin, block.xmax, block.dstep):
     xmin = min(xmin, block.xmin)
     xmax = max(xmax, block.xmax)
     col = []
     my = 0
-    begDiag = min(max(ymed, mx-maxDM), mx-minDM)
+    begDiag = max(ymed, mx-block.maxDM)
     # Adding bulk points
     if (mx-block.xmin)%block.xstep == 0 :
       for my in range(ymin, begDiag, block.ystep):
@@ -197,7 +178,10 @@ for block in scanBlocks:
         col.append([mx,my, nev])
         Nbulk += nev
     # Adding diagonal points
-    for my in range(begDiag, mx-minDM+1, diagStep):
+    yrange = []
+    if (mx>=hline_xmin): yrange.extend(hlines_below_grid)
+    yrange.extend(range(begDiag, mx-minDM+1, block.dstep)) 
+    for my in yrange:
       if my > ymax: continue
       nev = events(mx)
       col.append([mx,my, nev])
@@ -214,13 +198,13 @@ mpoints = []
 for col in cols: mpoints.extend(col)
 
 for point in mpoints:
-    msq, mlsp = point[0], point[1]
-    #qcut, tru_eff = matchParams(msq)
+    mglu, mlsp = point[0], point[1]
+    #qcut, tru_eff = matchParams(mglu)
     wgt = point[2] #*(mcm_eff/tru_eff)
     
     if mlsp==0: mlsp = 1
     mchi = mlsp + DeltaM
-    slhatable = baseSLHATable.replace('%MSQ%','%e' % msq)
+    slhatable = baseSLHATable.replace('%MGLU%','%e' % mglu)
     slhatable = slhatable.replace('%MLSP%','%e' % mlsp)
     slhatable = slhatable.replace('%MCHI%','%e' % mchi)
     slhatable = slhatable.replace('%WCHI%','%e' % ChiWidth)
@@ -253,8 +237,8 @@ for point in mpoints:
     generator.RandomizedParameters.append(
         cms.PSet(
             ConfigWeight = cms.double(wgt),
-            GridpackPath =  cms.string('/cvmfs/cms.cern.ch/phys_generator/gridpacks/2017/13TeV/madgraph/V5_2.4.2/sus_sms/LO_PDF/SMS-SqSq/v1/SMS-SqSq_mSq-%i_slc6_amd64_gcc481_CMSSW_7_1_30_tarball.tar.xz' % msq),
-            ConfigDescription = cms.string('%s_%i_%i_ctau-%s' % (model, msq, mlsp, ctau)),
+            GridpackPath =  cms.string('/cvmfs/cms.cern.ch/phys_generator/gridpacks/2017/13TeV/madgraph/V5_2.4.2/sus_sms/LO_PDF/SMS-GlGl/v1/SMS-GlGl_mGl-%i_slc6_amd64_gcc481_CMSSW_7_1_30_tarball.tar.xz' % mglu),
+            ConfigDescription = cms.string('%s_%i_%i_ctau-%s' % (model, mglu, mlsp, ctau)),
             SLHATableForPythia8 = cms.string('%s' % slhatable),
             PythiaParameters = basePythiaParameters,
         ),
