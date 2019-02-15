@@ -2,9 +2,9 @@ SCRIPT="/afs/cern.ch/work/s/scodella/MonteCarlo/gridtest/GenLHEfiles/GridpackWor
 EXECUTABLE=/afs/cern.ch/work/s/scodella/MonteCarlo/gridtest/GenLHEfiles/GridpackWorkflow/production/models/qcutanalysis/runLHEPythiaJob.sh
 NJETMAX=2
 
-#PROCESS="T1qqqq-LLChipm_ctau-10"; NJOB=4;
-#PROCESS="T1qqqq-LLChipm_ctau-50"; NJOB=7
-PROCESS="T1qqqq-LLChipm_ctau-200"; NJOB=12
+#PROCESS="T1qqqq-LLChipm_ctau-10"; NJOB=4
+#PROCESS="T1qqqq-LLChipm_ctau-50"; NJOB=5
+PROCESS="T1qqqq-LLChipm_ctau-200"; NJOB=5
 
 MODEL="SMS-${PROCESS}_mSq-"
 FRAGMENT=/afs/cern.ch/work/s/scodella/MonteCarlo/gridtest/GenLHEfiles/GridpackWorkflow/production/models/qcutanalysis/fragment_LHEGS_${PROCESS}.py
