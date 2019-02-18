@@ -107,7 +107,7 @@ void makeplot(const char *name, TTree *tree, TCut weight, const char *drawstring
   c->SaveAs(TString::Format("%s.pdf",name));
 }
 
-void plotdjr(const TString & infile, const TString & outputbase) {
+void myplotdjr(const TString & infile, const TString & outputbase) {
  
   TH1::SetDefaultSumw2();
   
@@ -127,9 +127,10 @@ void plotdjr(const TString & infile, const TString & outputbase) {
   TString runstring = "EventAuxiliary.run()>>"; runstring += RUN->GetName(); 
   tree->Draw(runstring);
   float matchedevents = RUN->GetEntries();
-  float generatedevents = 0.;
-  for (int nb = 0; nb<RUN->GetNbinsX()+1; nb++) if (RUN->GetBinContent(nb)>0.) generatedevents += 1.;
-  float matchingefficiency = matchedevents/(eventperjob*generatedevents);
+  //float njobs = 0.;
+  //for (int nb = 0; nb<RUN->GetNbinsX()+1; nb++) if (RUN->GetBinContent(nb)>0.) njobs += 1.;
+  int njobs = tree->GetNtrees()
+  float matchingefficiency = matchedevents/(eventperjob*njobs);
   TString MCMEff = outputbase.Data(); MCMEff += " matching efficiency = "; MCMEff += matchingefficiency;
   cout << MCMEff << " (" << matchedevents << "/" << (eventperjob*generatedevents) << ")" << endl;
   gSystem->Exec("echo '" + MCMEff +  "'   >>  " + outputbase.Data() +  "_mcmeff.txt");
