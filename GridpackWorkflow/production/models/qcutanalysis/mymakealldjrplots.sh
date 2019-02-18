@@ -15,14 +15,17 @@ PROCESS="T1qqqq-LLChipm_ctau-10"; QMIN=125; QMAX=165; QSTP=5
 MODEL="SMS-${PROCESS}_mSq-"
 
 for MGL in `eval echo {$MMIN..$MMAX..$MSTP}`; do
+    mkdir -p Plots/$MODEL$MGL
+    cp Plots/index.php Plots/$MODEL$MGL/
+    touch $MODEL$MGL.txt
     for QCUT in `eval echo {$QMIN..$QMAX..$QSTP}`; do
 	FILES=$DIRROOT$MODEL$MGL"/GEN_"$MODEL$MGL"_*_"$QCUT.root
 	OUTTEXT=$MODEL$MGL"_"$QCUT
 	echo $FILES
-	root -l -b -q '../../../test/scripts/plotdjr.C('\"$FILES\"', '\"$OUTTEXT\"')'
+	root -l -b -q '../../../test/scripts/myplotdjr.C('\"$FILES\"', '\"$OUTTEXT\"')'
+	mv $OUTTEXT*.pdf Plots/$MODEL$MGL/
+	cat $OUTTEXT*.txt >> $MODEL$MGL.txt
+	mv $OUTTEXT*.txt Plots/$MODEL$MGL/
     done
-    mkdir -p Plots/$MODEL$MGL
-    cp Plots/index.php Plots/$MODEL$MGL/
-    mv $MODEL$MGL*.pdf Plots/$MODEL$MGL/
-    mv $MODEL$MGL*.txt Plots/$MODEL$MGL/
+    mv $MODEL$MGL.txt  Plots/$MODEL$MGL/
 done
