@@ -129,10 +129,10 @@ void myplotdjr(const TString & infile, const TString & outputbase) {
   float matchedevents = RUN->GetEntries();
   //float njobs = 0.;
   //for (int nb = 0; nb<RUN->GetNbinsX()+1; nb++) if (RUN->GetBinContent(nb)>0.) njobs += 1.;
-  int njobs = tree->GetNtrees()
+  int njobs = tree->GetNtrees();
   float matchingefficiency = matchedevents/(eventperjob*njobs);
   TString MCMEff = outputbase.Data(); MCMEff += " matching efficiency = "; MCMEff += matchingefficiency;
-  cout << MCMEff << " (" << matchedevents << "/" << (eventperjob*generatedevents) << ")" << endl;
+  cout << MCMEff << " (" << matchedevents << "/" << (eventperjob*njobs) << ")" << endl;
   gSystem->Exec("echo '" + MCMEff +  "'   >>  " + outputbase.Data() +  "_mcmeff.txt");
 
   //TCanvas *c1 = new TCanvas("c1", "c1", 800, 600);
