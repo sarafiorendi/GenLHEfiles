@@ -87,11 +87,18 @@ generator = cms.EDFilter("Pythia8GeneratorFilter",
 model = "T2bt-LLChipm_ctau-10"
 # weighted average of matching efficiencies for the full scan
 # must equal the number entered in McM generator params
-mcm_eff = 0.261
+mcm_eff = 0.219
 
 ctau =  "10cm"
 DeltaM = 0.32485759
 ChiWidth = 1.97327052176253113e-15
+
+def matchParams(mass):
+  if mass>399 and mass<699: return 64., 0.231
+  elif mass<999: return 66., 0.202
+  elif mass<1299: return 68., 0.195
+  elif mass<1599: return 72, 0.198
+  else: return 72, 0.198  # should not happen 
 
 # ctau =  "50cm"
 #DeltaM = 0.23638902
@@ -101,20 +108,20 @@ ChiWidth = 1.97327052176253113e-15
 #DeltaM = 0.18288376 
 #ChiWidth = 0.9866600820631833e-16
 
-def matchParams(mass):
-  if mass>99 and mass<199: return 62., 0.498
-  elif mass<299: return 62., 0.361
-  elif mass<399: return 62., 0.302
-  elif mass<499: return 64., 0.275
-  elif mass<599: return 64., 0.254
-  elif mass<1299: return 68., 0.237
-  elif mass<1451: return 70., 0.243
-  elif mass<1801: return 74., 0.246
-  elif mass<2001: return 76., 0.267
-  elif mass<2201: return 78., 0.287
-  elif mass<2601: return 80., 0.320
-  elif mass<2801: return 84., 0.347
-  else: return 84., 0.347 # should not happen 
+#def matchParams(mass):
+  #if mass>99 and mass<199: return 62., 0.498
+  #elif mass<299: return 62., 0.361
+  #elif mass<399: return 62., 0.302
+  #elif mass<499: return 64., 0.275
+  #elif mass<599: return 64., 0.254
+  #elif mass<1299: return 68., 0.237
+  #elif mass<1451: return 70., 0.243
+  #elif mass<1801: return 74., 0.246
+  #elif mass<2001: return 76., 0.267
+  #elif mass<2201: return 78., 0.287
+  #elif mass<2601: return 80., 0.320
+  #elif mass<2801: return 84., 0.347
+  #else: return 84., 0.347 # should not happen 
 
 def xsec(mass):
   if mass < 300: return 319925471928717.38*math.pow(mass, -4.10396285974583*math.exp(mass*0.0001317804474363))

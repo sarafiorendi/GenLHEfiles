@@ -20,6 +20,7 @@ class gridBlock:
     
 model = "T2bt-LLChipm"
 process = "StopStop"
+processMCM = "StopStop-LLChipm_ctau-10cm"
 
 # Number of events: min(goalLumi*xsec, maxEvents) (always in thousands)
 goalLumi = 400
@@ -135,7 +136,7 @@ Ntot = makePlot(cols, 'lumi', model, process, xmin, xmax, ymin, ymax)
 
 Ntot = Ntot/1e3
 print '\nScan contains '+"{0:.0f}".format(Ntot*1e6)+" events\n"
-print 'Average matching efficiency (for McM and GEN fragment) = '+"{0:.3f}".format(getAveEff(mpoints,process))
+print 'Average matching efficiency (for McM and GEN fragment) = '+"{0:.3f}".format(getAveEff(mpoints,processMCM))
 print
 
 for ind in range(len(scanBlocks)):
