@@ -105,42 +105,74 @@ generator = cms.EDFilter("Pythia8GeneratorFilter",
     RandomizedParameters = cms.VPSet(),
 )
 
-model = "T2qq-LLChipm_ctau-10"
+model = "T2qq-LLChipm_ctau-50"
 # weighted average of matching efficiencies for the full scan
 # must equal the number entered in McM generator params
-mcm_eff = 0.260
 
 ctau =  "10cm"
 DeltaM = 0.32485759
 ChiWidth = 1.97327052176253113e-15
+mcm_eff = 0.222
 
-# ctau =  "50cm"
+def matchParams(mass):
+    if mass>299 and mass<599: return 62., 0.243
+    elif mass<899: return 64., 0.210
+    elif mass<1199: return 66., 0.196
+    elif mass<1499: return 70., 0.195
+    elif mass<1799: return 74., 0.200
+    elif mass<2099: return 76., 0.216
+    elif mass<2399: return 78., 0.227
+    elif mass<2699: return 80., 0.244
+
+#ctau =  "50cm"
 #DeltaM = 0.23638902
 #ChiWidth = 0.39466403282527335e-15
+#mcm_eff = 0.148
+
+#def matchParams(mass):
+#    if mass>299 and mass<599: return 62., 0.169
+#    elif mass<899: return 64., 0.137
+#    elif mass<1199: return 66., 0.127
+#    elif mass<1499: return 70., 0.127
+#    elif mass<1799: return 74., 0.132
+#    elif mass<2099: return 76., 0.137
+#    elif mass<2399: return 78., 0.151
+#    elif mass<2699: return 80., 0.153
 
 # ctau = "200cm"
 #DeltaM = 0.18288376 
 #ChiWidth = 0.9866600820631833e-16
+#mcm_eff = 0.0713
+
+#def matchParams(mass):
+#    if mass>299 and mass<599: return 62., 0.0810
+#    elif mass<899: return 64., 0.0657
+#    elif mass<1199: return 66., 0.0618
+#    elif mass<1499: return 70., 0.0615
+#    elif mass<1799: return 74., 0.0649
+#    elif mass<2099: return 76., 0.0670
+#    elif mass<2399: return 78., 0.0711
+#    elif mass<2699: return 80., 0.0792
 
 # Fit to squark cross-section in fb
 def xsec(mass):
     if mass < 300: return 319925471928717.38*math.pow(mass, -4.10396285974583*math.exp(mass*0.0001317804474363))
     else: return 6953884830281245*math.pow(mass, -4.7171617288678069*math.exp(mass*6.1752771466190749e-05))
 
-def matchParams(mass):
-  if mass>99 and mass<199: return 62., 0.498
-  elif mass<299: return 62., 0.361
-  elif mass<399: return 62., 0.302
-  elif mass<499: return 64., 0.275
-  elif mass<599: return 64., 0.254
-  elif mass<1299: return 68., 0.237
-  elif mass<1451: return 70., 0.243
-  elif mass<1801: return 74., 0.246
-  elif mass<2001: return 76., 0.267
-  elif mass<2201: return 78., 0.287
-  elif mass<2601: return 80., 0.320
-  elif mass<2801: return 84., 0.347
-  else: return 84., 0.347 # should not happen
+#def matchParams(mass):
+#  if mass>99 and mass<199: return 62., 0.498
+#  elif mass<299: return 62., 0.361
+#  elif mass<399: return 62., 0.302
+#  elif mass<499: return 64., 0.275
+#  elif mass<599: return 64., 0.254
+#  elif mass<1299: return 68., 0.237
+#  elif mass<1451: return 70., 0.243
+#  elif mass<1801: return 74., 0.246
+#  elif mass<2001: return 76., 0.267
+#  elif mass<2201: return 78., 0.287
+#  elif mass<2601: return 80., 0.320
+#  elif mass<2801: return 84., 0.347
+#  else: return 84., 0.347 # should not happen
 
 # Parameters that define the grid in the bulk and diagonal
 class gridBlock:

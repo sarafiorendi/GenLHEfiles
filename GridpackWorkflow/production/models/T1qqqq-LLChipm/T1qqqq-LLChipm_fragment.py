@@ -92,19 +92,31 @@ generator = cms.EDFilter("Pythia8GeneratorFilter",
 model = "T1qqqq-LLChipm_ctau-10"
 # weighted average of matching efficiencies for the full scan
 # must equal the number entered in McM generator params
-mcm_eff = 0.299
 
 ctau =  "10cm"
 DeltaM = 0.32485759
 ChiWidth = 1.97327052176253113e-15
+mcm_eff = 0.299
 
 # ctau =  "50cm"
 #DeltaM = 0.23638902
 #ChiWidth = 0.39466403282527335e-15
+#mcm_eff = 0.299
 
 # ctau = "200cm"
 #DeltaM = 0.18288376 
 #ChiWidth = 0.9866600820631833e-16
+#mcm_eff = 0.299
+
+def matchParams(mass):
+  if mass>999 and mass<1299: return 141., 0.241
+  elif mass<1599: return 148., 0.256
+  elif mass<1899: return 151., 0.274
+  elif mass<2199: return 157., 0.300
+  elif mass<2499: return 162., 0.322
+  elif mass<2799: return 167., 0.344
+  elif mass<2899: return 168., 0.367
+  else: return 168., 0.367
 
 # Parameters that define the grid in the bulk and diagonal
 class gridBlock:
@@ -121,18 +133,18 @@ class gridBlock:
 def xsec(mass):
     return 4.563e+17*math.pow(mass, -4.761*math.exp(5.848e-05*mass))
 
-def matchParams(mass):
-    if mass>599 and  mass<799: return 118., 0.235
-    elif mass<999: return 128., 0.235
-    elif mass<1199: return 140., 0.235
-    elif mass<1399: return 143., 0.245
-    elif mass<1499: return 147., 0.255
-    elif mass<1799: return 150., 0.267
-    elif mass<2099: return 156., 0.290
-    elif mass<2301: return 160., 0.315
-    elif mass<2601: return 162., 0.340
-    elif mass<2851: return 168, 0.364
-    else: return 168., 0.364
+#def matchParams(mass):
+#    if mass>599 and  mass<799: return 118., 0.235
+#    elif mass<999: return 128., 0.235
+#    elif mass<1199: return 140., 0.235
+#    elif mass<1399: return 143., 0.245
+#    elif mass<1499: return 147., 0.255
+#    elif mass<1799: return 150., 0.267
+#    elif mass<2099: return 156., 0.290
+#    elif mass<2301: return 160., 0.315
+#    elif mass<2601: return 162., 0.340
+#    elif mass<2851: return 168, 0.364
+#    else: return 168., 0.364
 
 # Number of events: min(goalLumi*xsec, maxEvents) (always in thousands)
 goalLumi, minLumi, maxEvents = 800, 40, 150

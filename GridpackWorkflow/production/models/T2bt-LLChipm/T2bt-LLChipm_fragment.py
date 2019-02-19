@@ -87,14 +87,14 @@ generator = cms.EDFilter("Pythia8GeneratorFilter",
 model = "T2bt-LLChipm_ctau-10"
 # weighted average of matching efficiencies for the full scan
 # must equal the number entered in McM generator params
-mcm_eff = 0.219
 
 ctau =  "10cm"
 DeltaM = 0.32485759
 ChiWidth = 1.97327052176253113e-15
+mcm_eff = 0.221
 
 def matchParams(mass):
-  if mass>399 and mass<699: return 64., 0.231
+  if mass>349 and mass<699: return 64., 0.231
   elif mass<999: return 66., 0.202
   elif mass<1299: return 68., 0.195
   elif mass<1599: return 72, 0.198
@@ -103,10 +103,26 @@ def matchParams(mass):
 # ctau =  "50cm"
 #DeltaM = 0.23638902
 #ChiWidth = 0.39466403282527335e-15
+#mcm_eff = 0.135
+
+#def matchParams(mass):
+#  if mass>349 and mass<699: return 64., 0.138
+#  elif mass<999: return 66., 0.125
+#  elif mass<1299: return 68., 0.125
+#  elif mass<1599: return 72, 0.130
+#  else: return 72, 0.130  # should not happen 
 
 # ctau = "200cm"
 #DeltaM = 0.18288376 
 #ChiWidth = 0.9866600820631833e-16
+#mcm_eff = 0.0637
+
+#def matchParams(mass):
+#  if mass>349 and mass<699: return 64., 0.0658
+#  elif mass<999: return 66., 0.0593
+#  elif mass<1299: return 68., 0.0583
+#  elif mass<1599: return 72, 0.0593
+#  else: return 72, 0.0593  # should not happen
 
 #def matchParams(mass):
   #if mass>99 and mass<199: return 62., 0.498

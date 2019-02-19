@@ -1,3 +1,4 @@
+
 #!/usr/bin/env python
 
 ### Utilities for constructing and plotting scan grids 
@@ -24,7 +25,71 @@ def xsec(mass, proc):
     sys.exit("grid_utils::xsec - Unknown process name %s" % proc)
   
 def matchParams(mass, proc):
-  if proc=="GlGl":
+  if "LLChipm" in proc:
+    if "GlGl" in proc:
+      if "10cm" in proc or "50cm" in proc or "200cm" in proc:
+        if mass>999 and mass<1299: return 141., 0.241
+        elif mass<1599: return 148., 0.256
+        elif mass<1899: return 151., 0.274
+        elif mass<2199: return 157., 0.300
+        elif mass<2499: return 162., 0.322
+        elif mass<2799: return 167., 0.344
+        elif mass<2899: return 168., 0.367
+        else: sys.exit("grid_utils::matchParams - Mass out of range %i" % mass)
+      else:sys.exit("grid_utils::matchParams - ctau out of range %i" % proc)
+    elif "StopStop" in proc :
+      if "10cm" in proc:
+        if mass>349 and mass<699: return 64., 0.231
+        elif mass<999: return 66., 0.202
+        elif mass<1299: return 68., 0.195
+        elif mass<1599: return 72, 0.198
+        else: sys.exit("grid_utils::matchParams - Mass out of range %i" % mass)
+      elif "50cm" in proc:
+        if mass>349 and mass<699: return 64., 0.138
+        elif mass<999: return 66., 0.125
+        elif mass<1299: return 68., 0.125
+        elif mass<1599: return 72, 0.130
+        else: sys.exit("grid_utils::matchParams - Mass out of range %i" % mass)
+      elif "200cm" in proc:
+        if mass>349 and mass<699: return 64., 0.0658
+        elif mass<999: return 66., 0.0593
+        elif mass<1299: return 68., 0.0583
+        elif mass<1599: return 72, 0.0593
+        else: sys.exit("grid_utils::matchParams - Mass out of range %i" % mass)
+      else:sys.exit("grid_utils::matchParams - ctau out of range %i" % proc)
+    elif "SqSq" in proc:
+      if "10cm" in proc:
+        if mass>299 and mass<599: return 62., 0.243
+        elif mass<899: return 64., 0.210
+        elif mass<1199: return 66., 0.196
+        elif mass<1499: return 70., 0.195
+        elif mass<1799: return 74., 0.200
+        elif mass<2099: return 76., 0.216
+        elif mass<2399: return 78., 0.227
+        elif mass<2699: return 80., 0.244
+      elif "50cm" in proc:
+        if mass>299 and mass<599: return 62., 0.169
+        elif mass<899: return 64., 0.137
+        elif mass<1199: return 66., 0.127
+        elif mass<1499: return 70., 0.127
+        elif mass<1799: return 74., 0.132
+        elif mass<2099: return 76., 0.137
+        elif mass<2399: return 78., 0.151
+        elif mass<2699: return 80., 0.153
+        else: sys.exit("grid_utils::matchParams - Mass out of range %i" % mass)
+      elif "200cm" in proc:
+        if mass>299 and mass<599: return 62., 0.0810
+        elif mass<899: return 64., 0.0657
+        elif mass<1199: return 66., 0.0618
+        elif mass<1499: return 70., 0.0615
+        elif mass<1799: return 74., 0.0649
+        elif mass<2099: return 76., 0.0670
+        elif mass<2399: return 78., 0.0711
+        elif mass<2699: return 80., 0.0792
+        else: sys.exit("grid_utils::matchParams - Mass out of range %i" % mass)
+      else:sys.exit("grid_utils::matchParams - ctau out of range %i" % proc)
+    else: sys.exit("grid_utils::matchParams - Unknown process name %s" % proc)
+  elif proc=="GlGl":
     if mass>599 and  mass<799: return 118., 0.235
     elif mass<999: return 128., 0.235
     elif mass<1199: return 140., 0.235

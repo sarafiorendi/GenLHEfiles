@@ -18,8 +18,9 @@ class gridBlock:
     self.xstep = xstep
     self.ystep = ystep
     
-model = "T2qq-LLChipm"
+model = "T2qq-LLChipm_ctau-10cm"
 process = "SqSq"
+processMCM = "SqSq-LLChipm_ctau-10cm"
 
 # Number of events: min(goalLumi*xsec, maxEvents) (always in thousands)
 goalLumi = 3200
@@ -99,7 +100,7 @@ makePlot(cols, 'lumix8', model, process, xmin, xmax, ymin, ymax)
 
 Ntot = Ntot/1e3
 print '\nScan contains '+"{0:.6f}".format(Ntot)+" million events\n"
-print 'Average matching efficiency (for McM and GEN fragment) = '+"{0:.3f}".format(getAveEff(mpoints,process))
+print 'Average matching efficiency (for McM and GEN fragment) = '+"{0:.4f}".format(getAveEff(mpoints,processMCM))
 print
 
 for ind in range(len(scanBlocks)):

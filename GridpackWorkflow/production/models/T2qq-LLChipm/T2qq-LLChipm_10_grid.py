@@ -12,28 +12,28 @@ from grid_utils import *
 
 # Parameters that define the grid in the bulk and diagonal
 class gridBlock:
-  def __init__(self, xmin, xmax, xstep, ystep, maxDM, dstep, minEvents):
+  def __init__(self, xmin, xmax, xstep, ystep):
     self.xmin = xmin
     self.xmax = xmax
     self.xstep = xstep
     self.ystep = ystep
-    self.maxDM = maxDM
-    self.dstep = dstep
-    self.minEvents = minEvents
     
-model = "T1qqqq-LLChipm"
-process = "GlGl"
-processMCM = "GlGl-LLChipm_ctau-10cm"
+model = "T2qq-LLChipm"
+process = "SqSq"
 
 # Number of events: min(goalLumi*xsec, maxEvents) (always in thousands)
-goalLumi, minLumi, maxEvents = 800, 40, 150
+goalLumi = 3200
+minLumi = 45
+minEvents, maxEvents = 10, 250
+diagStep = 50
+maxDM = 700
 
 scanBlocks = []
-scanBlocks.append(gridBlock(1000,  2801, 200, 200, 1000, 100, 40))
+scanBlocks.append(gridBlock(300,  1801, 50, 100))
+scanBlocks.append(gridBlock(1850,  2601, 50, 100))
+ymin, ymed, ymax = 0, 200, 2200
 minDM = 25
-ymin, ymed, ymax = 0, 800, 2800 
-hlines_below_grid = [25,50,75,150]
-hline_xmin = 1600
+
 
 # Number of events for mass point, in thousands
 def events(mass):
@@ -51,13 +51,12 @@ Nevents = []
 xmin, xmax = 9999, 0
 for block in scanBlocks:
   Nbulk, Ndiag = 0, 0
-  minEvents = block.minEvents
-  for mx in range(block.xmin, block.xmax, block.dstep):
+  for mx in range(block.xmin, block.xmax, diagStep):
     xmin = min(xmin, block.xmin)
     xmax = max(xmax, block.xmax)
     col = []
     my = 0
-    begDiag = max(ymed, mx-block.maxDM)
+    begDiag = min(max(ymed, mx-maxDM), mx-minDM)
     # Adding bulk points
     if (mx-block.xmin)%block.xstep == 0 :
       for my in range(ymin, begDiag, block.ystep):
@@ -66,10 +65,7 @@ for block in scanBlocks:
         col.append([mx,my, nev])
         Nbulk += nev
     # Adding diagonal points
-    yrange = []
-    if (mx>=hline_xmin): yrange.extend(hlines_below_grid)
-    yrange.extend(range(begDiag, mx-minDM+1, block.dstep)) 
-    for my in yrange:
+    for my in range(begDiag, mx-minDM+1, diagStep):
       if my > ymax: continue
       nev = events(mx)
       col.append([mx,my, nev])
@@ -97,11 +93,14 @@ else: print "\n\nGRID CONTAINS "+str(Ntot-Ndiff)+" DUPLICATE POINTS!!\n\n"
 
 makePlot(cols, 'events', model, process, xmin, xmax, ymin, ymax)
 Ntot = makePlot(cols, 'lumi', model, process, xmin, xmax, ymin, ymax)
-#makePlot(cols, 'factor')
+# Plotting equivalent lumi for 8 times the cross-section
+model = "T2qq_8flavor"
+makePlot(cols, 'lumix8', model, process, xmin, xmax, ymin, ymax)
+
 
 Ntot = Ntot/1e3
-print '\nScan contains '+"{0:.1f}".format(Ntot)+" million events\n"
-print 'Average matching efficiency (for McM and GEN fragment) = '+"{0:.3f}".format(getAveEff(mpoints,processMCM))
+print '\nScan contains '+"{0:.6f}".format(Ntot)+" million events\n"
+print 'Average matching efficiency (for McM and GEN fragment) = '+"{0:.3f}".format(getAveEff(mpoints,process))
 print
 
 for ind in range(len(scanBlocks)):
