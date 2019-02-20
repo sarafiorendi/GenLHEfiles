@@ -68,8 +68,8 @@ DECAY   1000021     0.00000000E+00   # gluino decays
 DECAY   1000022     0.00000000E+00   # neutralino1 decays
 DECAY   1000023     0.00000000E+00   # neutralino2 decays 
 DECAY   1000024     %WCHI%           # chargino1 decays # taken from T2bW_X05_dM-10to80 (or better https://github.com/CMS-SUS-XPAG/GenLHEfiles/blob/master/GridpackWorkflow/production/models/T2bt/T2bt_fragment.py#L71-80 ?) 
-    0.00000000E+00    3    1000022    12   -11  # dummy allowed decay, in order to turn on off-shell decays
-    1.00000000E+00    2    1000022      24
+#   0.00000000E+00    3    1000022    12   -11  # dummy allowed decay, in order to turn on off-shell decays
+    1.00000000E+00    2    211	1000022		# x1+  -->  n1 pi+
 DECAY   1000025     0.00000000E+00   # neutralino3 decays
 DECAY   1000035     0.00000000E+00   # neutralino4 decays
 DECAY   1000037     0.00000000E+00   # chargino2+ decays
@@ -275,7 +275,7 @@ for point in mpoints:
             'JetMatching:nJetMax = 2', #number of partons in born matrix element for highest multiplicity
             'JetMatching:doShowerKt = off', #off for MLM matching, turn on for shower-kT matching
             '6:m0 = 172.5',
-            '24:mMin = 0.01',
+            '24:mMin = 0.1',
             'Check:abortIfVeto = on',
         ), 
         parameterSets = cms.vstring('pythia8CommonSettings',
