@@ -111,14 +111,14 @@ baseSLHATable = baseSLHATable.replace('%WCHI%','%e' % ChiWidth)
 charginodecaySLHATable = charginodecaySLHATable.replace('%WCHI%','%e' % ChiWidth)
 
 # Two dummy files to initialise the generator
-dummyslha = open('dummy.slha','w')
-dummyslhatable = baseSLHATable.replace('%MGLU%','%e' % 1000) # dummy values
-dummyslhatable = dummyslhatable.replace('%MLSP%','%e' % 100) # these next two can be removed from the dummy ? They are in the chargino decay
-dummyslhatable = dummyslhatable.replace('%MCHI%','%e' % (100+DeltaM))
-dummyslha.write(dummyslhatable) 
-dummyslha.close() 
+#dummyslha = open('/afs/cern.ch/work/s/scodella/MonteCarlo/checkMcMRequests/CMSSW_7_1_37/src/dummy.slha','w')
+#dummyslhatable = baseSLHATable.replace('%MGLU%','%e' % 1000) # dummy values
+#dummyslhatable = dummyslhatable.replace('%MLSP%','%e' % 100) # these next two can be removed from the dummy ? They are in the chargino decay
+#dummyslhatable = dummyslhatable.replace('%MCHI%','%e' % (100+DeltaM))
+#dummyslha.write(dummyslhatable) 
+#dummyslha.close() 
 
-dummycharginodecay = open('dummycharginodecay.txt','w')
+dummycharginodecay = open('/afs/cern.ch/work/s/scodella/MonteCarlo/checkMcMRequests/CMSSW_7_1_37/src/dummycharginodecay.txt','w')
 dummycharginodecaytable = charginodecaySLHATable.replace('%MLSP%','%e' % 1000)
 dummycharginodecaytable = dummycharginodecaytable.replace('%MCHI%','%e' % (100+DeltaM))
 dummycharginodecay.write(dummycharginodecaytable)
@@ -137,7 +137,7 @@ generator = cms.EDFilter("Pythia8GeneratorFilter",
     hscpFlavor = cms.untracked.string('stau'),
     massPoint = cms.untracked.int32(100),
     slhaFile  = cms.string('dummy.slha'),
-    particleFile = cms.untracked.string('/afs/cern.ch/work/s/scodella/MonteCarlo/ridtest/GenLHEfiles/GridpackWorkflow/production/models/T1qqqq-LLChipm/charginodecay.txt'),  
+    particleFile = cms.untracked.string('charginodecay.txt'),  
     ###
 )
 
@@ -237,14 +237,14 @@ for point in mpoints:
     if mlsp==0: mlsp = 1
     mchi = mlsp + DeltaM
 
-    pointslha = open('point.slha','w')
-    pointslhatable = baseSLHATable.replace('%MGLU%','%e' % mglu) 
-    pointslhatable = pointslhatable.replace('%MLSP%','%e' % mlsp) # these next two can be removed from the point?
-    pointslhatable = pointslhatable.replace('%MCHI%','%e' % mchi)
-    pointslha.write(pointslhatable) 
-    pointslha.close() 
+    #pointslha = open('/afs/cern.ch/work/s/scodella/MonteCarlo/checkMcMRequests/CMSSW_7_1_37/src/point.slha','w')
+    #pointslhatable = baseSLHATable.replace('%MGLU%','%e' % mglu) 
+    #pointslhatable = pointslhatable.replace('%MLSP%','%e' % mlsp) # these next two can be removed from the point?
+    #pointslhatable = pointslhatable.replace('%MCHI%','%e' % mchi)
+    #pointslha.write(pointslhatable) 
+    #pointslha.close() 
     
-    pointcharginodecay = open('pointcharginodecay.txt','w')
+    pointcharginodecay = open('/afs/cern.ch/work/s/scodella/MonteCarlo/checkMcMRequests/CMSSW_7_1_37/src/pointcharginodecay_mLSP-%i_ctau-%s.txt' % (mlsp, ctau),'w')
     pointcharginodecaytable = charginodecaySLHATable.replace('%MLSP%','%e' % mlsp)
     pointcharginodecaytable = pointcharginodecaytable.replace('%MCHI%','%e' % mchi)
     pointcharginodecay.write(pointcharginodecaytable)
@@ -287,8 +287,11 @@ for point in mpoints:
             SLHATableForPythia8 = cms.string('%s' % slhatable), # should be use this or pointslha ?
             PythiaParameters = basePythiaParameters,
         ),
-    )
-    #generator.slhaFile.setValue('point.slha'), # this or SLHATableForPythia8 ?
+    ),
+    #generator.slhaFile.append('point.slha'), # this or SLHATableForPythia8 ?
+    #generator.massPoint.append(int(mlsp)),
+    #generator.particleFile.append('pointcharginodecay_mLSP-%i_ctau-%s.txt' % (mlsp, ctau)), 
     generator.massPoint.setValue(int(mlsp)),
-    generator.particleFile.setValue('pointcharginodecay.txt'),  
+    generator.particleFile.setValue('pointcharginodecay_mLSP-%i_ctau-%s.txt' % (mlsp, ctau)),  
     
+ 
