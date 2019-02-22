@@ -118,11 +118,11 @@ charginodecaySLHATable = charginodecaySLHATable.replace('%WCHI%','%e' % ChiWidth
 #dummyslha.write(dummyslhatable) 
 #dummyslha.close() 
 
-dummycharginodecay = open('/afs/cern.ch/work/s/scodella/MonteCarlo/checkMcMRequests/CMSSW_7_1_37/src/dummycharginodecay.txt','w')
-dummycharginodecaytable = charginodecaySLHATable.replace('%MLSP%','%e' % 1000)
-dummycharginodecaytable = dummycharginodecaytable.replace('%MCHI%','%e' % (100+DeltaM))
-dummycharginodecay.write(dummycharginodecaytable)
-dummycharginodecay.close()
+#dummycharginodecay = open('/afs/cern.ch/work/s/scodella/MonteCarlo/checkMcMRequests/CMSSW_7_1_37/src/dummycharginodecay.txt','w')
+#dummycharginodecaytable = charginodecaySLHATable.replace('%MLSP%','%e' % 1000)
+#dummycharginodecaytable = dummycharginodecaytable.replace('%MCHI%','%e' % (100+DeltaM))
+#dummycharginodecay.write(dummycharginodecaytable)
+#dummycharginodecay.close()
  
 generator = cms.EDFilter("Pythia8GeneratorFilter",
     maxEventsToPrint = cms.untracked.int32(1),
@@ -134,10 +134,10 @@ generator = cms.EDFilter("Pythia8GeneratorFilter",
     ### For long lived charginos
     processFile = cms.untracked.string('SimG4Core/CustomPhysics/data/RhadronProcessList.txt'),
     useregge = cms.bool(False),
-    hscpFlavor = cms.untracked.string('stau'),
+    #hscpFlavor = cms.untracked.string('stau'),
     massPoint = cms.untracked.int32(100),
     slhaFile  = cms.string('dummy.slha'),
-    particleFile = cms.untracked.string('charginodecay.txt'),  
+    particleFile = cms.untracked.string('dummycharginodecay.txt'),  
     ###
 )
 
