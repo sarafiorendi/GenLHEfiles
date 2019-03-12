@@ -22,7 +22,7 @@ def submitCondorJob(proc, executable, options, infile, label, outputToTransfer=N
     if isGridpackJob :
         f.write("+request_cpus=8\n")
     if hostname.count('lxplus'):
-      f.write('+JobFlavour = "longlunch"\n')
+      f.write('+JobFlavour = "testmatch"\n') #longlunch (2h) too short in some cases. tomorrow (1 day), testmatch (3 days), nextweek (1 week) also exist
     f.write("Executable = "+executable+"\n")
     f.write("arguments =  "+(' '.join(options))+"\n")
     f.write("Transfer_Executable = True\n")

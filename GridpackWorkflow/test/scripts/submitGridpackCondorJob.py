@@ -45,5 +45,6 @@ if __name__ == '__main__':
         os.makedirs("logs/%s"%proc)
 
     infile = ','.join(infile_list)
+    print infile
     options = [proc, out_dir]
     submitCondorJob(proc, executable, options, infile, label="gridpack", submit=(not args.noSub), proxy=args.proxy, isGridpackJob=True)
