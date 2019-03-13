@@ -3,8 +3,11 @@ import model mssm
 define p = p b b~
 define j = j b b~
 
-generate p p > ta1- ta1+ @1
-add process p p > ta1- ta1+ j @2
-add process p p > ta1- ta1+ j j @3
+define stau = ta1+ ta1-
+define tau = ta+ ta-
+
+generate p p > stau stau, stau > tau n1 @1
+add process p p > stau stau j, stau > tau n1 @2
+add process p p > stau stau j j, stau > tau n1 @3
 
 output ISRStau_DirectStau_mStau-%MNLSP%_mN1-%MN1% -nojpeg
