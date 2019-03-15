@@ -14,6 +14,6 @@ define ewkinos = x1+ x1- n1 n2 ta1- ta1+
 
 generate p p > ewkinos ewkinos / excl @1
 add process p p > ewkinos ewkinos j / excl @2
-add process p p > ewkinos ewkinos j j /excl @3
+add process p p > ewkinos ewkinos j j / excl @3
 
 output ISRStau_EWKino_mN2-%MN2%_mStau-%MNLSP%_mN1-%MN1% -nojpeg
