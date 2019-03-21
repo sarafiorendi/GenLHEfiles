@@ -67,7 +67,7 @@ if __name__ == '__main__':
     if hostname.count('ucsd'):
       out_dir='/hadoop/cms/store/user/'+os.environ['USER']+'/mcProduction/LHE'
     elif hostname.count('lxplus'):
-      out_dir='/hadoop/cms/store/user/'+os.environ['USER']+'/mcProduction/LHE'
+      out_dir='/eos/home-%s/'%user[0]+user+'/mcProduction/LHE'
     else:
       raise NotImplementedError
     print "Will generate LHE events using tarball",infile
