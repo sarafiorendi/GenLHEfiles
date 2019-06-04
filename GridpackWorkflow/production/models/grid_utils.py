@@ -1,4 +1,3 @@
-
 #!/usr/bin/env python
 
 ### Utilities for constructing and plotting scan grids 
@@ -25,71 +24,7 @@ def xsec(mass, proc):
     sys.exit("grid_utils::xsec - Unknown process name %s" % proc)
   
 def matchParams(mass, proc):
-  if "LLChipm" in proc:
-    if "GlGl" in proc:
-      if "10cm" in proc or "50cm" in proc or "200cm" in proc:
-        if mass>999 and mass<1299: return 141., 0.241
-        elif mass<1599: return 148., 0.256
-        elif mass<1899: return 151., 0.274
-        elif mass<2199: return 157., 0.300
-        elif mass<2499: return 162., 0.322
-        elif mass<2799: return 167., 0.344
-        elif mass<2899: return 168., 0.367
-        else: sys.exit("grid_utils::matchParams - Mass out of range %i" % mass)
-      else:sys.exit("grid_utils::matchParams - ctau out of range %i" % proc)
-    elif "StopStop" in proc :
-      if "10cm" in proc:
-        if mass>349 and mass<699: return 64., 0.231
-        elif mass<999: return 66., 0.202
-        elif mass<1299: return 68., 0.195
-        elif mass<1599: return 72, 0.198
-        else: sys.exit("grid_utils::matchParams - Mass out of range %i" % mass)
-      elif "50cm" in proc:
-        if mass>349 and mass<699: return 64., 0.138
-        elif mass<999: return 66., 0.125
-        elif mass<1299: return 68., 0.125
-        elif mass<1599: return 72, 0.130
-        else: sys.exit("grid_utils::matchParams - Mass out of range %i" % mass)
-      elif "200cm" in proc:
-        if mass>349 and mass<699: return 64., 0.0658
-        elif mass<999: return 66., 0.0593
-        elif mass<1299: return 68., 0.0583
-        elif mass<1599: return 72, 0.0593
-        else: sys.exit("grid_utils::matchParams - Mass out of range %i" % mass)
-      else:sys.exit("grid_utils::matchParams - ctau out of range %i" % proc)
-    elif "SqSq" in proc:
-      if "10cm" in proc:
-        if mass>299 and mass<599: return 62., 0.243
-        elif mass<899: return 64., 0.210
-        elif mass<1199: return 66., 0.196
-        elif mass<1499: return 70., 0.195
-        elif mass<1799: return 74., 0.200
-        elif mass<2099: return 76., 0.216
-        elif mass<2399: return 78., 0.227
-        elif mass<2699: return 80., 0.244
-      elif "50cm" in proc:
-        if mass>299 and mass<599: return 62., 0.169
-        elif mass<899: return 64., 0.137
-        elif mass<1199: return 66., 0.127
-        elif mass<1499: return 70., 0.127
-        elif mass<1799: return 74., 0.132
-        elif mass<2099: return 76., 0.137
-        elif mass<2399: return 78., 0.151
-        elif mass<2699: return 80., 0.153
-        else: sys.exit("grid_utils::matchParams - Mass out of range %i" % mass)
-      elif "200cm" in proc:
-        if mass>299 and mass<599: return 62., 0.0810
-        elif mass<899: return 64., 0.0657
-        elif mass<1199: return 66., 0.0618
-        elif mass<1499: return 70., 0.0615
-        elif mass<1799: return 74., 0.0649
-        elif mass<2099: return 76., 0.0670
-        elif mass<2399: return 78., 0.0711
-        elif mass<2699: return 80., 0.0792
-        else: sys.exit("grid_utils::matchParams - Mass out of range %i" % mass)
-      else:sys.exit("grid_utils::matchParams - ctau out of range %i" % proc)
-    else: sys.exit("grid_utils::matchParams - Unknown process name %s" % proc)
-  elif proc=="GlGl":
+  if proc=="GlGl":
     if mass>599 and  mass<799: return 118., 0.235
     elif mass<999: return 128., 0.235
     elif mass<1199: return 140., 0.235
@@ -118,6 +53,17 @@ def matchParams(mass, proc):
     elif mass < 399 : return 80,0.47
     elif mass < 499 : return 80,0.46
     else: sys.exit("grid_utils::matchParams - Mass out of range %i" % mass)
+  elif "StauStau-Ewkino" in proc: 
+    if mass>75. and mass < 125.: return 76,0.645
+    elif mass < 175.: return 76,0.581 
+    elif mass < 225.: return 76,0.549
+    elif mass < 275.: return 76,0.525 
+    elif mass < 325.: return 76,0.508
+    elif mass < 375.: return 76,0.486
+    elif mass < 425.: return 76,0.474
+    elif mass < 475.: return 76,0.468
+    elif mass < 525.: return 76,0.454
+    else: sys.exit("grid_utils::matchParams - Mass out of range %i" % mass)
   elif proc=="SqSq" or proc=="StopStop" or proc=="SbotSbot":
     if mass>99 and mass<199: return 62., 0.498
     elif mass<299: return 62., 0.361
@@ -131,6 +77,7 @@ def matchParams(mass, proc):
     elif mass<2201: return 78., 0.287
     elif mass<2601: return 80., 0.320
     elif mass<2801: return 84., 0.347
+    elif mass<3801: return 84., 0.347
     else: sys.exit("grid_utils::matchParams - Mass out of range %i" % mass)
   elif proc=="SqSqPlusGamma":
     if mass>99 and mass<299: return 62., 0.410 
@@ -198,7 +145,13 @@ def matchParams(mass, proc):
     elif mass < 181.: return 76,0.570
     elif mass < 201.: return 76,0.555
     elif mass < 221.: return 76,0.543
-    elif mass < 241.: return 76,0.533
+    elif mass < 261.: return 76,0.533
+    elif mass < 301.: return 76,0.523
+    elif mass < 341.: return 76,0.506
+    elif mass < 381.: return 76,0.500
+    elif mass < 421.: return 76,0.487
+    elif mass < 461.: return 76,0.475
+    elif mass < 501.: return 76,0.469
     else: return 76,0.5 # it shouldn't be used anyway
   elif proc=='Higgsino-N2N1':
     if mass < 221.: return 76,0.513
@@ -284,7 +237,7 @@ def makePlot(mpoints, type, model, proc, xmin, xmax, ymin, ymax):
 
   if type == 'events': title = 'Thousands of '+model+' events to generate'
   if 'lumi' in type: title = 'Equivalent '+model+' MC luminosity in fb$^{-1}$'
-  tot_s = ' ('+"{0:.1f}".format(Ntot/1000)+' million events in the scan)'
+  tot_s = ' ('+"{0:.1f}".format(Ntot/1000.)+' million events in the scan)'
   plt.title(title+tot_s, fontweight='bold')
   pname = model+'_'+type+'.pdf'
   plt.savefig(pname, bbox_inches='tight')
