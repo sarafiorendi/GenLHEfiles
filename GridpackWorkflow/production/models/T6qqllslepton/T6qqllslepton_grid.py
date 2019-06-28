@@ -6,8 +6,8 @@ import os,sys,math
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from grid_utils import *
     
-model = "T6bbllslepton"
-process = "SbotSbot"
+model = "T6qqllslepton"
+process = "SqSq"
 
 # Parameters that define the grid in the bulk and diagonal
 class gridBlock:
@@ -23,13 +23,11 @@ nevt = 50
 
 scanBlocks = []
 
-#scanBlocks.append(gridBlock(400, 800, 25, 25, 25,50))
-#scanBlocks.append(gridBlock(800, 1400, 50, 50, 25,50))
-scanBlocks.append(gridBlock(1400, 1801, 50, 50, 25,50))
-minDM = 25
+scanBlocks.append(gridBlock(1000, 2101, 50, 50, 50,50))
+minDM = 50
 maxDM = 300
-ymin, ymed, ymax = 150, 150, 1800
-hlines_below_grid = [120,130,140]
+ymin, ymed, ymax = 150, 150, 2100
+hlines_below_grid = []
 hline_xmin = 400
 
 # -------------------------------
