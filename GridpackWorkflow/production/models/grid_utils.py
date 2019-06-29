@@ -41,7 +41,18 @@ def matchParams(mass, proc):
     if mass < 199: return 76,0.608
     elif mass < 299: return 76,52.5e-2
     elif mass < 399: return 76,48.5e-2
-    elif mass > 399 : return 76,45.7e-2
+    elif mass < 499: return 76,0.457
+    elif mass < 550: return 76,0.442
+    elif mass < 650: return 76,0.433
+    elif mass < 750: return 76,0.418
+    elif mass < 850: return 76,0.406
+    elif mass < 950: return 76,0.396
+    elif mass < 1050: return 76,0.388
+    elif mass < 1150: return 76,0.385
+    elif mass < 1250: return 76,0.384
+    elif mass < 1350: return 76,0.381
+    elif mass < 1450: return 76,0.379
+    elif mass < 1550: return 76,0.378
     else: sys.exit("grid_utils::matchParams - Mass out of range %i" % mass)
   elif proc=="StauStau-RH" or proc=="StauStau-LH" or proc=="StauStau-MaxMixing":
     if mass < 99: return 80,0.63
@@ -141,6 +152,9 @@ def matchParams(mass, proc):
     elif mass<1099: return 76,0.40
     elif mass<1199: return 76,0.398
     elif mass<1299: return 76,0.394
+    elif mass<1451: return 76, 0.388
+    elif mass<1651: return 76, 0.389
+    elif mass<1851: return 76, 0.382
     else: return 76,0.394
   elif proc=='C1C1':
     if mass < 125: return 76,0.63
