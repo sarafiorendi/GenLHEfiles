@@ -1,0 +1,15 @@
+import model mssm
+define p = g u c d s u~ c~ d~ s~
+define j = g u c d s u~ c~ d~ s~
+define p = p b b~
+define j = j b b~
+
+define ell+ = e+ mu+ ta+
+define ell- = e- mu- ta-
+
+generate p p > t2 t2~, (t2 > n1 ell+ vl b), (t2~ > n1 ell- vl~ b~) @1
+add process p p > t2 t2~ j, (t2 > n1 ell+ vl b), (t2~ > n1 ell- vl~ b~) @2
+add process p p > t2 t2~ j j, (t2 > n1 ell+ vl b), (t2~ > n1 ell- vl~ b~) @3
+add process p p > t2 t2~ j j j, (t2 > n1 ell+ vl b), (t2~ > n1 ell- vl~ b~) @4
+
+output SMS-StopStop-3J_mStop-%MPROD%_mLSP-%MLSP% -nojpeg
