@@ -25,7 +25,10 @@ def xsec(mass, proc):
   
 def matchParams(mass, proc):
   if proc=="GlGl":
-    if mass>599 and  mass<799: return 118., 0.235
+    if mass>200 and mass<499: return 102., 0.333
+    elif mass<599: return 110., 0.255
+    elif mass<799: return 118., 0.235
+    #if mass>599 and  mass<799: return 118., 0.235
     elif mass<999: return 128., 0.235
     elif mass<1199: return 140., 0.235
     elif mass<1399: return 143., 0.245
@@ -113,7 +116,10 @@ def matchParams(mass, proc):
     elif mass < 399: return 62., 0.413
     elif mass < 499: return 62., 0.414
     elif mass < 599: return 64., 0.416
-    # the following are copied from SqSq
+    elif mass < 650: return 64., 0.431
+    elif mass < 850: return 64., 0.431
+    elif mass < 1050: return 64., 0.429
+    # the following are copied from SqSq who use such a large masses???
     elif mass<1299: return 68., 0.237
     elif mass<1451: return 70., 0.243
     elif mass<1801: return 74., 0.246
@@ -155,7 +161,7 @@ def matchParams(mass, proc):
     elif mass<1451: return 76, 0.388
     elif mass<1651: return 76, 0.389
     elif mass<1851: return 76, 0.382
-    else: return 76,0.394
+    else: return 76,0.382
   elif proc=='C1C1':
     if mass < 125: return 76,0.63
     elif mass < 150: return 76,0.6
@@ -164,7 +170,12 @@ def matchParams(mass, proc):
     elif mass < 400: return 76,0.5
     elif mass < 525: return 76,0.47
     elif mass < 725: return 76,0.44
-    else: return 76,0.42
+    elif mass < 950: return 76,0.411
+    elif mass <1150: return 76,0.398
+    elif mass <1350: return 76,0.389
+    elif mass <1550: return 76,0.379
+    elif mass <1750: return 76,0.372
+    else: return 76,0.372
   elif proc=='ttH_HToTT':
     if mass < 450.: return 76,0.435
     elif mass < 550.: return 76,0.409
