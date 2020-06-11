@@ -653,9 +653,9 @@ else
   cd $WORKDIR
   
 #   echo "creating debug tarball"
-#   cp ${LOGFILE} ./gridpack_generation.log
+#   cp ${LOGFILE} ./gridpack_generation_242.log
 #   DEBUGTARBALL=${name}_debug_tarball.tar.gz
-#   tar -czps --ignore-failed-read -f ${DEBUGTARBALL} processtmp gridpack_generation.log
+#   tar -czps --ignore-failed-read -f ${DEBUGTARBALL} processtmp gridpack_generation_242.log
 #   echo "moving tarball to ${PRODHOME}/${DEBUGTARBALL}"
 #   mv ${DEBUGTARBALL} ${PRODHOME}/${DEBUGTARBALL}
 #   set -e
@@ -720,7 +720,7 @@ else
 
   cd gridpack
   
-  cp $PRODHOME/runcmsgrid_LO.sh ./runcmsgrid.sh
+  cp $PRODHOME/runcmsgrid_LO_242.sh ./runcmsgrid.sh
   sed -i s/SCRAM_ARCH_VERSION_REPLACE/${scram_arch}/g runcmsgrid.sh
   sed -i s/CMSSW_VERSION_REPLACE/${cmssw_version}/g runcmsgrid.sh
   sed -i s/PDF_FLAVOR_SCHEME_REPLACE/${is5FlavorScheme}/g runcmsgrid.sh
@@ -756,7 +756,7 @@ fi
 echo "Saving log file(s)"
 #copy log file
 for i in ${LOGFILE_NAME}*.log; do 
-    cp $i ${i/$LOGFILE_NAME/gridpack_generation}; 
+    cp $i ${i/$LOGFILE_NAME/gridpack_generation_242}; 
 done
 
 
@@ -777,7 +777,7 @@ EXTRA_TAR_ARGS=""
 if [ -e $CARDSDIR/${name}_externaltarball.dat ]; then
     EXTRA_TAR_ARGS="${name}_externaltarball.dat header_for_madspin.txt"
 fi
-XZ_OPT="$XZ_OPT" tar -cJpsf ${PRODHOME}/${name}_${scram_arch}_${cmssw_version}_tarball.tar.xz mgbasedir process runcmsgrid.sh gridpack_generation*.log InputCards $EXTRA_TAR_ARGS
+XZ_OPT="$XZ_OPT" tar -cJpsf ${PRODHOME}/${name}_${scram_arch}_${cmssw_version}_tarball.tar.xz mgbasedir process runcmsgrid.sh gridpack_generation_242*.log InputCards $EXTRA_TAR_ARGS
 
 #mv ${name}_${scram_arch}_${cmssw_version}_tarball.tar.xz ${PRODHOME}/${name}_${scram_arch}_${cmssw_version}_tarball.tar.xz
 

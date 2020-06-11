@@ -31,7 +31,7 @@ cp ${WORKDIR}/${PROCESS}_param_card.dat cards/${PROCESS}
 
 #run script
 echo "Running gridpack generation"
-./gridpack_generation.sh ${PROCESS} cards/${PROCESS} 
+./gridpack_generation_242.sh ${PROCESS} cards/${PROCESS} 
 
 #copy output
 echo "Copy output"

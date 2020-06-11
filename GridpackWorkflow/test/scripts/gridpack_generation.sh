@@ -515,9 +515,9 @@ if grep -q -e "\$DEFAULT_PDF_SETS" -e "\$DEFAULT_PDF_MEMBERS" $CARDSDIR/${name}_
     elif [ "$isnlo" -eq "0" ]; then
         # 5F PDF
         if [ $is5FlavorScheme -eq 1 ]; then
-            sed "s/\$DEFAULT_PDF_SETS/315200/g" $CARDSDIR/${name}_run_card.dat > ./Cards/run_card.dat
+            sed "s/\$DEFAULT_PDF_SETS/325300/g" $CARDSDIR/${name}_run_card.dat > ./Cards/run_card.dat
         else
-            sed "s/\$DEFAULT_PDF_SETS/320900/g" $CARDSDIR/${name}_run_card.dat > ./Cards/run_card.dat
+            sed "s/\$DEFAULT_PDF_SETS/325500/g" $CARDSDIR/${name}_run_card.dat > ./Cards/run_card.dat
         # 4F PDF
         fi
         sed -i "s/ *\$DEFAULT_PDF_MEMBERS.*=.*//g" ./Cards/run_card.dat
@@ -650,9 +650,9 @@ else
   cd $WORKDIR
   
 #   echo "creating debug tarball"
-#   cp ${LOGFILE} ./gridpack_generation_325300.log
+#   cp ${LOGFILE} ./gridpack_generation.log
 #   DEBUGTARBALL=${name}_debug_tarball.tar.gz
-#   tar -czps --ignore-failed-read -f ${DEBUGTARBALL} processtmp gridpack_generation_325300.log
+#   tar -czps --ignore-failed-read -f ${DEBUGTARBALL} processtmp gridpack_generation.log
 #   echo "moving tarball to ${PRODHOME}/${DEBUGTARBALL}"
 #   mv ${DEBUGTARBALL} ${PRODHOME}/${DEBUGTARBALL}
 #   set -e
@@ -717,7 +717,7 @@ else
 
   cd gridpack
   
-  cp $PRODHOME/runcmsgrid_LO_325300.sh ./runcmsgrid.sh
+  cp $PRODHOME/runcmsgrid_LO.sh ./runcmsgrid.sh
   sed -i s/SCRAM_ARCH_VERSION_REPLACE/${scram_arch}/g runcmsgrid.sh
   sed -i s/CMSSW_VERSION_REPLACE/${cmssw_version}/g runcmsgrid.sh
   sed -i s/PDF_FLAVOR_SCHEME_REPLACE/${is5FlavorScheme}/g runcmsgrid.sh
@@ -753,7 +753,7 @@ fi
 echo "Saving log file(s)"
 #copy log file
 for i in ${LOGFILE_NAME}*.log; do 
-    cp $i ${i/$LOGFILE_NAME/gridpack_generation_325300}; 
+    cp $i ${i/$LOGFILE_NAME/gridpack_generation}; 
 done
 
 
@@ -774,7 +774,7 @@ EXTRA_TAR_ARGS=""
 if [ -e $CARDSDIR/${name}_externaltarball.dat ]; then
     EXTRA_TAR_ARGS="${name}_externaltarball.dat header_for_madspin.txt"
 fi
-XZ_OPT="$XZ_OPT" tar -cJpsf ${PRODHOME}/${name}_${scram_arch}_${cmssw_version}_tarball.tar.xz mgbasedir process runcmsgrid.sh gridpack_generation_325300*.log InputCards $EXTRA_TAR_ARGS
+XZ_OPT="$XZ_OPT" tar -cJpsf ${PRODHOME}/${name}_${scram_arch}_${cmssw_version}_tarball.tar.xz mgbasedir process runcmsgrid.sh gridpack_generation*.log InputCards $EXTRA_TAR_ARGS
 
 #mv ${name}_${scram_arch}_${cmssw_version}_tarball.tar.xz ${PRODHOME}/${name}_${scram_arch}_${cmssw_version}_tarball.tar.xz
 

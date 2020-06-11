@@ -19,7 +19,7 @@ if __name__ == '__main__':
     genproductions_dir = args.genproductionsDir
 
     script_dir = os.path.dirname(os.path.realpath(__file__))
-    executable = script_dir+'/runGridpackGeneration.sh'
+    executable = script_dir+'/runGridpackGeneration_242.sh'
     if hostname.count('lxplus'):
       out_dir = '/eos/home-s/'+os.environ['USER']+'/GRIDPACKS/'+proc
     elif hostname.count('ucsd'):
@@ -28,8 +28,8 @@ if __name__ == '__main__':
       raise NotImplementedError
 
     #gridpack generation script and misc scripts
-    infile_list = [script_dir+'/gridpack_generation.sh'] #use modified gridpack generation script 
-    infile_list.append(script_dir+'/runcmsgrid_LO.sh')
+    infile_list = [script_dir+'/gridpack_generation_242.sh'] #use modified gridpack generation script 
+    infile_list.append(script_dir+'/runcmsgrid_LO_242.sh')
     infile_list.append(genproductions_dir+'/bin/MadGraph5_aMCatNLO/cleangridmore.sh') # for old genproductions
     #infile_list.append(genproductions_dir+'/bin/MadGraph5_aMCatNLO/Utilities/cleangridmore.sh') # for new genproductions
     #patches needed by gridpack generation script
