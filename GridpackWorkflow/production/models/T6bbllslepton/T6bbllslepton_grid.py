@@ -9,23 +9,72 @@ from grid_utils import *
 model = "T6bbllslepton"
 process = "SbotSbot"
 
+# Parameters that define the grid in the bulk and diagonal
+class gridBlock:
+  def __init__(self, xmin, xmax, xstep, ystep, diagStep, minEvents):
+    self.xmin = xmin
+    self.xmax = xmax
+    self.xstep = xstep
+    self.ystep = ystep
+    self.diagStep = diagStep
+    self.minEvents = minEvents
+    
 nevt = 50
-diag = 50
-xmin, xmax, xstep = 1000, 1300, 50
-ymin, ymax, ystep = 150, 1300, 50 
+
+scanBlocks = []
+
+#scanBlocks.append(gridBlock(400, 800, 25, 25, 25,50))
+#scanBlocks.append(gridBlock(800, 1400, 50, 50, 25,50))
+scanBlocks.append(gridBlock(1400, 1801, 50, 50, 25,50))
+minDM = 25
+maxDM = 300
+ymin, ymed, ymax = 150, 150, 1800
+hlines_below_grid = [120,130,140]
+hline_xmin = 400
 
 # -------------------------------
 #    Constructing grid
 
+cols = []
+Nevents = []
+xmin, xmax = 9999, 0
+for block in scanBlocks:
+  Nbulk, Ndiag = 0, 0
+  minEvents = block.minEvents
+  for mx in range(block.xmin, block.xmax, block.diagStep):
+    xmin = min(xmin, block.xmin)
+    xmax = max(xmax, block.xmax)
+    col = []
+    my = 0
+    begDiag = max(ymed, mx-maxDM)
+    # Adding bulk points
+    if (mx-block.xmin)%block.xstep == 0:
+      # adding extra horizontal lines
+      yrange = []
+      if (mx>=hline_xmin): yrange.extend(hlines_below_grid)
+      else: yrange.append(hlines_below_grid[0])
+      yrange.extend(range(ymin, begDiag, block.ystep))
+      for my in yrange:
+        if my > ymax: continue
+        nev = nevt
+        col.append([mx,my, nev])
+        Nbulk += nev
+    # Adding diagonal points
+    for my in range(begDiag, mx-minDM+1, block.diagStep):
+      if my > ymax: continue
+      nev = nevt
+      col.append([mx,my, nev])
+      Ndiag += nev
+    if(my !=  mx-minDM and mx-minDM <= ymax):
+      my = mx-minDM
+      nev = nevt
+      col.append([mx,my, nev])
+      Ndiag += nev
+    cols.append(col)
+  Nevents.append([Nbulk, Ndiag])
+
 mpoints = []
-for mx in range(xmin, xmax+1, xstep):
-  ylist = []
-  if mx > ymax + diag: 
-    ylist.extend(range(ymin, ymax+1, ystep))
-  else:
-    ylist.extend(range(ymin, mx-diag+1, ystep))
-  for my in ylist:
-    mpoints.append([mx,my,nevt])
+for col in cols: mpoints.extend(col)
 
 
 ## Test print out for repeated points
@@ -42,7 +91,7 @@ makePlot([mpoints], 'events', model, process, xmin, xmax, ymin, ymax)
 Ntot = makePlot([mpoints], 'lumi', model, process, xmin, xmax, ymin, ymax)
 
 Ntot = Ntot/1e3
-print '\nScan contains '+"{0:,.0f}".format(Ntot*1e6)+" events\n"
+print '\nScan contains '+"{0:.0f}".format(Ntot*1e6)+" events\n"
 print 'Average matching efficiency (for McM and GEN fragment) = '+"{0:.3f}".format(getAveEff(mpoints,process))
 print
 

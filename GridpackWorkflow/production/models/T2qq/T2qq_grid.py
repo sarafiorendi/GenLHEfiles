@@ -21,17 +21,24 @@ class gridBlock:
 model = "T2qq"
 process = "SqSq"
 
+period = "Fall17"
+batch = 1
+
 # Number of events: min(goalLumi*xsec, maxEvents) (always in thousands)
 goalLumi = 3200
-minLumi = 10
+if "16" in period : minLumi = 10
+elif "17" in period : minLumi = 12
 minEvents, maxEvents = 10, 250
 diagStep = 50
 maxDM = 700
 
 scanBlocks = []
-scanBlocks.append(gridBlock(300,  1801, 50, 100))
+if batch == 1 :
+  scanBlocks.append(gridBlock(300,  1801, 50, 100))
+elif batch == 2 :
+  scanBlocks.append(gridBlock(1850,  2601, 50, 100))
+ymin, ymed, ymax = 0, 200, 2200
 minDM = 25
-ymin, ymed, ymax = 0, 200, 1400 
 
 
 # Number of events for mass point, in thousands
@@ -98,7 +105,7 @@ makePlot(cols, 'lumix8', model, process, xmin, xmax, ymin, ymax)
 
 
 Ntot = Ntot/1e3
-print '\nScan contains '+"{0:.1f}".format(Ntot)+" million events\n"
+print '\nScan contains '+"{0:.6f}".format(Ntot)+" million events\n"
 print 'Average matching efficiency (for McM and GEN fragment) = '+"{0:.3f}".format(getAveEff(mpoints,process))
 print
 

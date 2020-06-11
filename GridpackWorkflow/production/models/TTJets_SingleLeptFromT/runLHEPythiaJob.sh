@@ -1,4 +1,4 @@
-#### !/usr/local/bin/bash
+#!/bin/sh
 
 ### Script to generate LHE events and shower them using Pythia
 ### Intended for use with Condor at UCSD
@@ -12,11 +12,12 @@ NEVENTS=$2
 FRAGMENT=$3
 QCUT=$4
 NJETMAX=$5
-OUTDIR=$6
-NJOB=$7
-RANDOM_SEED=$8
+MGL=$6
+OUTDIR=$7
+NJOB=$8
+RANDOM_SEED=$9
 
-CMSSW_REL="CMSSW_9_3_1"
+CMSSW_REL="CMSSW_9_4_12"
 
 echo "Process:"
 echo $PROCESS
@@ -42,8 +43,8 @@ eval `scramv1 runtime -sh`
 
 echo "Prepare fragment..."
 mkdir -p Configuration/GenProduction/python
-sed "s/%QCUT%/${QCUT}/ ;s/%NJETMAX%/${NJETMAX}/" $FRAGMENT > Configuration/GenProduction/python/genfragment.py
-
+sed "s/%QCUT%/${QCUT}/ ;s/%NJETMAX%/${NJETMAX}/ ;s/%MGL%/${MGL}/" $FRAGMENT > Configuration/GenProduction/python/genfragment.py
+cat Configuration/GenProduction/python/genfragment.py
 eval "scramv1 build clean"
 eval "scramv1 build"
 
@@ -61,21 +62,39 @@ GENFILE='GEN_'${PROCESS}'_'${RANDOM_SEED}'_'${QCUT}'.root'
 
 
 echo "--------------> Let's begin... SHOWER"
+
+#cmsDriver.py \
+#  Configuration/GenProduction/python/genfragment.py \
+#  --mc \
+#  --eventcontent RAWSIM,LHE \
+#  --datatier GEN-SIM,LHE \
+#  --conditions 93X_mc2017_realistic_v3 \
+#  --step LHE,GEN,SIM \
+#  --nThreads 8 \
+#  --fileout file:${GENFILE} \
+#  --beamspot Realistic25ns13TeVEarly2017Collision \
+#  --geometry DB:Extended \
+#  --era Run2_2017 \
+#  --python_filename LHEGS_cfg.py \
+#  --no_exec \
+#  -n $NEVENTS 
+
 cmsDriver.py \
-  Configuration/GenProduction/python/genfragment.py \
-  --mc \
-  --eventcontent RAWSIM,LHE \
-  --datatier GEN-SIM,LHE \
-  --conditions 93X_mc2017_realistic_v3 \
-  --step LHE,GEN,SIM \
-  --nThreads 8 \
-  --fileout file:${GENFILE} \
-  --beamspot Realistic25ns13TeVEarly2017Collision \
-  --geometry DB:Extended \
-  --era Run2_2017 \
-  --python_filename LHEGS_cfg.py \
-  --no_exec \
-  -n $NEVENTS 
+    Configuration/GenProduction/python/genfragment.py \
+    --mc \
+    --eventcontent RAWSIM \
+    --datatier GEN-SIM \
+    --conditions 94X_mc2017_realistic_v15 \
+    --step GEN,SIM \
+    --nThreads 8 \
+    --customise_commands "process.source.numberEventsInLuminosityBlock = cms.untracked.uint32(200)" \
+    --fileout file:${GENFILE} \
+    --beamspot  Realistic25ns13TeVEarly2017Collision \
+    --geometry DB:Extended \
+    --era Run2_2017 \
+    --python_filename LHEGS_cfg.py \
+    --no_exec \
+    -n $NEVENTS  
 
 echo "process.RandomNumberGeneratorService.generator.initialSeed = $RANDOM_SEED" >> LHEGS_cfg.py
 echo "process.RandomNumberGeneratorService.externalLHEProducer.initialSeed = $RANDOM_SEED" >> LHEGS_cfg.py
@@ -88,8 +107,8 @@ cmsRun LHEGS_cfg.py
 
 
 echo "Hadronization finished. Copy output..."
-gfal-copy -p -f -t 4200 ${GENFILE} gsiftp://gftp.t2.ucsd.edu/${OUTDIR}/${GENFILE} --checksum ADLER32
-
+#gfal-copy -p -f -t 4200 ${GENFILE} gsiftp://gftp.t2.ucsd.edu/${OUTDIR}/${GENFILE} --checksum ADLER32
+gfal-copy -p -f -t 4200 ${GENFILE} $OUTDIR/${GENFILE} --checksum ADLER32
 
 echo "ls in cmssw src dir"
 ls

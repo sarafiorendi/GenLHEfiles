@@ -121,7 +121,19 @@ void plotdjr(const TString & infile, const TString & outputbase) {
   double djrmin = -0.5;
   double djrmax = 3.;
   
-  
+  // Getting the matching efficiency
+  float eventperjob = 5000.;
+  TH1D *RUN = new TH1D("RUN", "", 100, 0, 100);
+  TString runstring = "EventAuxiliary.run()>>"; runstring += RUN->GetName(); 
+  tree->Draw(runstring);
+  float matchedevents = RUN->GetEntries();
+  float generatedevents = 0.;
+  for (int nb = 0; nb<RUN->GetNbinsX()+1; nb++) if (RUN->GetBinContent(nb)>0.) generatedevents += 1.;
+  float matchingefficiency = matchedevents/(eventperjob*generatedevents);
+  TString MCMEff = outputbase.Data(); MCMEff += " matching efficiency = "; MCMEff += matchingefficiency;
+  cout << MCMEff << " (" << matchedevents << "/" << (eventperjob*generatedevents) << ")" << endl;
+  gSystem->Exec("echo '" + MCMEff +  "'   >>  " + outputbase.Data() +  "_mcmeff.txt");
+
   //TCanvas *c1 = new TCanvas("c1", "c1", 800, 600);
   //TPad *pad[4];
   //setcanvas(c1,pad);

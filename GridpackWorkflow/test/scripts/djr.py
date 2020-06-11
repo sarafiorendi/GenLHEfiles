@@ -17,7 +17,8 @@ def wrapper(args):
     print "Will do edmPickMerge for the following files"
     infile_path, files, qcut, proc  = args
     print files
-    filelist = [file.replace('/hadoop/cms','') for file in files]
+    #filelist = [file.replace('/hadoop/cms','') for file in files]
+    filelist = [file.replace('/eos/home-s/','file:/eos/home-s/') for file in files]
     outfile = 'GEN_'+proc+'_'+str(qcut)+'.root'
     os.system('edmCopyPickMerge inputFiles='+','.join(filelist)+' outputFile='+outfile)
     os.system('mv '+outfile+' '+infile_path+'/'+outfile)
@@ -138,4 +139,3 @@ if __name__ == '__main__':
     makeDJRPlots(f, proc, qcuts, texOnly=args.texOnly, qmin=qmin, qmax=qmax, njetmax=njetmax)
     f.write("\\end{document}\n")
     f.close()
-    subprocess.call(['pdflatex', fname])

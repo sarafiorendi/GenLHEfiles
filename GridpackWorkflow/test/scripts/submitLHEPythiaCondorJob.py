@@ -82,8 +82,6 @@ if __name__ == '__main__':
             if mass:
                 options = [proc, str(nevents), fragfile, str(qcut), str(nJetMax), str(mass), outdir, str(j+1)]
             else:
-                options = [proc, str(nevents), fragfile, str(qcut), str(nJetMax), outdir, str(j+1)]
+                options = [proc, str(nevents), fragfile, str(qcut), str(nJetMax), "0.00000", outdir, str(j+1)]
             print "Options:",(' '.join(options))
-            print executable
-            print fragment
             submitCondorJob(proc, executable, options+[rseed], fragment, label=str(qcut)+'_'+rseed, submit=(not args.noSub), proxy=args.proxy)

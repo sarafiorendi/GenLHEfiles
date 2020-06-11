@@ -45,6 +45,9 @@ if __name__ == '__main__':
     if not os.path.isdir("logs/%s"%proc):
         os.makedirs("logs/%s"%proc)
 
+    if not os.path.isdir("logs/%s"%proc):
+        os.makedirs("logs/%s"%proc)
+
     infile = ','.join(infile_list)
     print infile
     options = [proc, out_dir]

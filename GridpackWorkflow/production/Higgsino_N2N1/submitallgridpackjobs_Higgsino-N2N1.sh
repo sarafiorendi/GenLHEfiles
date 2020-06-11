@@ -1,15 +1,14 @@
 #!/bin/sh
 SCRIPT="../../test/scripts/submitGridpackCondorJob.py"
+genprodir="/home/users/dspitzba/SUSYsignalProduction_Summer16/genproductionsSummer16/"
 MODEL="Higgsino-N2N1_"
 PARTN2="mN2-"
 PARTN1="mN1-"
 JOBS="jobs"
 genprodir="/home/users/dspitzba/SUSYsignalProduction/genproductions/"
 
-for MN2 in 100; do
-    for DM in 10; do
-#for MN2 in 100 120 140 160 180 200 220 240 250; do
-#    for DM in 1 3 5 7.5 10 15 20 30 40 50; do
+for MN2 in 100 120 140 160 180 200 220 240 250; do
+    for DM in 1 3 5 7.5 10 15 20 30 40 50; do
 	MN1=`awk "BEGIN {printf \"%.2f\n\", (${MN2}-${DM})}"`	
 	MC1=`awk "BEGIN {printf \"%.2f\n\", ((${MN1}+${MN2})/2)}"`
 	MN2STR=${MN2/./p}

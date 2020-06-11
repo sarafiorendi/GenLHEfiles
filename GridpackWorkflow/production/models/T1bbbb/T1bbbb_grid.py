@@ -21,18 +21,25 @@ class gridBlock:
 model = "T1bbbb"
 process = "GlGl"
 
+period = "Fall17"
+
 # Number of events: min(goalLumi*xsec, maxEvents) (always in thousands)
 goalLumi = 800
-minLumi = 40
+if "16" in period : minLumi = 40
+elif "17" in period : minLumi = 45
 minEvents, maxEvents = 10, 150
 diagStep = 50
 maxDM = 1000
 
 scanBlocks = []
 scanBlocks.append(gridBlock(600,  1200, 100, 100))
-scanBlocks.append(gridBlock(1200, 2301, 50, 100))
+if period == "Spring16" :
+  scanBlocks.append(gridBlock(1200, 2301, 50, 100))
+  ymin, ymed, ymax = 0, 500, 1600 
+elif (period == "Summer16" or period == "Fall17") :
+  scanBlocks.append(gridBlock(1200, 2801, 50, 100))
+  ymin, ymed, ymax = 0, 500, 1900 
 minDM = 25
-ymin, ymed, ymax = 0, 500, 1600 
 
 
 # Number of events for mass point, in thousands
@@ -96,7 +103,7 @@ Ntot = makePlot(cols, 'lumi', model, process, xmin, xmax, ymin, ymax)
 #makePlot(cols, 'factor')
 
 Ntot = Ntot/1e3
-print '\nScan contains '+"{0:,.1f}".format(Ntot*1e6)+" events\n"
+print '\nScan contains '+"{0:.1f}".format(Ntot*1e6)+" events\n"
 print 'Average matching efficiency (for McM and GEN fragment) = '+"{0:.3f}".format(getAveEff(mpoints,process))
 print
 

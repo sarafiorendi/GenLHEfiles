@@ -14,9 +14,12 @@ import pprint
 model = "T8bbllnunu_XCha0p5"
 process = "StopStop"
 
+period = "Fall17"
+
 # Number of events: min(goalLumi*xsec, maxEvents) (always in thousands)
 goalLumi = 400
-minLumi = 20 
+if "16" in period : minLumi = 20
+elif "17" in period : minLumi = 22.5 
 minEvents, maxEvents = 50, 100
 bandStep = 50
 minDM, midDM, maxDM = 100, 200, 200
@@ -32,8 +35,8 @@ class gridBlock:
     
 scanBlocks = []
 scanBlocks.append(gridBlock(200, 400, 50, 50,50))
-scanBlocks.append(gridBlock(400,  1501, 50, 50, 25))
-ymin, ymed, ymax = 0, 150, 650
+scanBlocks.append(gridBlock(400,  1801, 50, 50, 25))
+ymin, ymed, ymax = 0, 150, 950
 hlines_below_grid = [25]
 hline_xmin = 400
 
@@ -110,7 +113,7 @@ Ntot = makePlot(cols, 'lumi', model, process, xmin, xmax, ymin, ymax)
 
 
 Ntot = Ntot/1e3
-print '\nScan contains '+"{0:,.0f}".format(Ntot*1e6)+" events\n"
+print '\nScan contains '+"{0:.0f}".format(Ntot*1e6)+" events\n"
 print 'Average matching efficiency (for McM and GEN fragment) = '+"{0:.3f}".format(getAveEff(mpoints,process))
 print
 

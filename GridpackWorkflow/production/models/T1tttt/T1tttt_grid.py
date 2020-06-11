@@ -24,12 +24,21 @@ class gridBlock:
 model = "T1tttt"
 process = "GlGl"
 
+period = "Fall17" 
+
 # Number of events: min(goalLumi*xsec, maxEvents) (always in thousands)
-goalLumi, minLumi, maxEvents = 800, 40, 150
+if "16" in period :
+  goalLumi, minLumi, maxEvents = 800, 40, 150 # Spring16, Summer16
+elif "17" in period :
+  goalLumi, minLumi, maxEvents = 800, 45, 150 # Fall17
 
 scanBlocks = []
 scanBlocks.append(gridBlock(600,  1200, 100, 100, 1000, 50, 10))
-scanBlocks.append(gridBlock(1200, 2301, 50, 100, 1000, 50, 20))
+if period == "Spring16" :
+  scanBlocks.append(gridBlock(1200, 2301, 50, 100, 1000, 50, 20)) # Spring16
+elif (period == "Summer16" or period == "Fall17") :
+  scanBlocks.append(gridBlock(1200, 2801, 50, 100, 1000, 50, 20)) # Summer16, Fall17
+
 minDM = 225
 ymin, ymed, ymax = 0, 300, 1600 
 

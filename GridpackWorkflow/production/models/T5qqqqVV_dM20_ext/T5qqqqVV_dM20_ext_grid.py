@@ -24,19 +24,30 @@ class gridBlock:
 model = "T5qqqqVV_dM20"
 process = "GlGl"
 
+period = "Fall17"
+
 ## Efficiency of the 1 lepton filter
 ##  double pw = 2/3., pz = 1/3., pwl = 1/3., pzl = 1/10.
 ##  bf_1L = pw*pw*(1-pow(1-pwl,2)) + pz*pz*(1-pow(1-pzl,2)) + 2*pw*pz*(1-(1-pwl)*(1-pzl))
 bf_1L = 0.446 
 
 # Number of events: min(goalLumi*xsec, maxEvents) (always in thousands)
-goalLumi, minLumi, maxEvents = 800*bf_1L, 20*bf_1L, 50
+if "16" in period :
+  goalLumi, minLumi, maxEvents = 800*bf_1L, 20*bf_1L, 50
+elif "17" in period :
+  goalLumi, minLumi, maxEvents = 800*bf_1L, 22.5*bf_1L, 50
 
 scanBlocks = []
-scanBlocks.append(gridBlock(600,  800, 50, 50, 1000, 50, 20))
-scanBlocks.append(gridBlock(800,  2001, 50, 50, 1000, 50, 20))
+if period == "Spring16" :
+  scanBlocks.append(gridBlock(600,  800, 50, 50, 1000, 50, 20))
+  scanBlocks.append(gridBlock(800,  2001, 50, 50, 1000, 50, 20))
+  ymin, ymed, ymax = 0, 200, 1500 
+else : 
+  scanBlocks.append(gridBlock(600,  800, 50, 50, 1000, 50, 20))
+  scanBlocks.append(gridBlock(800,  2301, 50, 50, 1000, 50, 20))
+  ymin, ymed, ymax = 0, 200, 1800 
+
 minDM = 25
-ymin, ymed, ymax = 0, 200, 1500 
 
 
 # Number of events for mass point, in thousands
@@ -102,7 +113,7 @@ Ntot = makePlot(cols, 'lumi_br2', model, process, xmin, xmax, ymin, ymax)
 #makePlot(cols, 'factor')
 
 Ntot = Ntot/1e3
-print '\nScan contains '+"{0:.1f}".format(Ntot)+" million events\n"
+print '\nScan contains '+"{0:.6f}".format(Ntot)+" million events\n"
 print 'Average matching efficiency (for McM and GEN fragment) = '+"{0:.3f}".format(getAveEff(mpoints,process))
 print
 

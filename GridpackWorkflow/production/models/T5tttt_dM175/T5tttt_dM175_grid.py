@@ -24,14 +24,25 @@ class gridBlock:
 model = "T5tttt_dM175"
 process = "GlGl"
 
+period = "Spring16"
+
 # Number of events: min(goalLumi*xsec, maxEvents) (always in thousands)
-goalLumi, minLumi, maxEvents = 800, 40, 150
+if "16" in period :
+  goalLumi, minLumi, maxEvents = 800, 40, 150
+elif "17" in period :
+  goalLumi, minLumi, maxEvents = 800, 45, 150
 
 scanBlocks = []
-scanBlocks.append(gridBlock(800,  1200, 100, 100, 1000, 50, 10))
-scanBlocks.append(gridBlock(1200, 2301, 50, 100, 1000, 50, 20))
+if period == "Summer16" :
+  scanBlocks.append(gridBlock(800,  1200, 100, 100, 1000, 50, 10))
+  scanBlocks.append(gridBlock(1200, 2301, 50, 100, 1000, 50, 20))
+  ymin, ymed, ymax = 0, 600, 1600
+else :
+  scanBlocks.append(gridBlock(800,  1200, 100, 100, 1000, 50, 10))
+  scanBlocks.append(gridBlock(1200, 2601, 50, 100, 1000, 50, 20))
+  ymin, ymed, ymax = 0, 600, 1900
+
 minDM = 265
-ymin, ymed, ymax = 0, 600, 1600
 hlines_below_grid = [50,150]
 hline_xmin = 1200
 
@@ -101,7 +112,7 @@ makePlot(cols, 'events', model, process, xmin, xmax, ymin, ymax)
 Ntot = makePlot(cols, 'lumi', model, process, xmin, xmax, ymin, ymax)
 #makePlot(cols, 'factor')
 
-print '\nScan contains '+"{0:,.0f}".format(Ntot*1e3)+" events\n"
+print '\nScan contains '+"{0:.0f}".format(Ntot*1e3)+" events\n"
 print 'Average matching efficiency (for McM and GEN fragment) = '+"{0:.3f}".format(getAveEff(mpoints,process))
 print
 

@@ -23,7 +23,7 @@ if [ "$use_gridpack_env" = true ]
       then
         scram_arch_version=${5}
       else
-        scram_arch_version=SCRAM_ARCH_VERSION_REPLACE
+        scram_arch_version=slc6_amd64_gcc481
     fi
     echo "%MSG-MG5 SCRAM_ARCH version = $scram_arch_version"
 
@@ -31,7 +31,7 @@ if [ "$use_gridpack_env" = true ]
       then
         cmssw_version=${6}
       else
-        cmssw_version=CMSSW_VERSION_REPLACE
+        cmssw_version=CMSSW_7_1_25_patch3
     fi
     echo "%MSG-MG5 CMSSW version = $cmssw_version"
     export VO_CMS_SW_DIR=/cvmfs/cms.cern.ch
@@ -154,7 +154,7 @@ scalecorrelation:
 PDF:
 " > syscalc_card.dat
 
-is5FlavorScheme=PDF_FLAVOR_SCHEME_REPLACE
+is5FlavorScheme=1
 
 #run syscalc to populate pdf and scale variation weights
 if [ $is5FlavorScheme -eq 1 ]; then
