@@ -23,7 +23,7 @@ def submitCondorJob(proc, executable, options, infile, label, outputToTransfer=N
         f.write("request_cpus=8\n")
 	f.write("request_memory=4200MB\n")
     if hostname.count('lxplus'):
-      f.write('+JobFlavour = "nextweek"\n') #longlunch (2h) too short in some cases. tomorrow (1 day), testmatch (3 days), nextweek (1 week) also exist
+      f.write('+JobFlavour = "testmatch"\n') #longlunch (2h) too short in some cases. tomorrow (1 day), testmatch (3 days), nextweek (1 week) also exist
     #if.write('requirements = (OpSysAndVer =?= "SLCern6")\n') # to run on lxplus6
     f.write("Executable = "+executable+"\n")
     f.write("arguments =  "+(' '.join(options))+"\n")

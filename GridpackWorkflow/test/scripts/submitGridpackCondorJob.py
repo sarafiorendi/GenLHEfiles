@@ -32,6 +32,7 @@ if __name__ == '__main__':
     infile_list.append(script_dir+'/runcmsgrid_LO.sh')
     #infile_list.append(genproductions_dir+'/bin/MadGraph5_aMCatNLO/cleangridmore.sh') # for old genproductions
     infile_list.append(genproductions_dir+'/bin/MadGraph5_aMCatNLO/Utilities/cleangridmore.sh') # for new genproductions
+    infile_list.append(genproductions_dir+'/bin/MadGraph5_aMCatNLO/Utilities/scripts/getMG5_aMC_PDFInputs.py')
     #patches needed by gridpack generation script
     #infile_list.append(script_dir+'/ucsdMG5_242.patch') #use the patch committed in this repository
     if hostname.count('ucsd'):
