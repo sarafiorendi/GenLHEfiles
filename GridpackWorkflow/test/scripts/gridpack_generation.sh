@@ -506,7 +506,8 @@ if grep -q -e "\$DEFAULT_PDF_SETS" -e "\$DEFAULT_PDF_MEMBERS" $CARDSDIR/${name}_
     if [ $is5FlavorScheme -eq 1 ]; then
 	pdfExtraArgs+="--is5FlavorScheme "
     fi
-    local central_set=$(python ${PRODHOME}/getMG5_aMC_PDFInputs.py -f "central" -c 2017 $pdfExtraArgs)
+    #central_set=$(python ${PRODHOME}/getMG5_aMC_PDFInputs.py -f "central" -c 2017 $pdfExtraArgs)
+    central_set=325300
     sed "s/\$DEFAULT_PDF_SETS/${central_set}/g" $CARDSDIR/${name}_run_card.dat > ./Cards/run_card.dat
     sed -i "s/ *\$DEFAULT_PDF_MEMBERS.*=.*//g" ./Cards/run_card.dat
 else
@@ -715,7 +716,8 @@ else
   if [ $is5FlavorScheme -eq 1 ]; then
       pdfExtraArgs+="--is5FlavorScheme "
   fi
-  pdfSysArgs=$(python ${PRODHOME}/getMG5_aMC_PDFInputs.py -f systematics -c 2017 $pdfExtraArgs)
+  #pdfSysArgs=$(python ${PRODHOME}/getMG5_aMC_PDFInputs.py -f systematics -c 2017 $pdfExtraArgs)
+  pdfSysArgs="325300,316200,306000,322500@0,322700@0,322900@0,323100@0,323300@0,323500@0,323700@0,323900@0,305800,13000,13065@0,13069@0,13100,13163@0,13167@0,13200@0,25200,25300,25000@0,42780,90200,91200,90400,91400,61100,61130,61200,61230,13400,82200,292200,292600@0,315000@0,315200@0,262000@0,263000@0"
   sed -i s/PDF_SETS_REPLACE/${pdfSysArgs}/g runcmsgrid.sh  
 
 fi
