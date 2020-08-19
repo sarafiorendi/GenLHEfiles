@@ -243,30 +243,6 @@ generator = cms.EDFilter("Pythia8GeneratorFilter",
 )
     
 model = "VBF_EWKino_WZ"
-process = "C1N2"
-mcm_eff = 0.536
-
-def matchParams(mass):
-    if mass < 124: return 76,0.64
-    elif mass < 151: return 76, 0.6
-    elif mass < 176: return 76, 0.57
-    elif mass < 226: return 76, 0.54
-    elif mass < 326: return 76, 0.51
-    elif mass < 451: return 76, 0.48
-    elif mass < 651: return 76, 0.45
-    elif mass < 751: return 76, 0.436
-    elif mass < 851: return 76, 0.433
-    elif mass < 951: return 76, 0.424
-    elif mass < 1051: return 76, 0.421
-    elif mass < 1151: return 76, 0.415
-    elif mass < 1251: return 76, 0.407
-    elif mass < 1351: return 76, 0.400
-    elif mass < 1451: return 76, 0.394
-    elif mass < 1551: return 76, 0.389
-    elif mass < 1651: return 76, 0.384
-    elif mass < 1751: return 76, 0.381
-    elif mass < 1851: return 76, 0.379
-    else: return 76, 0.379
 
 # Parameters that define the grid in the bulk and diagonal
 class gridBlock:
@@ -311,8 +287,7 @@ for col in cols: mpoints.extend(col)
 
 for point in mpoints:
     mneu2, mlsp = point[0], point[1]
-    qcut, tru_eff = matchParams(mneu2)
-    wgt = point[2]*(mcm_eff/tru_eff)
+    wgt = point[2]
     
     if mlsp==0: mlsp = 1
     mnlsp = (mneu2 + mlsp)/2.
@@ -323,27 +298,17 @@ for point in mpoints:
     
     mlspstr = ( '%.2f' % mlsp).replace('.', 'p')
     
+    # base hadronizer, no jet matching
     basePythiaParameters = cms.PSet(
         pythia8CommonSettingsBlock,
         pythia8CUEP8M1SettingsBlock,
-        JetMatchingParameters = cms.vstring(
-            'JetMatching:setMad = off',
-            'JetMatching:scheme = 1',
-            'JetMatching:merge = on',
-            'JetMatching:jetAlgorithm = 2',
-            'JetMatching:etaJetMax = 5.',
-            'JetMatching:coneRadius = 1.',
-            'JetMatching:slowJetPower = 1',
-            'JetMatching:qCut = %.0f' % qcut, #this is the actual merging scale
-            'JetMatching:nQmatch = 5', #4 corresponds to 4-flavour scheme (no matching of b-quarks), 5 for 5-flavour scheme
-            'JetMatching:nJetMax = 2', #number of partons in born matrix element for highest multiplicity
-            'JetMatching:doShowerKt = off', #off for MLM matching, turn on for shower-kT matching
+        MassParameters = cms.vstring(
+            '23:mMin = 0.1',
             '6:m0 = 172.5',
-            'Check:abortIfVeto = on',
         ), 
         parameterSets = cms.vstring('pythia8CommonSettings',
                                     'pythia8CUEP8M1Settings',
-                                    'JetMatchingParameters'
+                                    'MassParameters'
         )
     )
 

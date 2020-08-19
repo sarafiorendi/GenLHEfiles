@@ -66,20 +66,5 @@ else: print "\n\nGRID CONTAINS "+str(Ntot-Ndiff)+" DUPLICATE POINTS!!\n\n"
 #     Plotting and printing
 
 makePlot(cols, 'events', model, process, xmin, xmax, ymin, ymax)
-Ntot = makePlot(cols, 'lumi', model, process, xmin, xmax, ymin, ymax)
-
-
-Ntot = Ntot/1e3
-print '\nScan contains '+"{0:,.0f}".format(Ntot*1e6)+" events\n"
-print 'Average matching efficiency (for McM and GEN fragment) = '+"{0:.3f}".format(getAveEff(mpoints,process))
-print
-
-for ind in range(len(scanBlocks)):
-  Nbulk, Ndiag = Nevents[ind][0]/1e3, Nevents[ind][1]/1e3
-  Nblock = Nbulk+Ndiag
-  print "From "+'{:>4}'.format(scanBlocks[ind].xmin)+" to "+str(scanBlocks[ind].xmax)+": ",
-  print "{0:>4.1f}".format(Nblock)+"M ("+"{0:>4.1f}".format(Nblock/Ntot*100)+" %) events, "+"{0:>4.1f}".format(Nbulk),
-  print "M ("+"{0:>4.1f}".format(Nbulk/Ntot*100)+" %) in the bulk, "+"{0:>4.1f}".format(Ndiag)+"M (",
-  print "{0:.1f}".format(Ndiag/Ntot*100)+" %) in the diagonal"
 
 print
