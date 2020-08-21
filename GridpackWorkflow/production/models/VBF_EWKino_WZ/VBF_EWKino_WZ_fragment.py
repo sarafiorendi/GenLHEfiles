@@ -2,6 +2,7 @@ import FWCore.ParameterSet.Config as cms
 
 from Configuration.Generator.Pythia8CommonSettings_cfi import *
 from Configuration.Generator.Pythia8CUEP8M1Settings_cfi import *
+#from Configuration.Generator.MCTunes2017.PythiaCP2Settings_cfi import *
 
 import math
 
@@ -128,7 +129,7 @@ DECAY   1000024     0.00000000E+00   # neutralino2 decays
 
 #         PDG            Width
 DECAY   1000015     1.48327268E-01   # stau_1 decays
-#          BR         NDA      ID1       ID2
+#          BR         NDA      ID1       ID2 
      1.00000000E+00    2     1000022        15   # BR(~tau_1 -> ~chi_10  tau-)
      0.00000000E+00    2     1000023        15   # BR(~tau_1 -> ~chi_20  tau-)
      0.00000000E+00    2     1000025        15   # BR(~tau_1 -> ~chi_30  tau-)
@@ -163,6 +164,7 @@ DECAY   1000024     1.70414503E-02   # chargino1+ decays
      0.00000000E+00    2    -2000013        14   # BR(~chi_1+ -> ~mu_R+   nu_mu)
      0.00000000E+00    2    -1000015        16   # BR(~chi_1+ -> ~tau_1+  nu_tau)
      0.00000000E+00    2    -2000015        16   # BR(~chi_1+ -> ~tau_2+  nu_tau)
+     0.00000000E+00    3     1000022  12   -11   # dummy allowed decay, in order to turn on off-shell decays
      1.00000000E+00    2     1000022        24   # BR(~chi_1+ -> ~chi_10  W+)
      0.00000000E+00    2     1000023        24   # BR(~chi_1+ -> ~chi_20  W+)
      0.00000000E+00    2     1000025        24   # BR(~chi_1+ -> ~chi_30  W+)
@@ -176,6 +178,7 @@ DECAY   1000024     1.70414503E-02   # chargino1+ decays
 #         PDG            Width
 DECAY   1000023     2.07770048E-02   # neutralino2 decays
 #          BR         NDA      ID1       ID2
+     0.00000000E+00    3     1000022  11   -11   # dummy allowed decay, in order to turn on off-shell decays
      1.00000000E+00    2     1000022        23   # BR(~chi_20 -> ~chi_10   Z )
      0.00000000E+00    2     1000024       -24   # BR(~chi_20 -> ~chi_1+   W-)
      0.00000000E+00    2    -1000024        24   # BR(~chi_20 -> ~chi_1-   W+)
@@ -302,12 +305,15 @@ for point in mpoints:
     basePythiaParameters = cms.PSet(
         pythia8CommonSettingsBlock,
         pythia8CUEP8M1SettingsBlock,
+        #pythia8CP2SettingsBlock,
         MassParameters = cms.vstring(
             '23:mMin = 0.1',
+            '24:mMin = 0.1',
             '6:m0 = 172.5',
         ), 
         parameterSets = cms.vstring('pythia8CommonSettings',
                                     'pythia8CUEP8M1Settings',
+                                    #'pythia8CP2Settings',
                                     'MassParameters'
         )
     )
@@ -316,8 +322,11 @@ for point in mpoints:
         cms.PSet(
             ConfigWeight = cms.double(wgt),
             GridpackPath =  cms.string('/cvmfs/cms.cern.ch/phys_generator/gridpacks/slc6_amd64_gcc481/13TeV/madgraph/V5_2.4.2/sus_sms/VBF_EWKino/v1/VBF_EWKino_mN2-%i_mN1-%s_tarball.tar.xz' % (mneu2, mlspstr)),
-            ConfigDescription = cms.string('%s_%i_%i' % (model, mneu2, mlsp)),
+            #GridpackPath =  cms.string('/cvmfs/cms.cern.ch/phys_generator/gridpacks/2017/13TeV/madgraph/V5_2.4.2/sus_sms/LO_PDF/VBF_EWKino/v1/VBF_EWKino_mN2-%i_mN1-%s_tarball.tar.xz' % (mneu2, mlspstr)),
+            ConfigDescription = cms.string('%s_%i_%s' % (model, mneu2, mlspstr)),
             SLHATableForPythia8 = cms.string('%s' % slhatable),
             PythiaParameters = basePythiaParameters,
         ),
     )
+
+ 

@@ -10,6 +10,9 @@
 import os,sys,math
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from grid_utils import *
+    
+model = "VBF_AnapoleDM"
+process = "C1N2"
 
 # Parameters that define the grid in the bulk and diagonal
 class gridBlock:
@@ -17,17 +20,14 @@ class gridBlock:
     self.xmin = xmin
     self.xmax = xmax
     self.xstep = xstep
-    
-model = "VBF_EWKino_WZ"
-process = "C1N2"
 
 scanBlocks = []
-scanBlocks.append(gridBlock(100, 401, 25))
+scanBlocks.append(gridBlock(500, 2001, 250))
 
-deltaM = [ 0.5, 1, 5, 10, 15, 20, 30, 40, 50, 60, 75  ] 
+MN1 = [ 0.1, 1, 10, 50, 100, 200, 300, 400, 500, 750, 1000 ] 
 
 # Number of events for mass point, in thousands
-nev = 1000
+nev = 100
 
 # -------------------------------
 #    Constructing grid
@@ -42,13 +42,11 @@ for block in scanBlocks:
   xmax = max(xmax, block.xmax)
   for mx in range(block.xmin, block.xmax, block.xstep):
     col = []
-    for dm in deltaM:
-      my = mx-dm
-      if my>=0.: 
-        ymin = min(ymin, my)
-        ymax = max(ymax, my)
-        col.append([mx,my,nev])
-        Nbulk += nev
+    for my in MN1:
+      ymin = min(ymin, my)
+      ymax = max(ymax, my)
+      col.append([mx,my,nev])
+      Nbulk += nev
     cols.append(col)
   Nevents.append([Nbulk, Ndiag])
 
