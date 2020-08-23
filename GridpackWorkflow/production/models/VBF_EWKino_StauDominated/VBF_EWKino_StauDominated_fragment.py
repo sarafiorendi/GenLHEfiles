@@ -295,7 +295,7 @@ for block in scanBlocks:
         ymax = max(ymax, my)
         if (mx!=150 and mx!=300) or (dm!=1 and dm!=50):
           col.append([mx,my,nev])
-        Nbulk += nev
+          Nbulk += nev
     cols.append(col)
   Nevents.append([Nbulk, Ndiag])
 
