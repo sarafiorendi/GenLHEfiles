@@ -332,7 +332,7 @@ for point in mpoints:
                                     'MassParameters'
         )
     )
-    print ('/cvmfs/cms.cern.ch/phys_generator/gridpacks/2017/13TeV/madgraph/V5_2.4.2/sus_sms/LO_PDF/VBF_EWKino_StauDominated/v1/VBF_EWKino_StauDominated_mN2-%i_mStau-%s_mN1-%s_tarball.tar.xz' % (mneu2, mnlspstr, mlspstr))
+
     generator.RandomizedParameters.append(
         cms.PSet(
             ConfigWeight = cms.double(wgt),
