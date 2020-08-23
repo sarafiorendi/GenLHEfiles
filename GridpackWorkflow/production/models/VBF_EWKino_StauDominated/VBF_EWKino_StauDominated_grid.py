@@ -22,11 +22,11 @@ model = "VBF_EWKino_StauDominated"
 process = "C1N2"
 
 scanBlocks = []
-#scanBlocks.append(gridBlock(100, 401, 25))
-scanBlocks.append(gridBlock(150, 301, 150))
+scanBlocks.append(gridBlock(100, 401, 25))
+#scanBlocks.append(gridBlock(150, 301, 150))
 
-#deltaM = [ 0.5, 1, 5, 10, 15, 20, 30, 40, 50, 60, 75  ] 
-deltaM = [ 1, 50  ] 
+deltaM = [ 0.5, 1, 5, 10, 15, 20, 30, 40, 50, 60, 75  ] 
+#deltaM = [ 1, 50  ] 
 
 # Number of events for mass point, in thousands
 nev = 250
@@ -49,7 +49,8 @@ for block in scanBlocks:
       if my>=0.: 
         ymin = min(ymin, my)
         ymax = max(ymax, my)
-        col.append([mx,my,nev])
+        if (mx!=150 and mx!=300) or (dm!=1 and dm!=50):
+          col.append([mx,my,nev])
         Nbulk += nev
     cols.append(col)
   Nevents.append([Nbulk, Ndiag])

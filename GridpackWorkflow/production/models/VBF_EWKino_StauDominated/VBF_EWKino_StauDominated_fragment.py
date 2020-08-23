@@ -1,8 +1,8 @@
 import FWCore.ParameterSet.Config as cms
 
 from Configuration.Generator.Pythia8CommonSettings_cfi import *
-from Configuration.Generator.Pythia8CUEP8M1Settings_cfi import *
-#from Configuration.Generator.MCTunes2017.PythiaCP2Settings_cfi import *
+#from Configuration.Generator.Pythia8CUEP8M1Settings_cfi import *
+from Configuration.Generator.MCTunes2017.PythiaCP2Settings_cfi import *
 
 import math
 
@@ -266,11 +266,11 @@ class gridBlock:
     self.xstep = xstep
 
 scanBlocks = []
-#scanBlocks.append(gridBlock(100, 401, 25))
-scanBlocks.append(gridBlock(150, 301, 150))
+scanBlocks.append(gridBlock(100, 401, 25))
+#scanBlocks.append(gridBlock(150, 301, 150))
 
-#deltaM = [ 0.5, 1, 5, 10, 15, 20, 30, 40, 50, 60, 75  ] 
-deltaM = [ 1, 50  ] 
+deltaM = [ 0.5, 1, 5, 10, 15, 20, 30, 40, 50, 60, 75  ] 
+#deltaM = [ 1, 50  ] 
 
 # Number of events for mass point, in thousands
 nev = 250
@@ -293,7 +293,8 @@ for block in scanBlocks:
       if my>=0.: 
         ymin = min(ymin, my)
         ymax = max(ymax, my)
-        col.append([mx,my,nev])
+        if (mx!=150 and mx!=300) or (dm!=1 and dm!=50):
+          col.append([mx,my,nev])
         Nbulk += nev
     cols.append(col)
   Nevents.append([Nbulk, Ndiag])
@@ -318,25 +319,25 @@ for point in mpoints:
     # base hadronizer, no jet matching
     basePythiaParameters = cms.PSet(
         pythia8CommonSettingsBlock,
-        pythia8CUEP8M1SettingsBlock,
-        #pythia8CP2SettingsBlock,
+        #pythia8CUEP8M1SettingsBlock,
+        pythia8CP2SettingsBlock,
         MassParameters = cms.vstring(
             '23:mMin = 0.1',
             '24:mMin = 0.1',
             '6:m0 = 172.5',
         ), 
         parameterSets = cms.vstring('pythia8CommonSettings',
-                                    'pythia8CUEP8M1Settings',
-                                    #'pythia8CP2Settings',
+                                    #'pythia8CUEP8M1Settings',
+                                    'pythia8CP2Settings',
                                     'MassParameters'
         )
     )
-
+    print ('/cvmfs/cms.cern.ch/phys_generator/gridpacks/2017/13TeV/madgraph/V5_2.4.2/sus_sms/LO_PDF/VBF_EWKino_StauDominated/v1/VBF_EWKino_StauDominated_mN2-%i_mStau-%s_mN1-%s_tarball.tar.xz' % (mneu2, mnlspstr, mlspstr))
     generator.RandomizedParameters.append(
         cms.PSet(
             ConfigWeight = cms.double(wgt),
-            GridpackPath =  cms.string('/cvmfs/cms.cern.ch/phys_generator/gridpacks/slc6_amd64_gcc481/13TeV/madgraph/V5_2.4.2/sus_sms/VBF_EWKino_StauDominated/v1/VBF_EWKino_StauDominated_mN2-%i_mStau-%s_mN1-%s_tarball.tar.xz' % (mneu2, mnlspstr, mlspstr)),
-            #GridpackPath =  cms.string('/cvmfs/cms.cern.ch/phys_generator/gridpacks/2017/13TeV/madgraph/V5_2.4.2/sus_sms/LO_PDF/VBF_EWKino_StauDominated/v1/VBF_EWKino_StauDominated_mN2-%i_mStau-%s_mN1-%s_tarball.tar.xz' % (mneu2, mnlspstr, mlspstr)),
+            #GridpackPath =  cms.string('/cvmfs/cms.cern.ch/phys_generator/gridpacks/slc6_amd64_gcc481/13TeV/madgraph/V5_2.4.2/sus_sms/VBF_EWKino_StauDominated/v1/VBF_EWKino_StauDominated_mN2-%i_mStau-%s_mN1-%s_tarball.tar.xz' % (mneu2, mnlspstr, mlspstr)),
+            GridpackPath =  cms.string('/cvmfs/cms.cern.ch/phys_generator/gridpacks/2017/13TeV/madgraph/V5_2.4.2/sus_sms/LO_PDF/VBF_EWKino_StauDominated/v1/VBF_EWKino_StauDominated_mN2-%i_mStau-%s_mN1-%s_tarball.tar.xz' % (mneu2, mnlspstr, mlspstr)),
             ConfigDescription = cms.string('%s_%i_%s_%s' % (model, mneu2, mnlspstr, mlspstr)),
             SLHATableForPythia8 = cms.string('%s' % slhatable),
             PythiaParameters = basePythiaParameters,
