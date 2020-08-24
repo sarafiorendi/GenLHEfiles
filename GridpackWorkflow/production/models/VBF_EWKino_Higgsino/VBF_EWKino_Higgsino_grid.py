@@ -22,11 +22,11 @@ class gridBlock:
     self.xstep = xstep
 
 scanBlocks = []
-#scanBlocks.append(gridBlock(50, 201, 25))
-scanBlocks.append(gridBlock(100, 101, 25))
+scanBlocks.append(gridBlock(50, 201, 25))
+#scanBlocks.append(gridBlock(100, 101, 25))
 
-#deltaM = [ 0.5, 1, 5, 10, 15, 20, 30, 40, 50, 60, 75  ] 
-deltaM = [ 0.5, 1, 10, 50 ] 
+deltaM = [ 0.5, 1, 5, 10, 15, 20, 30, 40, 50, 60, 75  ] 
+#deltaM = [ 0.5, 1, 10, 50 ] 
 
 # Number of events for mass point, in thousands
 nev = 1000
@@ -49,8 +49,9 @@ for block in scanBlocks:
       if my>=0.: 
         ymin = min(ymin, my)
         ymax = max(ymax, my)
-        col.append([mx,my,nev])
-        Nbulk += nev
+        if mx!=100 or (dm!=0.5 and dm!=1 and dm!=10 and dm!=50):
+          col.append([mx,my,nev])
+          Nbulk += nev
     cols.append(col)
   Nevents.append([Nbulk, Ndiag])
 
