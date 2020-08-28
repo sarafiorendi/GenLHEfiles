@@ -130,7 +130,6 @@ DECAY   1000022     0.00000000E+00   # neutralino1 decays
 #         PDG            Width
 DECAY   1000015     1.48327268E-01   # stau_1 decays
 #          BR         NDA      ID1       ID2
-     0.00000000E+00    4     1000022 11 -12 16   # dummy allowed decay, in order to turn on off-shell decays
      1.00000000E+00    2     1000022        15   # BR(~tau_1 -> ~chi_10  tau-)
      0.00000000E+00    2     1000023        15   # BR(~tau_1 -> ~chi_20  tau-)
      0.00000000E+00    2     1000025        15   # BR(~tau_1 -> ~chi_30  tau-)
@@ -163,8 +162,6 @@ DECAY   1000024     1.70414503E-02   # chargino1+ decays
      0.00000000E+00    2    -2000011        12   # BR(~chi_1+ -> ~e_R+    nu_e)
      0.00000000E+00    2    -1000013        14   # BR(~chi_1+ -> ~mu_L+   nu_mu)
      0.00000000E+00    2    -2000013        14   # BR(~chi_1+ -> ~mu_R+   nu_mu)
-     0.00000000E+00    5     1000022 -11 12 -16 16 # dummy allowed decay, in order to turn on off-shell decays
-     0.00000000E+00    3     1000022 -15    16   # dummy allowed decay, in order to turn on off-shell decays
      1.00000000E+00    2    -1000015        16   # BR(~chi_1+ -> ~tau_1+  nu_tau)
      0.00000000E+00    2    -2000015        16   # BR(~chi_1+ -> ~tau_2+  nu_tau)
      0.00000000E+00    2     1000022        24   # BR(~chi_1+ -> ~chi_10  W+)
@@ -224,17 +221,7 @@ DECAY   1000023     2.07770048E-02   # neutralino2 decays
      0.00000000E+00    2    -1000013        13   # BR(~chi_20 -> ~mu_L+    mu-)
      0.00000000E+00    2     2000013       -13   # BR(~chi_20 -> ~mu_R-    mu+)
      0.00000000E+00    2    -2000013        13   # BR(~chi_20 -> ~mu_R+    mu-)
-     0.00000000E+00    7     1000022 11 -12 16 -11 12 -16 # dummy allowed decay, in order to turn on off-shell decays
-     0.00000000E+00    5     1000022 15 -11 12 -16 # dummy allowed decay, in order to turn on off-shell decays
-     0.00000000E+00    5     1000022 11 -12 16 -15 # dummy allowed decay, in order to turn on off-shell decays
-     0.00000000E+00    3     1000022 15        -15 # dummy allowed decay, in order to turn on off-shell decays
-     0.00000000E+00    4     1000015 -11 12 -16  # dummy allowed decay, in order to turn on off-shell decays 
      0.50000000E+00    2     1000015       -15   # BR(~chi_20 -> ~tau_1-   tau+)
-     0.00000000E+00    7     1000022 -11 12 -16 11 -12 16 # dummy allowed decay, in order to turn on off-shell decays
-     0.00000000E+00    5     1000022 -15 11 -12 16 # dummy allowed decay, in order to turn on off-shell decays
-     0.00000000E+00    5     1000022 -11 12 -16 15 # dummy allowed decay, in order to turn on off-shell decays
-     0.00000000E+00    3     1000022 -15        15 # dummy allowed decay, in order to turn on off-shell decays
-     0.00000000E+00    4    -1000015 11 -12 16   # dummy allowed decay, in order to turn on off-shell decays 
      0.50000000E+00    2    -1000015        15   # BR(~chi_20 -> ~tau_1+   tau-)
      0.00000000E+00    2     2000015       -15   # BR(~chi_20 -> ~tau_2-   tau+)
      0.00000000E+00    2    -2000015        15   # BR(~chi_20 -> ~tau_2+   tau-)
@@ -269,8 +256,8 @@ scanBlocks = []
 scanBlocks.append(gridBlock(100, 401, 25))
 #scanBlocks.append(gridBlock(150, 301, 150))
 
-deltaM = [ 0.5, 1, 5, 10, 15, 20, 30, 40, 50, 60, 75  ] 
-#deltaM = [ 1, 50  ] 
+deltaM = [ 5, 10, 15, 20, 30, 40, 50, 60, 75  ] 
+#deltaM = [ 5, 50  ] 
 
 # Number of events for mass point, in thousands
 nev = 250
@@ -293,7 +280,7 @@ for block in scanBlocks:
       if my>=0.: 
         ymin = min(ymin, my)
         ymax = max(ymax, my)
-        if (mx!=150 and mx!=300) or (dm!=1 and dm!=50):
+        if (mx!=150 and mx!=300) or (dm!=5 and dm!=50):
           col.append([mx,my,nev])
           Nbulk += nev
     cols.append(col)
