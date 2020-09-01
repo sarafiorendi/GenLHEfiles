@@ -340,8 +340,8 @@ for point in mpoints:
     generator.RandomizedParameters.append(
         cms.PSet(
             ConfigWeight = cms.double(wgt),
-            #GridpackPath =  cms.string('/cvmfs/cms.cern.ch/phys_generator/gridpacks/slc6_amd64_gcc481/13TeV/madgraph/V5_2.4.2/sus_sms/VBF_EWKino_StauDominated/v1/VBF_EWKino_StauDominated_mN2-%i_mStau-%s_mN1-%s_tarball.tar.xz' % (mneu2, mnlspstr, mlspstr)),
-            GridpackPath =  cms.string('/cvmfs/cms.cern.ch/phys_generator/gridpacks/2017/13TeV/madgraph/V5_2.4.2/sus_sms/LO_PDF/VBF_EWKino_StauDominated/v1/VBF_EWKino_StauDominated_mN2-%i_mStau-%s_mN1-%s_tarball.tar.xz' % (mneu2, mnlspstr, mlspstr)),
+            #GridpackPath =  cms.string('/cvmfs/cms.cern.ch/phys_generator/gridpacks/slc6_amd64_gcc481/13TeV/madgraph/V5_2.4.2/sus_sms/VBF_EWKino/v1/VBF_EWKino_mN2-%i_mN1-%s_tarball.tar.xz' % (mneu2, mlspstr)),
+            GridpackPath =  cms.string('/cvmfs/cms.cern.ch/phys_generator/gridpacks/2017/13TeV/madgraph/V5_2.4.2/sus_sms/LO_PDF/VBF_EWKino/v1/VBF_EWKino_mN2-%i_mN1-%s_tarball.tar.xz' % (mneu2, mlspstr)),
             ConfigDescription = cms.string('%s_%i_%s_%s' % (model, mneu2, mnlspstr, mlspstr)),
             SLHATableForPythia8 = cms.string('%s' % slhatable),
             PythiaParameters = basePythiaParameters,
