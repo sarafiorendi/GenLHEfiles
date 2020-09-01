@@ -275,7 +275,7 @@ class gridBlock:
 scanBlocks = []
 scanBlocks.append(gridBlock(100, 401, 25))
 
-deltaM = [0.5, 1, 5, 10, 15, 20, 30, 40, 50, 60, 75] 
+deltaM = [5, 10, 15, 20, 30, 40, 50, 60, 75] 
 
 # Number of events for mass point, in thousands
 nev = 250
