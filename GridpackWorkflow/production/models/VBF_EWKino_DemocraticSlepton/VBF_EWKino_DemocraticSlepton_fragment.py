@@ -263,7 +263,7 @@ generator = cms.EDFilter("Pythia8GeneratorFilter",
     RandomizedParameters = cms.VPSet(),
 )
     
-model = "VBF_EWKino_DemocracticSlepton"
+model = "VBF_EWKino_DemocraticSlepton"
 
 # Parameters that define the grid in the bulk and diagonal
 class gridBlock:
