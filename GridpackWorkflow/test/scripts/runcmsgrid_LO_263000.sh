@@ -160,7 +160,7 @@ is5FlavorScheme=1
 if [ $is5FlavorScheme -eq 1 ]; then
   # 5F PDF
   echo "
-  NNPDF31_lo_as_0130.LHgrid
+  NNPDF30_lo_as_0130.LHgrid
   NNPDF31_nnlo_hessian_pdfas.LHgrid
   NNPDF31_nnlo_as_0108.LHgrid 1
   NNPDF31_nnlo_as_0110.LHgrid 1
@@ -196,7 +196,7 @@ if [ $is5FlavorScheme -eq 1 ]; then
   NNPDF30_nnlo_nf_5_pdfas.LHgrid 1
   NNPDF31_lo_as_0118.LHgrid 1
   NNPDF30_lo_as_0118.LHgrid 1
-  NNPDF30_lo_as_0130.LHgrid 1
+  NNPDF31_lo_as_0130.LHgrid 1
  " >> syscalc_card.dat
 
 else
