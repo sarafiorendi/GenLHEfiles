@@ -1,8 +1,8 @@
 import FWCore.ParameterSet.Config as cms
 
 from Configuration.Generator.Pythia8CommonSettings_cfi import *
-#from Configuration.Generator.Pythia8CUEP8M1Settings_cfi import *
-from Configuration.Generator.MCTunes2017.PythiaCP2Settings_cfi import *
+from Configuration.Generator.Pythia8CUEP8M1Settings_cfi import *
+#from Configuration.Generator.MCTunes2017.PythiaCP2Settings_cfi import *
 
 import math
 
@@ -159,7 +159,9 @@ DECAY   1000015     1.48327268E-01   # stau_1 decays
      0.00000000E+00    2     1000016       -37   # BR(~tau_1 -> ~nu_tauL H-)
      0.00000000E+00    2     1000016       -24   # BR(~tau_1 -> ~nu_tauL W-)
 #
+"""
 
+large_dm = """
 #         PDG            Width
 DECAY   1000024     1.70414503E-02   # chargino1+ decays
 #          BR         NDA      ID1       ID2
@@ -254,6 +256,102 @@ DECAY   1000023     2.07770048E-02   # neutralino2 decays
 #
 """
 
+small_dm = """
+#         PDG            Width
+DECAY   1000024     1.70414503E-02   # chargino1+ decays
+#          BR         NDA      ID1       ID2
+     0.00000000E+00    2     1000002        -1   # BR(~chi_1+ -> ~u_L   db)
+     0.00000000E+00    2     2000002        -1   # BR(~chi_1+ -> ~u_R   db)
+     0.00000000E+00    2    -1000001         2   # BR(~chi_1+ -> ~d_L*  u )
+     0.00000000E+00    2    -2000001         2   # BR(~chi_1+ -> ~d_R*  u )
+     0.00000000E+00    2     1000004        -3   # BR(~chi_1+ -> ~c_L   sb)
+     0.00000000E+00    2     2000004        -3   # BR(~chi_1+ -> ~c_R   sb)
+     0.00000000E+00    2    -1000003         4   # BR(~chi_1+ -> ~s_L*  c )
+     0.00000000E+00    2    -2000003         4   # BR(~chi_1+ -> ~s_R*  c )
+     0.00000000E+00    2     1000006        -5   # BR(~chi_1+ -> ~t_1   bb)
+     0.00000000E+00    2     2000006        -5   # BR(~chi_1+ -> ~t_2   bb)
+     0.00000000E+00    2    -1000005         6   # BR(~chi_1+ -> ~b_1*  t )
+     0.00000000E+00    2    -2000005         6   # BR(~chi_1+ -> ~b_2*  t )
+     0.00000000E+00    2     1000012       -11   # BR(~chi_1+ -> ~nu_eL  e+  )
+     0.00000000E+00    2     1000014       -13   # BR(~chi_1+ -> ~nu_muL  mu+ )
+     0.00000000E+00    2     1000016       -15   # BR(~chi_1+ -> ~nu_tau1 tau+)
+     0.33333333E-01    2    -1000011        12   # BR(~chi_1+ -> ~e_L+    nu_e)
+     0.00000000E+00    2    -2000011        12   # BR(~chi_1+ -> ~e_R+    nu_e)
+     0.33333333E-01    2    -1000013        14   # BR(~chi_1+ -> ~mu_L+   nu_mu)
+     0.00000000E+00    2    -2000013        14   # BR(~chi_1+ -> ~mu_R+   nu_mu)
+     #0.33333333E-01    2    -1000015        16   # BR(~chi_1+ -> ~tau_1+  nu_tau)
+     0.33333333E-01    2    1000022    211
+     0.00000000E+00    2    -2000015        16   # BR(~chi_1+ -> ~tau_2+  nu_tau)
+     0.00000000E+00    2     1000022        24   # BR(~chi_1+ -> ~chi_10  W+)
+     0.00000000E+00    2     1000023        24   # BR(~chi_1+ -> ~chi_20  W+)
+     0.00000000E+00    2     1000025        24   # BR(~chi_1+ -> ~chi_30  W+)
+     0.00000000E+00    2     1000035        24   # BR(~chi_1+ -> ~chi_40  W+)
+     0.00000000E+00    2     1000022        37   # BR(~chi_1+ -> ~chi_10  H+)
+     0.00000000E+00    2     1000023        37   # BR(~chi_1+ -> ~chi_20  H+)
+     0.00000000E+00    2     1000025        37   # BR(~chi_1+ -> ~chi_30  H+)
+     0.00000000E+00    2     1000035        37   # BR(~chi_1+ -> ~chi_40  H+)
+#         
+
+#         PDG            Width
+DECAY   1000023     2.07770048E-02   # neutralino2 decays
+#          BR         NDA      ID1       ID2
+     0.00000000E+00    2     1000022        23   # BR(~chi_20 -> ~chi_10   Z )
+     0.00000000E+00    2     1000024       -24   # BR(~chi_20 -> ~chi_1+   W-)
+     0.00000000E+00    2    -1000024        24   # BR(~chi_20 -> ~chi_1-   W+)
+     0.00000000E+00    2     1000037       -24   # BR(~chi_20 -> ~chi_2+   W-)
+     0.00000000E+00    2    -1000037        24   # BR(~chi_20 -> ~chi_2-   W+)
+     0.00000000E+00    2     1000022        25   # BR(~chi_20 -> ~chi_10   h )
+     0.00000000E+00    2     1000022        35   # BR(~chi_20 -> ~chi_10   H )
+     0.00000000E+00    2     1000022        36   # BR(~chi_20 -> ~chi_10   A )
+     0.00000000E+00    2     1000024       -37   # BR(~chi_20 -> ~chi_1+   H-)
+     0.00000000E+00    2    -1000024        37   # BR(~chi_20 -> ~chi_1-   H+)
+     0.00000000E+00    2     1000037       -37   # BR(~chi_20 -> ~chi_2+   H-)
+     0.00000000E+00    2    -1000037        37   # BR(~chi_20 -> ~chi_2-   H+)
+     0.00000000E+00    2     1000002        -2   # BR(~chi_20 -> ~u_L      ub)
+     0.00000000E+00    2    -1000002         2   # BR(~chi_20 -> ~u_L*     u )
+     0.00000000E+00    2     2000002        -2   # BR(~chi_20 -> ~u_R      ub)
+     0.00000000E+00    2    -2000002         2   # BR(~chi_20 -> ~u_R*     u )
+     0.00000000E+00    2     1000001        -1   # BR(~chi_20 -> ~d_L      db)
+     0.00000000E+00    2    -1000001         1   # BR(~chi_20 -> ~d_L*     d )
+     0.00000000E+00    2     2000001        -1   # BR(~chi_20 -> ~d_R      db)
+     0.00000000E+00    2    -2000001         1   # BR(~chi_20 -> ~d_R*     d )
+     0.00000000E+00    2     1000004        -4   # BR(~chi_20 -> ~c_L      cb)
+     0.00000000E+00    2    -1000004         4   # BR(~chi_20 -> ~c_L*     c )
+     0.00000000E+00    2     2000004        -4   # BR(~chi_20 -> ~c_R      cb)
+     0.00000000E+00    2    -2000004         4   # BR(~chi_20 -> ~c_R*     c )
+     0.00000000E+00    2     1000003        -3   # BR(~chi_20 -> ~s_L      sb)
+     0.00000000E+00    2    -1000003         3   # BR(~chi_20 -> ~s_L*     s )
+     0.00000000E+00    2     2000003        -3   # BR(~chi_20 -> ~s_R      sb)
+     0.00000000E+00    2    -2000003         3   # BR(~chi_20 -> ~s_R*     s )
+     0.00000000E+00    2     1000006        -6   # BR(~chi_20 -> ~t_1      tb)
+     0.00000000E+00    2    -1000006         6   # BR(~chi_20 -> ~t_1*     t )
+     0.00000000E+00    2     2000006        -6   # BR(~chi_20 -> ~t_2      tb)
+     0.00000000E+00    2    -2000006         6   # BR(~chi_20 -> ~t_2*     t )
+     0.00000000E+00    2     1000005        -5   # BR(~chi_20 -> ~b_1      bb)
+     0.00000000E+00    2    -1000005         5   # BR(~chi_20 -> ~b_1*     b )
+     0.00000000E+00    2     2000005        -5   # BR(~chi_20 -> ~b_2      bb)
+     0.00000000E+00    2    -2000005         5   # BR(~chi_20 -> ~b_2*     b )
+     0.25000000E-01    2     1000011       -11   # BR(~chi_20 -> ~e_L-     e+)
+     0.25000000E-01    2    -1000011        11   # BR(~chi_20 -> ~e_L+     e-)
+     0.00000000E+00    2     2000011       -11   # BR(~chi_20 -> ~e_R-     e+)
+     0.00000000E+00    2    -2000011        11   # BR(~chi_20 -> ~e_R+     e-)
+     0.25000000E-01    2     1000013       -13   # BR(~chi_20 -> ~mu_L-    mu+)
+     0.25000000E-01    2    -1000013        13   # BR(~chi_20 -> ~mu_L+    mu-)
+     0.00000000E+00    2     2000013       -13   # BR(~chi_20 -> ~mu_R-    mu+)
+     0.00000000E+00    2    -2000013        13   # BR(~chi_20 -> ~mu_R+    mu-)
+     0.00000000E+00    2     1000015       -15   # BR(~chi_20 -> ~tau_1-   tau+)
+     0.00000000E+00    2    -1000015        15   # BR(~chi_20 -> ~tau_1+   tau-)
+     0.00000000E+00    2     2000015       -15   # BR(~chi_20 -> ~tau_2-   tau+)
+     0.00000000E+00    2    -2000015        15   # BR(~chi_20 -> ~tau_2+   tau-)
+     0.00000000E+00    2     1000012       -12   # BR(~chi_20 -> ~nu_eL    nu_eb)
+     0.00000000E+00    2    -1000012        12   # BR(~chi_20 -> ~nu_eL*   nu_e )
+     0.00000000E+00    2     1000014       -14   # BR(~chi_20 -> ~nu_muL   nu_mub)
+     0.00000000E+00    2    -1000014        14   # BR(~chi_20 -> ~nu_muL*  nu_mu )
+     0.00000000E+00    2     1000016       -16   # BR(~chi_20 -> ~nu_tau1  nu_taub)
+     0.00000000E+00    2    -1000016        16   # BR(~chi_20 -> ~nu_tau1* nu_tau )
+#
+"""
+
 generator = cms.EDFilter("Pythia8GeneratorFilter",
     maxEventsToPrint = cms.untracked.int32(1),
     pythiaPylistVerbosity = cms.untracked.int32(1),
@@ -275,7 +373,7 @@ class gridBlock:
 scanBlocks = []
 scanBlocks.append(gridBlock(100, 401, 25))
 
-deltaM = [5, 10, 15, 20, 30, 40, 50, 60, 75] 
+deltaM = [ 0.5, 1, 5, 10, 15, 20, 30, 40, 50, 60, 75  ] 
 
 # Number of events for mass point, in thousands
 nev = 250
@@ -316,23 +414,27 @@ for point in mpoints:
     slhatable = slhatable.replace('%MC1%','%e' % mneu2)
     slhatable = slhatable.replace('%MN1%','%e' % mlsp)
     slhatable = slhatable.replace('%MNLSP%','%e' % mnlsp) 
+
+    if (mneu2-mlsp)<=3.6:
+      slhatable += small_dm
+    else:
+      slhatable += large_dm
     
     mlspstr = ( '%.2f' % mlsp).replace('.', 'p')
-    mnlspstr = ( '%.2f' % mnlsp).replace('.', 'p')
     
     # base hadronizer, no jet matching
     basePythiaParameters = cms.PSet(
         pythia8CommonSettingsBlock,
-        #pythia8CUEP8M1SettingsBlock,
-        pythia8CP2SettingsBlock,
+        pythia8CUEP8M1SettingsBlock,
+        #pythia8CP2SettingsBlock,
         MassParameters = cms.vstring(
             '23:mMin = 0.1',
             '24:mMin = 0.1',
             '6:m0 = 172.5',
         ), 
         parameterSets = cms.vstring('pythia8CommonSettings',
-                                    #'pythia8CUEP8M1Settings',
-                                    'pythia8CP2Settings',
+                                    'pythia8CUEP8M1Settings',
+                                    #'pythia8CP2Settings',
                                     'MassParameters'
         )
     )
@@ -340,9 +442,9 @@ for point in mpoints:
     generator.RandomizedParameters.append(
         cms.PSet(
             ConfigWeight = cms.double(wgt),
-            #GridpackPath =  cms.string('/cvmfs/cms.cern.ch/phys_generator/gridpacks/slc6_amd64_gcc481/13TeV/madgraph/V5_2.4.2/sus_sms/VBF_EWKino/v1/VBF_EWKino_mN2-%i_mN1-%s_tarball.tar.xz' % (mneu2, mlspstr)),
-            GridpackPath =  cms.string('/cvmfs/cms.cern.ch/phys_generator/gridpacks/2017/13TeV/madgraph/V5_2.4.2/sus_sms/LO_PDF/VBF_EWKino/v1/VBF_EWKino_mN2-%i_mN1-%s_tarball.tar.xz' % (mneu2, mlspstr)),
-            ConfigDescription = cms.string('%s_%i_%s_%s' % (model, mneu2, mnlspstr, mlspstr)),
+            GridpackPath =  cms.string('/cvmfs/cms.cern.ch/phys_generator/gridpacks/slc6_amd64_gcc481/13TeV/madgraph/V5_2.4.2/sus_sms/VBF_EWKino/v1/VBF_EWKino_mN2-%i_mN1-%s_tarball.tar.xz' % (mneu2, mlspstr)),
+            #GridpackPath =  cms.string('/cvmfs/cms.cern.ch/phys_generator/gridpacks/2017/13TeV/madgraph/V5_2.4.2/sus_sms/LO_PDF/VBF_EWKino/v1/VBF_EWKino_mN2-%i_mN1-%s_tarball.tar.xz' % (mneu2, mlspstr)),
+            ConfigDescription = cms.string('%s_%i_%s' % (model, mneu2, mlspstr)),
             SLHATableForPythia8 = cms.string('%s' % slhatable),
             PythiaParameters = basePythiaParameters,
         ),
