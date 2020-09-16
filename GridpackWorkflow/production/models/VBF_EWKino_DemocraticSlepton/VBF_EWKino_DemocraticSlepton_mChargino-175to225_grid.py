@@ -11,7 +11,7 @@ import os,sys,math
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from grid_utils import *
     
-model = "VBF_EWKino_DemocraticSlepton"
+model = "VBF_EWKino_DemocraticSlepton_mChargino-175to225"
 process = "C1N2"
 
 # Parameters that define the grid in the bulk and diagonal
@@ -22,7 +22,7 @@ class gridBlock:
     self.xstep = xstep
 
 scanBlocks = []
-scanBlocks.append(gridBlock(325, 351, 25))
+scanBlocks.append(gridBlock(175, 226, 25))
 
 deltaM = [ 0.5, 1, 5, 10, 15, 20, 30, 40, 50, 60, 75 ] 
 

@@ -11,7 +11,7 @@ import os,sys,math
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from grid_utils import *
     
-model = "VBF_EWKino_DemocraticSlepton"
+model = "VBF_EWKino_DemocraticSlepton_mChargino-250to300"
 process = "C1N2"
 
 # Parameters that define the grid in the bulk and diagonal
