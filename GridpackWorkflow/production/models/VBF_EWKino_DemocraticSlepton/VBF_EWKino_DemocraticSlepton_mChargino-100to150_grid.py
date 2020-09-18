@@ -68,5 +68,10 @@ else: print "\n\nGRID CONTAINS "+str(Npts-Ndiff)+" DUPLICATE POINTS!!\n\n"
 Ntot = makePlot(cols, 'events', model, process, xmin, xmax, ymin, ymax)
 
 print '\nScan contains '+"{0:,.0f}".format(Ntot*1000)+" events"
+print getAveEff(mpoints, process)
+print
+
+print 'Average efficiency of: ', getAveEff(mpoints, process)
 
 print
+
