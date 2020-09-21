@@ -107,17 +107,13 @@ class gridBlock:
     self.xmax = xmax
     self.xstep = xstep
 
-scanBlocksMGlu = []
-scanBlocksMGlu.append(gridBlock(1000, 2601, 50))
-scanBlocksMN1 = []
-scanBlocksMN1.append(gridBlock(0, 1601, 50))
 # weighted average of matching efficiencies for the full scan
 # must equal the number entered in McM generator params
 mcm_eff = 0.285
 nev = 250
 
 # -------------------------------
-#    Constructing grid just based on two [mGlu, mC1] points
+#    Only the requested two reference [mGlu, mC1] points
 
 cols = [[[2200,1,nev]],[[1400,1000,nev]]]
 
