@@ -108,14 +108,14 @@ class gridBlock:
     self.xstep = xstep
 
 scanBlocksMGlu = []
-scanBlocksMGlu.append(gridBlock(1000, 2601, 50))
+scanBlocksMGlu.append(gridBlock(2150, 2351, 50))
 scanBlocksMN1 = []
 scanBlocksMN1.append(gridBlock(0, 1601, 50))
 dMGluN1min = 200
 dMGluN2    = 50
 # weighted average of matching efficiencies for the full scan
 # must equal the number entered in McM generator params
-mcm_eff = 0.282
+mcm_eff = 0.320
 nev = 100
 
 # -------------------------------

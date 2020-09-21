@@ -21,7 +21,7 @@ class gridBlock:
 model   = "T5qqqqZH_HToBB"
 process = "GlGl"    
 scanBlocksMGlu = []
-scanBlocksMGlu.append(gridBlock(1000, 2601, 50))
+scanBlocksMGlu.append(gridBlock(1900, 2101, 50))
 scanBlocksMN1 = []
 scanBlocksMN1.append(gridBlock(0, 1601, 50))
 dMGluN1min = 200

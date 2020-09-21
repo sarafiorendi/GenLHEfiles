@@ -28,29 +28,12 @@ dMGluN1min = 200
 dMGluN2    = 50
 # weighted average of matching efficiencies for the full scan
 # must equal the number entered in McM generator params
-nev = 100000
+nev = 250
 
 # -------------------------------
 #    Constructing grid
-cols = []
-Nevents = []
-xmin, xmax = 9999, 0
-ymin, ymax = 9999, 0
-for block in scanBlocksMGlu:
-  Nbulk, Ndiag = 0, 0
-  for mx in range(block.xmin, block.xmax, block.xstep):
-    xmin = min(xmin, block.xmin)
-    xmax = max(xmax, block.xmax)
-    col = []
-    for blockLSP in scanBlocksMN1:
-      for my in range(blockLSP.xmin, blockLSP.xmax, blockLSP.xstep):
-        if (mx - my) < dMGluN1min: continue
-        ymin = min(ymin, my)
-        ymax = max(ymax, my)
-        col.append([mx,my,nev])
-        Nbulk += nev
-    cols.append(col)
-  Nevents.append([Nbulk, Ndiag])
+cols = [[[2200,1,nev]],[[1400,1000,nev]]]
+Nevents = [[250,0],[250,0]]
 mpoints = []
 for col in cols: mpoints.extend(col)
 ## Test print out for repeated points
@@ -67,7 +50,7 @@ makePlot(cols, 'events', model, process, xmin, xmax, ymin, ymax)
 Ntot = makePlot(cols, 'lumi', model, process, xmin, xmax, ymin, ymax)
 #makePlot(cols, 'factor')
 
-print '\nScan contains '+"{0:,.0f}".format(Ntot)+" events\n"
+print '\nScan contains '+"{0:,.0f}".format(Ntot*1.e3)+" events\n"
 print 'Average matching efficiency (for McM and GEN fragment) = '+"{0:.3f}".format(getAveEff(mpoints,process))
 print
 

@@ -111,31 +111,15 @@ scanBlocksMGlu = []
 scanBlocksMGlu.append(gridBlock(1000, 2601, 50))
 scanBlocksMN1 = []
 scanBlocksMN1.append(gridBlock(0, 1601, 50))
-dMGluN1min = 200
-dMGluN2    = 50
 # weighted average of matching efficiencies for the full scan
 # must equal the number entered in McM generator params
-mcm_eff = 0.282
-nev = 100
+mcm_eff = 0.285
+nev = 250
 
 # -------------------------------
-#    Constructing grid
-cols = []
-Nevents = []
-xmin, xmax = 9999, 0
-for block in scanBlocksMGlu:
-  Nbulk, Ndiag = 0, 0
-  for mx in range(block.xmin, block.xmax, block.xstep):
-    xmin = min(xmin, block.xmin)
-    xmax = max(xmax, block.xmax)
-    col = []
-    for blockLSP in scanBlocksMN1:
-      for my in range(blockLSP.xmin, blockLSP.xmax, blockLSP.xstep):
-        if (mx - my) < dMGluN1min: continue 
-        col.append([mx,my,nev])
-        Nbulk += nev
-    cols.append(col)
-  Nevents.append([Nbulk, Ndiag])
+#    Constructing grid just based on two [mGlu, mC1] points
+
+cols = [[[2200,1,nev]],[[1400,1000,nev]]]
 
 mpoints = []
 for col in cols: mpoints.extend(col)
