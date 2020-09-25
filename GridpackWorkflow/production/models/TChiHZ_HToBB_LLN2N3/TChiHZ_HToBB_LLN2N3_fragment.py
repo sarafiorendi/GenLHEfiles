@@ -74,7 +74,6 @@ DECAY   1000035     0.00000000E+00   # neutralino4 decays
 DECAY   1000037     0.00000000E+00   # chargino2+ decays
 """
 
-model = "TChiHZ"
 
 generator = cms.EDFilter("Pythia8GeneratorFilter",
     maxEventsToPrint = cms.untracked.int32(1),
@@ -127,6 +126,7 @@ for i, m in enumerate(mchi):
 
 for point in mpoints:
     mchi, wchi, nevents = point[0], point[1], point[2]
+    tchi  = hBarCinGeVmm/wchi 
     qcut, tru_eff = matchParams(mchi)
     wgt = point[2]*(mcm_eff/tru_eff)*(nevents)/totevents
 
@@ -170,7 +170,7 @@ for point in mpoints:
         cms.PSet(
             ConfigWeight = cms.double(wgt),
             GridpackPath =  cms.string('/cvmfs/cms.cern.ch/phys_generator/gridpacks/2017/13TeV/madgraph/V5_2.4.2/sus_sms/LO_PDF/SMS-%s/v1/SMS-%s_mN-%i_slc6_amd64_gcc481_CMSSW_7_1_30_tarball.tar.xz' % (process,process,mchi)),
-            ConfigDescription = cms.string('%s_%i_%i' % (model, mchi, wchi)),
+            ConfigDescription = cms.string('%s_%i_%i' % (model, mchi, tchi)),
             SLHATableForPythia8 = cms.string('%s' % slhatable),
             PythiaParameters = basePythiaParameters,
         ),
