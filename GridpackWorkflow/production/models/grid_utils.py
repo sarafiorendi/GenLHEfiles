@@ -227,7 +227,7 @@ def getAveEff(mpoints, proc):
     sum_evt += point[2]
   return sum_wgt/sum_evt
   
-def makePlot(mpoints, type, model, proc, xmin, xmax, ymin, ymax):
+def makePlot(mpoints, type, model, proc, xmin, xmax, ymin, ymax, xlabel=False,  ylabel=False):
   plt.figure(figsize=(17,10))
   if("GlGl" in proc): plt.xlabel('$m(\widetilde{g})$ [GeV]', fontsize=18)
   if("StopStop" in proc): plt.xlabel('$m(\widetilde{t})$ [GeV]', fontsize=18)
@@ -238,7 +238,12 @@ def makePlot(mpoints, type, model, proc, xmin, xmax, ymin, ymax):
   if("ttH" in proc or "tHW" in proc or "tHq" in proc): plt.xlabel('$m_{H}$ [GeV]', fontsize=18)
 
   plt.ylabel('$m(\chi^0_1)$ [GeV]', fontsize=18)
+
   if model == 'T6ttWW':  plt.ylabel('$m(\chi^\pm_1)$ [GeV]', fontsize=18)
+
+  if ylabel: plt.ylabel(ylabel)
+  if xlabel: plt.xlabel(xlabel)
+
 
   ranges = [0, 50,   150,    400,      999]
   colors = ['black', 'green', 'blue', 'purple', 'red']
@@ -262,12 +267,12 @@ def makePlot(mpoints, type, model, proc, xmin, xmax, ymin, ymax):
       if val>=1000: 
         val_s = "{0:.1f}".format(float(val)/1000)
       plt.text(mpoint[0],mpoint[1], val_s, fontweight='bold', color=font_col, 
-               verticalalignment='center', horizontalalignment='center', fontsize=9)
+               verticalalignment='center', horizontalalignment='center', fontsize=9,rotation=45)
 
-  xmin = min([min([pt[0] for pt in column]) for column in mpoints if len(column)>0]) 
-  xmax = max([max([pt[0] for pt in column]) for column in mpoints if len(column)>0]) 
-  ymin = min([min([pt[1] for pt in column]) for column in mpoints if len(column)>0]) 
-  ymax = max([max([pt[1] for pt in column]) for column in mpoints if len(column)>0]) 
+  #xmin = min([min([pt[0] for pt in column]) for column in mpoints if len(column)>0]) 
+  #xmax = max([max([pt[0] for pt in column]) for column in mpoints if len(column)>0]) 
+  #ymin = min([min([pt[1] for pt in column]) for column in mpoints if len(column)>0]) 
+  #ymax = max([max([pt[1] for pt in column]) for column in mpoints if len(column)>0]) 
   xtickmin, xtickmax = xmin-(xmin%100), xmax+100-(xmax%100)
   ytickmin, ytickmax = ymin-(ymin%100), ymax+100-(ymax%100)
   xtickstep, ytickstep = 200, 200
