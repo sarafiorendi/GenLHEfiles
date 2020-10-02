@@ -1,7 +1,7 @@
 import FWCore.ParameterSet.Config as cms
 from Configuration.Generator.Pythia8CommonSettings_cfi import *
 from Configuration.Generator.Pythia8CUEP8M1Settings_cfi import *
-#from Configuration.Generator.MCTunes2017.PythiaCP5Settings_cfi import *
+#from Configuration.Generator.MCTunes2017.PythiaCP2Settings_cfi import *
 
 baseSLHATable="""
 BLOCK MASS  # Mass Spectrum
@@ -114,7 +114,7 @@ hBarCinGeVmm = 1.973269788e-13
 
 #Scan parameters
 mchi  = [127.,150.,175.,200.,250.,300.,400.,600.,800.,1000.,1250.,1500.,1800.]
-nevs  = [600.,500.,350.,250.,150.,100., 50., 50., 50.,  50.,  50.,  50.,  50.] #Weight more higher x-sec regions
+nevs  = [600.,500.,350.,250.,150.,100., 50., 50., 50.,  50.,  50.,  50.,  50.] #Weight more higher x-sec regions as requested per analysts
 totevents = sum(nevs)
 ctauValues = [500,3000] # Neutralino lifetime in mm
 wchi  = [ hBarCinGeVmm/ctau0 for ctau0 in ctauValues ]
@@ -128,9 +128,8 @@ for point in mpoints:
     mchi, wchi, nevents = point[0], point[1], point[2]
     tchi  = hBarCinGeVmm/wchi 
     qcut, tru_eff = matchParams(mchi)
-    wgt = point[2]*(mcm_eff/tru_eff)*(nevents)/totevents
+    wgt = point[2]*(mcm_eff/tru_eff)
 
-    if mlsp==0: mlsp = 1
     slhatable = baseSLHATable.replace('%MCHI%','%e' % mchi)
     slhatable = slhatable.replace('%WCHI%','%e' % wchi)
 
@@ -152,7 +151,7 @@ for point in mpoints:
             'JetMatching:doShowerKt = off', #off for MLM matching, turn on for shower-kT matching
             '6:m0 = 172.5',
             '25:onMode = off',
-            '25:onIfMatch = 5 -5', # Only H->bb
+            '25:onIfMatch = 5 -5', # Only H->bb decays
             '25:m0 = 125.0',
         ),
         parameterSets = cms.vstring('pythia8CommonSettings',
