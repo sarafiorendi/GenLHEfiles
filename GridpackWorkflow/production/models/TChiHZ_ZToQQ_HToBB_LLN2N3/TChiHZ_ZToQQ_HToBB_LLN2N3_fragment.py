@@ -153,6 +153,8 @@ for point in mpoints:
             '25:onMode = off',
             '25:onIfMatch = 5 -5', # Only H->bb decays
             '25:m0 = 125.0',
+            '23:onMode = off',
+            '23:onIfAny = 1 2 3 4 5', # Only Z->qq decays
         ),
         parameterSets = cms.vstring('pythia8CommonSettings',
                                     'pythia8CUEP8M1Settings',
