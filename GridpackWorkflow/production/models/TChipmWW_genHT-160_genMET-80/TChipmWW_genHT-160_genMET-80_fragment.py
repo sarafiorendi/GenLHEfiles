@@ -2,7 +2,7 @@ import FWCore.ParameterSet.Config as cms
 
 from Configuration.Generator.Pythia8CommonSettings_cfi import *
 from Configuration.Generator.Pythia8CUEP8M1Settings_cfi import *
-#from Configuration.Generator.Pythia8CP5Settings_cfi import *
+#from Configuration.Generator.Pythia8CP2Settings_cfi import *
 
 import math
 
@@ -113,6 +113,16 @@ for mx in range(xmin, xmax+1, xstep):
 
 mcm_eff = 0.507
 
+def matchParams(mass):
+    if mass < 125: return 76,0.63
+    elif mass < 150: return 76,0.6
+    elif mass < 225: return 76,0.57
+    elif mass < 300: return 76,0.53
+    elif mass < 400: return 76,0.5
+    elif mass < 525: return 76,0.47
+    elif mass < 725: return 76,0.44
+    else: return 76,0.42
+
 for point in mpoints:
     mc1, mlsp = point[0],point[0] - point[1]
     qcut, tru_eff = matchParams(mc1)
@@ -124,7 +134,7 @@ for point in mpoints:
     basePythiaParameters = cms.PSet(
         pythia8CommonSettingsBlock,
         pythia8CUEP8M1SettingsBlock,
-        #pythia8CP5SettingsBlock,
+        #pythia8CP2SettingsBlock,
         JetMatchingParameters = cms.vstring(
             'JetMatching:setMad = off',
             'JetMatching:scheme = 1',
@@ -142,7 +152,7 @@ for point in mpoints:
         ), 
         parameterSets = cms.vstring('pythia8CommonSettings',
                                     'pythia8CUEP8M1Settings',
-                                    #'pythia8CP5Settings',
+                                    #'pythia8CP2Settings',
                                     'JetMatchingParameters'
         )
     )
