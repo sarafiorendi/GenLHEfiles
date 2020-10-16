@@ -35,7 +35,7 @@ BLOCK MASS  # Mass Spectrum
    1000035     1.00000000E+05   # ~chi_40
    1000024     1.00000000E+05   # ~chi_1+
    1000037     1.00000000E+05   # ~chi_2+
-
+   
 # DECAY TABLE
 #         PDG            Width
 DECAY   1000001     0.00000000E+00   # sdown_L decays
