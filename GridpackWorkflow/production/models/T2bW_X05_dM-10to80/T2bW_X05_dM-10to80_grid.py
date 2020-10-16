@@ -75,3 +75,4 @@ Ntot = makePlot([mpoints], 'lumi_br4', model, process, xmin, xmax, ymin, ymax)
 
 print 'Average matching efficiency (for McM and GEN fragment) = '+"{0:.3f}".format(getAveEff(mpoints,process))
 print
+

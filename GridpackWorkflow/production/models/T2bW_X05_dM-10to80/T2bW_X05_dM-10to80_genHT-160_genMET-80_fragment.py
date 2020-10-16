@@ -35,6 +35,7 @@ BLOCK MASS  # Mass Spectrum
    1000035     1.00000000E+05   # ~chi_40
    1000024     %MCHI%           # ~chi_1+
    1000037     1.00000000E+05   # ~chi_2+
+   
 # DECAY TABLE
 #         PDG            Width
 DECAY   1000001     0.00000000E+00   # sdown_L decays
@@ -50,6 +51,7 @@ DECAY   2000005     0.00000000E+00   # sbottom2 decays
 DECAY   1000006     1.00000000E+00   # stop1 decays
     1.00000000E+00    2    1000024      5
 DECAY   2000006     0.00000000E+00   # stop2 decays
+
 DECAY   1000011     0.00000000E+00   # selectron_L decays
 DECAY   2000011     0.00000000E+00   # selectron_R decays
 DECAY   1000012     0.00000000E+00   # snu_elL decays
@@ -287,3 +289,4 @@ ProductionFilterSequence = cms.Sequence(generator*
                                         tmpAk4GenJetsNoNu * genHTFilter * 
                                         tmpGenMetTrue * genMETfilter1 * genMETfilter2
 )
+
