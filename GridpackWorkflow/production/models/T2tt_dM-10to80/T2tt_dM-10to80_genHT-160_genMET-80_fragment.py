@@ -35,7 +35,6 @@ BLOCK MASS  # Mass Spectrum
    1000035     1.00000000E+05   # ~chi_40
    1000024     1.00000000E+05   # ~chi_1+
    1000037     1.00000000E+05   # ~chi_2+
-
 # DECAY TABLE
 #         PDG            Width
 DECAY   1000001     0.00000000E+00   # sdown_L decays
@@ -52,7 +51,6 @@ DECAY   1000006     1.00000000E+00   # stop1 decays
     0.00000000E+00    4    1000022      5     -1    2  # dummy allowed decay, in order to turn on off-shell decays
     1.00000000E+00    3    1000022      5   24
 DECAY   2000006     0.00000000E+00   # stop2 decays
-
 DECAY   1000011     0.00000000E+00   # selectron_L decays
 DECAY   2000011     0.00000000E+00   # selectron_R decays
 DECAY   1000012     0.00000000E+00   # snu_elL decays
@@ -79,9 +77,28 @@ generator = cms.EDFilter("Pythia8GeneratorFilter",
     comEnergy = cms.double(13000.),
     RandomizedParameters = cms.VPSet(),
 )
+
+# Parameters that define the grid in the bulk and diagonal
+class gridBlock:
+  def __init__(self, xmin, xmax, xstep, ystep):
+    self.xmin = xmin
+    self.xmax = xmax
+    self.xstep = xstep
+    self.ystep = ystep
     
 model = "T2tt_dM-10to80_genHT-160_genMET-80"
 process = "StopStop"
+
+# Number of events: min(goalLumi*xsec, maxEvents) (always in thousands)
+goalLumi = 400
+minLumi = 50
+minEvents, maxEvents = 40, 1000
+xdiagStep, ydiagStep = 25, 10
+minDM, maxDM = 10, 80
+
+scanBlocks = []
+scanBlocks.append(gridBlock(250,  801, 25, 10))
+ymin, ymax = 0, 1100
 
 def matchParams(mass):
   if mass>99 and mass<199: return 62., 0.498
@@ -96,18 +113,28 @@ def xsec(mass):
   if mass < 300: return 319925471928717.38*math.pow(mass, -4.10396285974583*math.exp(mass*0.0001317804474363))
   else: return 6953884830281245*math.pow(mass, -4.7171617288678069*math.exp(mass*6.1752771466190749e-05))
 
+# Number of events for mass point, in thousands
+def events(mass):
+  xs = xsec(mass)
+  nev = min(goalLumi*xs, maxEvents*1000)
+  if nev < xs*minLumi: nev = xs*minLumi
+  nev = max(nev/1000, minEvents)
+  return math.ceil(nev) # Rounds up
+
 # -------------------------------
 #    Constructing grid
 mpoints = []
-nev=250
-def GetAllStopNeutralinoPoints(minStop = 300, maxStop = 1000, dStop = 100, mindif = 6, maxdif = 8, ddif = 2):
-  points = []
-  for mStop in range(minStop, maxStop+dStop, dStop):
-    for dif in range(mindif, maxdif+ddif, ddif):
-      mChi = mStop-dif
-      points.append([mStop, mChi,nev])
-  return points
-mpoints=GetAllStopNeutralinoPoints()
+Ndiag = 0
+xmin, xmax = 9999, 0
+for block in scanBlocks:
+  for mx in range(block.xmin, block.xmax, xdiagStep):
+    xmin = min(block.xmin, xmin)
+    xmax = min(block.xmin, xmax)
+    for my in range(mx-maxDM, mx-minDM+1, ydiagStep):
+      if my > ymax: continue
+      nev = events(mx)#*eff[mx][my]
+      Ndiag += nev
+      mpoints.append([mx,my, nev])
 
 for point in mpoints:
     mstop, mlsp = point[0], point[1]
@@ -258,4 +285,3 @@ ProductionFilterSequence = cms.Sequence(generator*
                                         tmpAk4GenJetsNoNu * genHTFilter * 
                                         tmpGenMetTrue * genMETfilter1 * genMETfilter2
 )
-
