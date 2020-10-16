@@ -80,7 +80,7 @@ generator = cms.EDFilter("Pythia8GeneratorFilter",
     RandomizedParameters = cms.VPSet(),
 )
     
-model = "T2tt_dM-10to80_genHT-160_genMET-80"
+model = "T2tt_dM-6to8_genHT-160_genMET-80"
 process = "StopStop"
 
 def matchParams(mass):
