@@ -18,26 +18,14 @@ class gridBlock:
     self.xstep = xstep
     self.ystep = ystep
     
-model = "T2tt_4bd"
+model = "T2bW"
 process = "StopStop"
-
-period = "Summer16"
 
 # Number of events: min(goalLumi*xsec, maxEvents) (always in thousands)
 goalLumi = 400
-if "16" in period : minLumi = 50
-elif "17" in period : minLumi = 57   
-minEvents, maxEvents = 50, 1000
-xdiagStep, ydiagStep = 25, 10
-minDM, maxDM = 10, 80
+minLumi = 50 
+minEvents, maxEvents = 40, 1000
 
-scanBlocks = []
-if period == "Spring16" : 
-  scanBlocks.append(gridBlock(250,  801, 25, 10)) #Using only [x,y]diagStep
-  ymin, ymax = 0, 1100 
-elif (period == "Summer16" or period == "Fall17") : 
-  scanBlocks.append(gridBlock(250,  1101, 25, 10)) #Using only [x,y]diagStep
-  ymin, ymax = 0, 1400
 
 # Number of events for mass point, in thousands
 def events(mass):
@@ -49,23 +37,21 @@ def events(mass):
 
 # -------------------------------
 #    Constructing grid
-
-
 #Steps in mStop
 xStep, xmin, xmax = 25, 300, 651
-ymin, ymax = 200, 1100
+ymin, ymax = 0, 1100
 #Values of dM(stop, N1)
-dMs = [10, 13, 15, 18, 20]
+dMs = [10, 13, 15, 18]
 
 # -------------------------------
 #    Constructing grid
-Ndiag = 0
 mpoints = []
+Ndiag = 0
 for mx in range(xmin, xmax, xStep):
   for diag in dMs:
     my = mx - diag
     if my > ymax or my < ymin: continue
-    nev = events(mx)*(2 - (diag==20))/10. # A nasty trick, we need less stats for dM=20 GeV as it already exists in previous scans but analysts want it anyway for cross-checking
+    nev = events(mx)*2/10 # 2 times as before
     mpoints.append([mx,my, nev])
     Ndiag += nev
 
@@ -73,7 +59,7 @@ for mx in range(xmin, xmax, xStep):
 mset = set()
 for mp in mpoints: mset.add(mp[0]*10000+mp[1])
 Ntot, Ndiff = len(mpoints), len(mset)
-nev_s = "{0:.3f}".format(Ndiag/1000)
+nev_s = "{0:.1f}".format(Ndiag/1000)
 if Ntot==Ndiff: print "\nGrid contains "+str(Ntot)+" mass points with "+nev_s+"M events. No duplicates\n"
 else: print "\n\nGRID CONTAINS "+str(Ntot-Ndiff)+" DUPLICATE MASS POINTS!!\n\n"
 

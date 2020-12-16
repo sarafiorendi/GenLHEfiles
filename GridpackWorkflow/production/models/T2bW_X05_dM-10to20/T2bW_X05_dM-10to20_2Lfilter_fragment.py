@@ -33,7 +33,7 @@ BLOCK MASS  # Mass Spectrum
    1000023     1.00000000E+05   # ~chi_20
    1000025     1.00000000E+05   # ~chi_30
    1000035     1.00000000E+05   # ~chi_40
-   1000024     1.00000000E+05   # ~chi_1+
+   1000024     %MCHI%           # ~chi_1+
    1000037     1.00000000E+05   # ~chi_2+
 
 # DECAY TABLE
@@ -49,8 +49,7 @@ DECAY   2000004     0.00000000E+00   # scharm_R decays
 DECAY   1000005     0.00000000E+00   # sbottom1 decays
 DECAY   2000005     0.00000000E+00   # sbottom2 decays
 DECAY   1000006     1.00000000E+00   # stop1 decays
-    0.00000000E+00    4    1000022      5     -1    2  # dummy allowed decay, in order to turn on off-shell decays
-    1.00000000E+00    3    1000022      5   24
+    1.00000000E+00    2    1000024      5
 DECAY   2000006     0.00000000E+00   # stop2 decays
 
 DECAY   1000011     0.00000000E+00   # selectron_L decays
@@ -65,7 +64,9 @@ DECAY   1000016     0.00000000E+00   # snu_tauL decays
 DECAY   1000021     0.00000000E+00   # gluino decays
 DECAY   1000022     0.00000000E+00   # neutralino1 decays
 DECAY   1000023     0.00000000E+00   # neutralino2 decays
-DECAY   1000024     0.00000000E+00   # chargino1+ decays
+DECAY   1000024     1.00000000E+00   # chargino1+ decays
+    0.00000000E+00    3    1000022     -1    2  # dummy allowed decay, in order to turn on off-shell decays
+    1.00000000E+00    2    1000022      24
 DECAY   1000025     0.00000000E+00   # neutralino3 decays
 DECAY   1000035     0.00000000E+00   # neutralino4 decays
 DECAY   1000037     0.00000000E+00   # chargino2+ decays
@@ -81,12 +82,17 @@ generator = cms.EDFilter("Pythia8GeneratorFilter",
 )
 
 # Parameters that define the grid in the bulk and diagonal
+class gridBlock:
+  def __init__(self, xmin, xmax, xstep, ystep):
+    self.xmin = xmin
+    self.xmax = xmax
+    self.xstep = xstep
+    self.ystep = ystep
     
-model = "T2tt_dM-10to20_2Lfilter"
+model = "T2bW_X05_dM-10to80_genHT-160_genMET-80"
 process = "StopStop"
 
-# Stuff to compute the #events needed per point and weight accordingly in the random scan
-
+# Number of events: min(goalLumi*xsec, maxEvents) (always in thousands)
 goalLumi = 400
 minLumi = 50
 minEvents, maxEvents = 40, 1000
@@ -112,12 +118,13 @@ def events(mass):
   nev = max(nev/1000, minEvents)
   return math.ceil(nev) # Rounds up
 
-
+# -------------------------------
+#    Constructing grid
 #Steps in mStop
 xStep, xmin, xmax = 25, 300, 651
-ymin, ymax = 0, 1100 
+ymin, ymax = 0, 1100
 #Values of dM(stop, N1)
-dMs = [10, 13, 15, 18, 20]
+dMs = [10, 13, 15, 18]
 
 # -------------------------------
 #    Constructing grid
@@ -126,17 +133,20 @@ for mx in range(xmin, xmax, xStep):
   for diag in dMs:
     my = mx - diag
     if my > ymax or my < ymin: continue
-    nev = events(mx)*(2 - (diag==20)) # A nasty trick, we need less stats for dM=20 GeV as it already exists in previous scans but analysts want it anyway for cross-checking
+    nev = events(mx) # Here all points equally probable as higher diagonals were not in previous productions 
     mpoints.append([mx,my, nev])
+
 
 for point in mpoints:
     mstop, mlsp = point[0], point[1]
     qcut, tru_eff = matchParams(mstop)
-    # Now weight for the matching efficiency to properly generate the desired number of events at the end
     wgt = point[2]/tru_eff
+    
     if mlsp==0: mlsp = 1
     slhatable = baseSLHATable.replace('%MSTOP%','%e' % mstop)
     slhatable = slhatable.replace('%MLSP%','%e' % mlsp)
+    slhatable = slhatable.replace('%MCHI%','%e' % ((mlsp+mstop)/2.))
+
     basePythiaParameters = cms.PSet(
         pythia8CommonSettingsBlock,
         pythia8CUEP8M1SettingsBlock,
@@ -153,9 +163,9 @@ for point in mpoints:
             'JetMatching:nJetMax = 2', #number of partons in born matrix element for highest multiplicity
             'JetMatching:doShowerKt = off', #off for MLM matching, turn on for shower-kT matching
             '6:m0 = 172.5',
-            '24:mMin = 0.1', #Reduced to more off-shell cases so there is more kinematically allowed range for the massive b 
-            '24:onMode = off',
-            '24:onIfAny = 11 13 15', # Leptonic W decays only 
+            '24:mMin = 0.1',
+            '24:onMode = off',	    
+            '24:onIfAny = 11 13 15',
             'Check:abortIfVeto = on',
         ), 
         parameterSets = cms.vstring('pythia8CommonSettings',
@@ -173,5 +183,3 @@ for point in mpoints:
             PythiaParameters = basePythiaParameters,
         ),
     )
-
-

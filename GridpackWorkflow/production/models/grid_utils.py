@@ -227,7 +227,7 @@ def getAveEff(mpoints, proc):
     sum_evt += point[2]
   return sum_wgt/sum_evt
   
-def makePlot(mpoints, type, model, proc, xmin, xmax, ymin, ymax, xlabel=False,  ylabel=False):
+def makePlot(mpoints, type, model, proc, xmin, xmax, ymin, ymax, xlabel=False,  ylabel=False, rotate=False):
   plt.figure(figsize=(17,10))
   if("GlGl" in proc): plt.xlabel('$m(\widetilde{g})$ [GeV]', fontsize=18)
   if("StopStop" in proc): plt.xlabel('$m(\widetilde{t})$ [GeV]', fontsize=18)
@@ -238,12 +238,20 @@ def makePlot(mpoints, type, model, proc, xmin, xmax, ymin, ymax, xlabel=False,  
   if("ttH" in proc or "tHW" in proc or "tHq" in proc): plt.xlabel('$m_{H}$ [GeV]', fontsize=18)
 
   plt.ylabel('$m(\chi^0_1)$ [GeV]', fontsize=18)
+  if rotate:
+    if("GlGl" in proc): plt.ylabel('$m(\widetilde{g})-m(\chi^0_1)$ [GeV]', fontsize=18)
+    if("StopStop" in proc): plt.ylabel('$m(\widetilde{t})-m(\chi^0_1)$ [GeV]', fontsize=18)
+    if("SbotSbot" in proc): plt.ylabel('$m(\widetilde{b})-m(\chi^0_1)$ [GeV]', fontsize=18)
+    if("SqSq" in proc): plt.ylabel('$m(\widetilde{q})-m(\chi^0_1)$ [GeV]', fontsize=18)
+    if("C1N2" in proc or "N2C1" in proc): plt.xlabel('$m(\chi^{\pm}_{1})-m(\chi^0_1)$ [GeV]', fontsize=18)
+    if("StauStau" in proc): plt.ylabel('$m(\widetilde{\\tau})-m(\chi^0_1)$ [GeV]', fontsize=18)
+    if("ttH" in proc or "tHW" in proc or "tHq" in proc): plt.ylabel('$m_{H}-m(\chi^0_1)$ [GeV]', fontsize=18)
+
 
   if model == 'T6ttWW':  plt.ylabel('$m(\chi^\pm_1)$ [GeV]', fontsize=18)
-
   if ylabel: plt.ylabel(ylabel)
   if xlabel: plt.xlabel(xlabel)
-
+  
 
   ranges = [0, 50,   150,    400,      999]
   colors = ['black', 'green', 'blue', 'purple', 'red']
@@ -266,9 +274,11 @@ def makePlot(mpoints, type, model, proc, xmin, xmax, ymin, ymax, xlabel=False,  
       val_s = "{0:.0f}".format(val)
       if val>=1000: 
         val_s = "{0:.1f}".format(float(val)/1000)
-      plt.text(mpoint[0],mpoint[1], val_s, fontweight='bold', color=font_col, 
-               verticalalignment='center', horizontalalignment='center', fontsize=9,rotation=45)
 
+      if not(rotate): plt.text(mpoint[0],mpoint[1], val_s, fontweight='bold', color=font_col, 
+               verticalalignment='center', horizontalalignment='center', fontsize=9,rotation=45)
+      else:  plt.text(mpoint[0],mpoint[0]-mpoint[1], val_s, fontweight='bold', color=font_col,
+               verticalalignment='center', horizontalalignment='center', fontsize=9,rotation=45)
   #xmin = min([min([pt[0] for pt in column]) for column in mpoints if len(column)>0]) 
   #xmax = max([max([pt[0] for pt in column]) for column in mpoints if len(column)>0]) 
   #ymin = min([min([pt[1] for pt in column]) for column in mpoints if len(column)>0]) 
@@ -279,11 +289,11 @@ def makePlot(mpoints, type, model, proc, xmin, xmax, ymin, ymax, xlabel=False,  
   xbuffer, ybuffer = 100, 100
   dx, dy = xmax-xmin, ymax-ymin
   if dx<1200: 
-    xtickstep = 100
+    xtickstep = 20
     xbuffer = 50
   if dy<1200: 
-    ytickstep = 100
-    ybuffer = 50
+    ytickstep = 20
+    ybuffer = 0
   #print "xmax is "+str(xmax)+", xmin is "+str(xmin)+", tickstep is "+str(tickstep)
   plt.axis([xmin-xbuffer, xmax+xbuffer, ymin-ybuffer, ymax+ybuffer])
   plt.xticks(np.arange(xtickmin, xtickmax, xtickstep))
