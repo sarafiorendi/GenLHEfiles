@@ -1,7 +1,8 @@
 import FWCore.ParameterSet.Config as cms
+
 from Configuration.Generator.Pythia8CommonSettings_cfi import *
 from Configuration.Generator.Pythia8CUEP8M1Settings_cfi import *
-#from Configuration.Generator.MCTunes2017.PythiaCP2Settings_cfi import *
+import math
 
 baseSLHATable="""
 BLOCK MASS  # Mass Spectrum
@@ -16,7 +17,7 @@ BLOCK MASS  # Mass Spectrum
    2000004     1.00000000E+05   # ~c_R
    1000005     1.00000000E+05   # ~b_1
    2000005     1.00000000E+05   # ~b_2
-   1000006     1.00000000E+05   # ~t_1
+   1000006     %MSTOP%          # ~t_1
    2000006     1.00000000E+05   # ~t_2
    1000011     1.00000000E+05   # ~e_L
    2000011     1.00000000E+05   # ~e_R
@@ -27,14 +28,13 @@ BLOCK MASS  # Mass Spectrum
    1000015     1.00000000E+05   # ~tau_1
    2000015     1.00000000E+05   # ~tau_2
    1000016     1.00000000E+05   # ~nu_tauL
-   1000021     1.00000000E+05   # ~g
-   1000022     1.00000000E+00   # ~chi_10
-   1000023     %MCHI%           # ~chi_20
-   1000025     %MCHI%           # ~chi_30
+   1000021     1.00000000E+05    # ~g
+   1000022     %MLSP%           # ~chi_10
+   1000023     1.00000000E+05   # ~chi_20
+   1000025     1.00000000E+05   # ~chi_30
    1000035     1.00000000E+05   # ~chi_40
    1000024     1.00000000E+05   # ~chi_1+
    1000037     1.00000000E+05   # ~chi_2+
-   1000039     1.00000000E+05   # ~gravitino
 
 # DECAY TABLE
 #         PDG            Width
@@ -48,8 +48,11 @@ DECAY   1000004     0.00000000E+00   # scharm_L decays
 DECAY   2000004     0.00000000E+00   # scharm_R decays
 DECAY   1000005     0.00000000E+00   # sbottom1 decays
 DECAY   2000005     0.00000000E+00   # sbottom2 decays
-DECAY   1000006     0.00000000E+00   # stop1 decays
+DECAY   1000006     1.00000000E+00   # stop1 decays
+    0.00000000E+00    4    1000022      5     -1    2  # dummy allowed decay, in order to turn on off-shell decays
+    1.00000000E+00    3    1000022      5   24
 DECAY   2000006     0.00000000E+00   # stop2 decays
+
 DECAY   1000011     0.00000000E+00   # selectron_L decays
 DECAY   2000011     0.00000000E+00   # selectron_R decays
 DECAY   1000012     0.00000000E+00   # snu_elL decays
@@ -61,19 +64,12 @@ DECAY   2000015     0.00000000E+00   # stau_2 decays
 DECAY   1000016     0.00000000E+00   # snu_tauL decays
 DECAY   1000021     0.00000000E+00   # gluino decays
 DECAY   1000022     0.00000000E+00   # neutralino1 decays
-DECAY   1000023     %WCHI%   # neutralino2 decays
-    0.00000000E+00    3     1000022   5   -5  # Dummy decay
-    0.50000000E+00    2     1000022   25      # BR(N2 -> N1 + H)
-    0.500000000E+00   2     1000022   23      # BR(N2 -> N1 + Z)
+DECAY   1000023     0.00000000E+00   # neutralino2 decays
 DECAY   1000024     0.00000000E+00   # chargino1+ decays
-DECAY   1000025     %WCHI%   # neutralino3 decays
-    0.00000000E+00    3     1000022   5   -5  # Dummy decay 
-    0.50000000E+00    2     1000022   25      # BR(N3 -> N1 + H)
-    0.500000000E+00   2     1000022   23      # BR(N3 -> N1 + Z)
+DECAY   1000025     0.00000000E+00   # neutralino3 decays
 DECAY   1000035     0.00000000E+00   # neutralino4 decays
 DECAY   1000037     0.00000000E+00   # chargino2+ decays
 """
-
 
 generator = cms.EDFilter("Pythia8GeneratorFilter",
     maxEventsToPrint = cms.untracked.int32(1),
@@ -84,59 +80,66 @@ generator = cms.EDFilter("Pythia8GeneratorFilter",
     RandomizedParameters = cms.VPSet(),
 )
 
+# Parameters that define the grid in the bulk and diagonal
+    
+model = "T2tt_dM-10to20_2Lfilter"
+process = "StopStop"
+
+# Stuff to compute the #events needed per point and weight accordingly in the random scan
+
+goalLumi = 400
+minLumi = 50
+minEvents, maxEvents = 40, 1000
+
 def matchParams(mass):
-    if mass < 199: return 76,0.52
-    elif mass<299: return 76,0.524
-    elif mass<399: return 76,0.492
-    elif mass<499: return 76,0.464
-    elif mass<599: return 76,0.451
-    elif mass<699: return 76,0.437
-    elif mass<799: return 76,0.425
-    elif mass<899: return 76,0.413
-    elif mass<999: return 76,0.402
-    elif mass<1099: return 76,0.40
-    elif mass<1199: return 76,0.398
-    elif mass<1299: return 76,0.394
-    elif mass<1451: return 76, 0.388
-    elif mass<1651: return 76, 0.389
-    elif mass<1851: return 76, 0.382
-    else: return 76,0.382
+  if mass>99 and mass<199: return 62., 0.498
+  elif mass<299: return 62., 0.361
+  elif mass<399: return 62., 0.302
+  elif mass<499: return 64., 0.275
+  elif mass<599: return 64., 0.254
+  elif mass<1299: return 68., 0.237
+  elif mass<1801: return 70., 0.243
 
-# weighted average of matching efficiencies for the full scan
-# must equal the number entered in McM generator params
-mcm_eff = 0.503
+def xsec(mass):
+  if mass < 300: return 319925471928717.38*math.pow(mass, -4.10396285974583*math.exp(mass*0.0001317804474363))
+  else: return 6953884830281245*math.pow(mass, -4.7171617288678069*math.exp(mass*6.1752771466190749e-05))
 
-model = "TChiHZ_HToBB_LLN2N3"
-process = "N2N3"
+# Number of events for mass point, in thousands
+def events(mass):
+  xs = xsec(mass)
+  nev = min(goalLumi*xs, maxEvents*1000)
+  if nev < xs*minLumi: nev = xs*minLumi
+  nev = max(nev/1000, minEvents)
+  return math.ceil(nev) # Rounds up
 
-#Need hbar*c to convert lifetime to width    
-hBarCinGeVmm = 1.973269788e-13
 
-#Scan parameters
-mchi  = [127.,150.,175.,200.,250.,300.,400.,600.,800.,1000.,1250.,1500.,1800.]
-nevs  = [600.,500.,350.,250.,150.,100., 50., 50., 50.,  50.,  50.,  50.,  50.] #Weight more higher x-sec regions as requested per analysts
-totevents = sum(nevs)
-ctauValues = [500,3000] # Neutralino lifetime in mm
-wchi  = [ hBarCinGeVmm/ctau0 for ctau0 in ctauValues ]
+#Steps in mStop
+xStep, xmin, xmax = 25, 300, 651
+ymin, ymax = 0, 1100 
+#Values of dM(stop, N1)
+dMs = [10, 13, 15, 18, 20]
 
+# -------------------------------
+#    Constructing grid
 mpoints = []
-for i, m in enumerate(mchi):
-  for w in wchi:
-    mpoints.append([m,w,nevs[i]])
+for mx in range(xmin, xmax, xStep):
+  for diag in dMs:
+    my = mx - diag
+    if my > ymax or my < ymin: continue
+    nev = events(mx)*(2 - (dMs==20)) # A nasty trick, we need less stats for dM=20 GeV as it already exists in previous scans but analysts want it anyway for cross-checking
+    mpoints.append([mx,my, nev])
 
 for point in mpoints:
-    mchi, wchi, nevents = point[0], point[1], point[2]
-    tchi  = hBarCinGeVmm/wchi 
-    qcut, tru_eff = matchParams(mchi)
-    wgt = point[2]*(mcm_eff/tru_eff)
-
-    slhatable = baseSLHATable.replace('%MCHI%','%e' % mchi)
-    slhatable = slhatable.replace('%WCHI%','%e' % wchi)
-
+    mstop, mlsp = point[0], point[1]
+    qcut, tru_eff = matchParams(mstop)
+    # Now weight for the matching efficiency to properly generate the desired number of events at the end
+    wgt = point[2]/tru_eff
+    if mlsp==0: mlsp = 1
+    slhatable = baseSLHATable.replace('%MSTOP%','%e' % mstop)
+    slhatable = slhatable.replace('%MLSP%','%e' % mlsp)
     basePythiaParameters = cms.PSet(
         pythia8CommonSettingsBlock,
         pythia8CUEP8M1SettingsBlock,
-        #pythia8CP2SettingsBlock,
         JetMatchingParameters = cms.vstring(
             'JetMatching:setMad = off',
             'JetMatching:scheme = 1',
@@ -150,30 +153,25 @@ for point in mpoints:
             'JetMatching:nJetMax = 2', #number of partons in born matrix element for highest multiplicity
             'JetMatching:doShowerKt = off', #off for MLM matching, turn on for shower-kT matching
             '6:m0 = 172.5',
-            '25:onMode = off',
-            '25:onIfMatch = 5 -5', # Only H->bb decays
-            '25:m0 = 125.0',
-            '23:onMode = off',
-            '23:onIfAny = 1 2 3 4 5', # Only Z->qq decays
-        ),
+            '24:mMin = 0.1', #Reduced to more off-shell cases so there is more kinematically allowed range for the massive b 
+            '24:onMode = off',
+            '24:onIfAny = 11 13 15', # Leptonic W decays only 
+            'Check:abortIfVeto = on',
+        ), 
         parameterSets = cms.vstring('pythia8CommonSettings',
                                     'pythia8CUEP8M1Settings',
-                                    #'pythia8CP2Settings',
                                     'JetMatchingParameters'
         )
     )
 
-    for p in [1000023, 1000025]: # Fix N2/N3 lifetimes
-        basePythiaParameters.pythia8CommonSettings.extend([str(p)+':tau0 = %e' % (hBarCinGeVmm/wchi)]) # Pythia8 should compute it from the width, but let's be safe here
-    basePythiaParameters.pythia8CommonSettings.extend(['LesHouches:setLifetime = 2'])                # Override gridpack's infinite lifetimes for N2/N3, lets pythia lifetimes take preference
-
     generator.RandomizedParameters.append(
         cms.PSet(
             ConfigWeight = cms.double(wgt),
-            GridpackPath =  cms.string('/cvmfs/cms.cern.ch/phys_generator/gridpacks/2017/13TeV/madgraph/V5_2.4.2/sus_sms/LO_PDF/SMS-%s/v1/SMS-%s_mN-%i_slc6_amd64_gcc481_CMSSW_7_1_30_tarball.tar.xz' % (process,process,mchi)),
-            ConfigDescription = cms.string('%s_%i_%i' % (model, mchi, tchi)),
+            GridpackPath =  cms.string('/cvmfs/cms.cern.ch/phys_generator/gridpacks/slc6_amd64_gcc481/13TeV/madgraph/V5_2.3.3/sus_sms/SMS-StopStop/SMS-StopStop_mStop-%i_tarball.tar.xz' % mstop),
+            ConfigDescription = cms.string('%s_%i_%i' % (model, mstop, mlsp)),
             SLHATableForPythia8 = cms.string('%s' % slhatable),
             PythiaParameters = basePythiaParameters,
         ),
     )
+
 
