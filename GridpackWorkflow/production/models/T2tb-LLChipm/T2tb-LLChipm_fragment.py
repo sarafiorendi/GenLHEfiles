@@ -16,9 +16,9 @@ BLOCK MASS  # Mass Spectrum
    2000003     1.00000000E+05   # ~s_R
    1000004     1.00000000E+05   # ~c_L
    2000004     1.00000000E+05   # ~c_R
-   1000005     1.00000000E+05   # ~b_1
+   1000005     %MSBOT%          # ~b_1
    2000005     1.00000000E+05   # ~b_2
-   1000006     %MSTOP%          # ~t_1
+   1000006     1.00000000E+05   # ~t_1
    2000006     1.00000000E+05   # ~t_2
    1000011     1.00000000E+05   # ~e_L
    2000011     1.00000000E+05   # ~e_R
@@ -47,14 +47,13 @@ DECAY   1000003     0.00000000E+00   # sstrange_L decays
 DECAY   2000003     0.00000000E+00   # sstrange_R decays
 DECAY   1000004     0.00000000E+00   # scharm_L decays
 DECAY   2000004     0.00000000E+00   # scharm_R decays
-DECAY   1000005     0.00000000E+00   # sbottom1 decays
+DECAY   1000005     1.00000000E+00   # sbottom1 decays
+    0.00000000E+00    3    1000024      5     24  # dummy allowed decay, in order to turn on off-shell decays
+    0.50000000E+00    2    1000024      6
+    0.50000000E+00    2    1000022      5
 DECAY   2000005     0.00000000E+00   # sbottom2 decays
-DECAY   1000006     1.00000000E+00   # stop1 decays # taken from T2bt
-    0.00000000E+00    3    1000022      5     24  # dummy allowed decay, in order to turn on off-shell decays
-    0.50000000E+00    2    1000022      6   
-    0.50000000E+00    2    1000024      5
+DECAY   1000006     0.00000000E+00   # stop1 decays # taken from T2bt
 DECAY   2000006     0.00000000E+00   # stop2 decays
-
 DECAY   1000011     0.00000000E+00   # selectron_L decays
 DECAY   2000011     0.00000000E+00   # selectron_R decays
 DECAY   1000012     0.00000000E+00   # snu_elL decays
@@ -84,7 +83,7 @@ generator = cms.EDFilter("Pythia8GeneratorFilter",
     RandomizedParameters = cms.VPSet(),
 )
     
-model = "T2bt-LLChipm_ctau-"
+model = "T2tb-LLChipm_ctau-"
 # weighted average of matching efficiencies for the full scan
 # must equal the number entered in McM generator params
 
@@ -248,14 +247,14 @@ mpoints = []
 for col in cols: mpoints.extend(col)
 
 for point in mpoints:
-    mstop, mlsp = point[0], point[1]
-    qcut, tru_eff = matchParams(mstop)
+    msbot, mlsp = point[0], point[1]
+    qcut, tru_eff = matchParams(msbot)
     wgt = point[2]*(mcm_eff/tru_eff)
     deltaM = point[3][0]
     ChiWidth = point[3][1]
     if mlsp==0: mlsp = 1
     mchi = mlsp + DeltaM
-    slhatable = baseSLHATable.replace('%MSTOP%','%e' % mstop)
+    slhatable = baseSLHATable.replace('%MSBOT%','%e' % msbot)
     slhatable = slhatable.replace('%MLSP%','%e' % mlsp)
     slhatable = slhatable.replace('%MCHI%','%e' % mchi)
     slhatable = slhatable.replace('%WCHI%','%e' % ChiWidth)
@@ -288,8 +287,8 @@ for point in mpoints:
     generator.RandomizedParameters.append(
         cms.PSet(
             ConfigWeight = cms.double(wgt),
-            GridpackPath =  cms.string('/cvmfs/cms.cern.ch/phys_generator/gridpacks/2017/13TeV/madgraph/V5_2.4.2/sus_sms/LO_PDF/SMS-StopStop/v1/SMS-StopStop_mStop-%i_slc6_amd64_gcc481_CMSSW_7_1_30_tarball.tar.xz' % mstop),
-            ConfigDescription = cms.string('%s_%i_%i_ctau-%s' % (model, mstop, mlsp, point[3])),
+            GridpackPath =  cms.string('/cvmfs/cms.cern.ch/phys_generator/gridpacks/slc6_amd64_gcc481/13TeV/madgraph/V5_2.3.3/sus_sms/SMS-SbotSbot/SMS-SbotSbot_mSbot-%i_tarball.tar.xz'% msbot),
+            ConfigDescription = cms.string('%s_%i_%i_ctau-%s' % (model, msbot, mlsp, point[3])),
             SLHATableForPythia8 = cms.string('%s' % slhatable),
             PythiaParameters = basePythiaParameters,
         ),
