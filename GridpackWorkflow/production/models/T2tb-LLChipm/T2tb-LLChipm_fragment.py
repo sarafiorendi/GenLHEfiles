@@ -88,54 +88,25 @@ model = "T2tb-LLChipm_ctau-"
 # must equal the number entered in McM generator params
 
 
-ctau =  {"10cm":[0.32485759,1.97327052176253113e-15],"50cm":[0.23638902,0.39466403282527335e-15],"200cm":[0.18288376,0.9866600820631833e-16]} # Tag : [dM, width]
-mcm_eff = 0.221
+ctau =  {"10cm":[0.32485759,1.97327052176253113e-15],"200cm":[0.18288376,0.9866600820631833e-16]} # Tag : [dM, width]
+# weighted average of matching efficiencies for the full scan
+# must equal the number entered in McM generator params
+mcm_eff = 0.242
 
 def matchParams(mass):
-  if mass>349 and mass<699: return 64., 0.231
-  elif mass<999: return 66., 0.202
-  elif mass<1299: return 68., 0.195
-  elif mass<1599: return 72, 0.198
-  else: return 72, 0.198  # should not happen 
-
-# ctau =  "50cm"
-#DeltaM = 0.23638902
-#ChiWidth = 0.39466403282527335e-15
-#mcm_eff = 0.135
-
-#def matchParams(mass):
-#  if mass>349 and mass<699: return 64., 0.138
-#  elif mass<999: return 66., 0.125
-#  elif mass<1299: return 68., 0.125
-#  elif mass<1599: return 72, 0.130
-#  else: return 72, 0.130  # should not happen 
-
-# ctau = "200cm"
-#DeltaM = 0.18288376 
-#ChiWidth = 0.9866600820631833e-16
-#mcm_eff = 0.0637
-
-#def matchParams(mass):
-#  if mass>349 and mass<699: return 64., 0.0658
-#  elif mass<999: return 66., 0.0593
-#  elif mass<1299: return 68., 0.0583
-#  elif mass<1599: return 72, 0.0593
-#  else: return 72, 0.0593  # should not happen
-
-#def matchParams(mass):
-  #if mass>99 and mass<199: return 62., 0.498
-  #elif mass<299: return 62., 0.361
-  #elif mass<399: return 62., 0.302
-  #elif mass<499: return 64., 0.275
-  #elif mass<599: return 64., 0.254
-  #elif mass<1299: return 68., 0.237
-  #elif mass<1451: return 70., 0.243
-  #elif mass<1801: return 74., 0.246
-  #elif mass<2001: return 76., 0.267
-  #elif mass<2201: return 78., 0.287
-  #elif mass<2601: return 80., 0.320
-  #elif mass<2801: return 84., 0.347
-  #else: return 84., 0.347 # should not happen 
+  if mass>99 and mass<199: return 62., 0.498
+  elif mass<299: return 62., 0.361
+  elif mass<399: return 62., 0.302
+  elif mass<499: return 64., 0.275
+  elif mass<599: return 64., 0.254
+  elif mass<1299: return 68., 0.237
+  elif mass<1451: return 70., 0.243
+  elif mass<1801: return 74., 0.246
+  elif mass<2001: return 76., 0.267
+  elif mass<2201: return 78., 0.287
+  elif mass<2601: return 80., 0.320
+  elif mass<2801: return 84., 0.347
+  elif mass<3801: return 84., 0.347
 
 def xsec(mass):
   if mass < 300: return 319925471928717.38*math.pow(mass, -4.10396285974583*math.exp(mass*0.0001317804474363))
@@ -152,15 +123,15 @@ class gridBlock:
 # Number of events: min(goalLumi*xsec, maxEvents) (always in thousands)
 goalLumi = 400
 minLumi = 1e-40 # Skip minimum lumi
-minEvents, maxEvents = 20, 1000
+minEvents, maxEvents = 20, 70
 diagStep, bandStep = 50, 50
 midDM, maxDM = 300, 700
 addDiag = [183, 167] # DeltaM for additional diagonal lines to be added
 
 scanBlocks = []
-scanBlocks.append(gridBlock(400,  1501, 50, 50))
+scanBlocks.append(gridBlock(400,  1751, 50, 50))
 minDM = 85
-ymin, ymed, ymax = 0, 0, 1400
+ymin, ymed, ymax = 0, 0, 1650
 
 # Number of events for mass point, in thousands
 def events(mass):
@@ -198,7 +169,7 @@ for block in scanBlocks:
             dm_after = mx - my
             if(dm>dm_before and dm<dm_after):
               nev = events(my+dm)
-              col.append([my+dm,my, nev, ct])
+              col.append([mx,mx-dm, nev, ct])
               Nbulk += nev
           nev = events(mx)
           col.append([mx,my, nev, ct])
@@ -214,7 +185,7 @@ for block in scanBlocks:
             dm_after = mx - my
             if(dm>dm_before and dm<dm_after):
               nev = events(my+dm)
-              col.append([my+dm,my, nev, ct])
+              col.append([mx,mx-dm, nev, ct])
               Ndiag += nev
           # Adding standard diagonal points
           nev = events(mx)
@@ -230,7 +201,7 @@ for block in scanBlocks:
           dm_after = mx - my
           if(dm>dm_before and dm<dm_after):
             nev = events(my+dm)
-            col.append([my+dm,my, nev, ct])
+            col.append([mx,mx-dm, nev, ct])
             Ndiag += nev
         nev = events(mx)
         col.append([mx,my, nev, ct])
@@ -250,8 +221,8 @@ for point in mpoints:
     msbot, mlsp = point[0], point[1]
     qcut, tru_eff = matchParams(msbot)
     wgt = point[2]*(mcm_eff/tru_eff)
-    deltaM = point[3][0]
-    ChiWidth = point[3][1]
+    DeltaM = ctau[point[3]][0]
+    ChiWidth = ctau[point[3]][1]
     if mlsp==0: mlsp = 1
     mchi = mlsp + DeltaM
     slhatable = baseSLHATable.replace('%MSBOT%','%e' % msbot)
@@ -287,7 +258,7 @@ for point in mpoints:
     generator.RandomizedParameters.append(
         cms.PSet(
             ConfigWeight = cms.double(wgt),
-            GridpackPath =  cms.string('/cvmfs/cms.cern.ch/phys_generator/gridpacks/slc6_amd64_gcc481/13TeV/madgraph/V5_2.3.3/sus_sms/SMS-SbotSbot/SMS-SbotSbot_mSbot-%i_tarball.tar.xz'% msbot),
+            GridpackPath =  cms.string('/cvmfs/cms.cern.ch/phys_generator/gridpacks/2017/13TeV/madgraph/V5_2.4.2/sus_sms/LO_PDF/SMS-SbotSbot/v1/SMS-SbotSbot_mSbot-%i_slc6_amd64_gcc481_CMSSW_7_1_30_tarball.tar.xz'% msbot),
             ConfigDescription = cms.string('%s_%i_%i_ctau-%s' % (model, msbot, mlsp, point[3])),
             SLHATableForPythia8 = cms.string('%s' % slhatable),
             PythiaParameters = basePythiaParameters,

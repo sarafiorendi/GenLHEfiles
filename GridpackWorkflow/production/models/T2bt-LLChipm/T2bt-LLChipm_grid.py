@@ -20,20 +20,20 @@ class gridBlock:
     
 model = "T2bt-LLChipm"
 process = "StopStop"
-processMCM = "StopStop-LLChipm_ctau-200cm"
+processMCM = "StopStop"#-LLChipm_ctau-200cm"
 
 # Number of events: min(goalLumi*xsec, maxEvents) (always in thousands)
 goalLumi = 400
 minLumi = 1e-40 # Skip minimum lumi
-minEvents, maxEvents = 20, 1000
+minEvents, maxEvents = 20, 70
 diagStep, bandStep = 50, 50
 midDM, maxDM = 300, 700
 addDiag = [183, 167] # DeltaM for additional diagonal lines to be added
 
 scanBlocks = []
-scanBlocks.append(gridBlock(400,  1501, 50, 50))
+scanBlocks.append(gridBlock(400,  1751, 50, 50))
 minDM = 85
-ymin, ymed, ymax = 0, 0, 1400 
+ymin, ymed, ymax = 0, 0, 1650 
 
 
 
@@ -72,7 +72,7 @@ for block in scanBlocks:
           dm_after = mx - my
           if(dm>dm_before and dm<dm_after):
             nev = events(my+dm)
-            col.append([my+dm,my, nev])
+            col.append([mx,mx-dm, nev])
             Nbulk += nev
         nev = events(mx)
         col.append([mx,my, nev])
@@ -88,7 +88,7 @@ for block in scanBlocks:
           dm_after = mx - my
           if(dm>dm_before and dm<dm_after):
             nev = events(my+dm)
-            col.append([my+dm,my, nev])
+            col.append([mx,mx-dm, nev])
             Ndiag += nev
         # Adding standard diagonal points
         nev = events(mx)
@@ -104,7 +104,7 @@ for block in scanBlocks:
         dm_after = mx - my
         if(dm>dm_before and dm<dm_after):
           nev = events(my+dm)
-          col.append([my+dm,my, nev])
+          col.append([mx,mx-dm, nev])
           Ndiag += nev
       nev = events(mx)
       col.append([mx,my, nev])

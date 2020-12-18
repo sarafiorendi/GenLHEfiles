@@ -62,8 +62,9 @@ DECAY   1000015     0.00000000E+00   # stau_1 decays
 DECAY   2000015     0.00000000E+00   # stau_2 decays
 DECAY   1000016     0.00000000E+00   # snu_tauL decays
 DECAY   1000021     1.00000000E+00   # gluino decays to t b C1 
-    0.50000000E+00    3    1000024     -6    5
-    0.50000000E+00    3    -1000024    6    -5
+    0.25000000E+00    3    1000024     -6    5
+    0.25000000E+00    3    -1000024     6   -5
+    0.50000000E+00    3    1000022      6   -6
 DECAY   1000022     0.00000000E+00   # neutralino1 decays
 DECAY   1000023     0.00000000E+00   # neutralino2 decays
 DECAY   1000024     %WCHI%           # chargino1+ decays # taken from T2bW_X05_dM-10to80
@@ -82,16 +83,13 @@ generator = cms.EDFilter("Pythia8GeneratorFilter",
     RandomizedParameters = cms.VPSet(),
 )
 
-model = "T1qqqq-LLChipm_ctau-"
+model = "T1btbt-LLChipm_ctau-"
+ctau =  {"10cm":[0.32485759,1.97327052176253113e-15],"200cm":[0.18288376,0.9866600820631833e-16]} # Tag : [dM, width]
+
 # weighted average of matching efficiencies for the full scan
 # must equal the number entered in McM generator params
-
-ctau =  {"10cm":[0.32485759,1.97327052176253113e-15],"50cm":[0.23638902,0.39466403282527335e-15],"200cm":[0.18288376,0.9866600820631833e-16]} # Tag : [dM, width]
 mcm_eff = 0.299
 
-#DeltaM = 0.18288376 
-#ChiWidth = 0.9866600820631833e-16
-#mcm_eff = 0.299
 
 def matchParams(mass):
   if mass>999 and mass<1299: return 141., 0.241
@@ -114,22 +112,10 @@ class gridBlock:
     self.dstep = dstep
     self.minEvents = minEvents
 
-# Fit to gluino cross-section in fb
+# Fit to gluino cross-section in fb, to get proportion of events
 def xsec(mass):
     return 4.563e+17*math.pow(mass, -4.761*math.exp(5.848e-05*mass))
 
-#def matchParams(mass):
-#    if mass>599 and  mass<799: return 118., 0.235
-#    elif mass<999: return 128., 0.235
-#    elif mass<1199: return 140., 0.235
-#    elif mass<1399: return 143., 0.245
-#    elif mass<1499: return 147., 0.255
-#    elif mass<1799: return 150., 0.267
-#    elif mass<2099: return 156., 0.290
-#    elif mass<2301: return 160., 0.315
-#    elif mass<2601: return 162., 0.340
-#    elif mass<2851: return 168, 0.364
-#    else: return 168., 0.364
 
 # Number of events: min(goalLumi*xsec, maxEvents) (always in thousands)
 goalLumi, minLumi, maxEvents = 800, 40, 150
@@ -239,3 +225,4 @@ for point in mpoints:
             PythiaParameters = basePythiaParameters,
         ),
     )
+

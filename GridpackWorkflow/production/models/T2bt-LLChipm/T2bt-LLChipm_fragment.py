@@ -1,7 +1,7 @@
 import FWCore.ParameterSet.Config as cms
 
 from Configuration.Generator.Pythia8CommonSettings_cfi import *
-from Configuration.Generator.MCTunes2017.PythiaCP2Settings_cfi import * 
+from Configuration.Generator.MCTunes2017.PythiaCP2Settings_cfi import *
 
 import math
 
@@ -51,7 +51,7 @@ DECAY   1000005     0.00000000E+00   # sbottom1 decays
 DECAY   2000005     0.00000000E+00   # sbottom2 decays
 DECAY   1000006     1.00000000E+00   # stop1 decays # taken from T2bt
     0.00000000E+00    3    1000022      5     24  # dummy allowed decay, in order to turn on off-shell decays
-    0.50000000E+00    2    1000022      6   
+    0.50000000E+00    2    1000022      6
     0.50000000E+00    2    1000024      5
 DECAY   2000006     0.00000000E+00   # stop2 decays
 
@@ -66,10 +66,10 @@ DECAY   2000015     0.00000000E+00   # stau_2 decays
 DECAY   1000016     0.00000000E+00   # snu_tauL decays
 DECAY   1000021     0.00000000E+00   # gluino decays
 DECAY   1000022     0.00000000E+00   # neutralino1 decays
-DECAY   1000023     0.00000000E+00   # neutralino2 decays 
-DECAY   1000024     %WCHI%           # chargino1 decays # taken from T2bW_X05_dM-10to80 (or better https://github.com/CMS-SUS-XPAG/GenLHEfiles/blob/master/GridpackWorkflow/production/models/T2bt/T2bt_fragment.py#L71-80 ?) 
+DECAY   1000023     0.00000000E+00   # neutralino2 decays
+DECAY   1000024     %WCHI%           # chargino1 decays # taken from T2bW_X05_dM-10to80 (or better https://github.com/CMS-SUS-XPAG/GenLHEfiles/blob/master/GridpackWorkflow/production/models/T2bt/T2bt_fragment.py#L71-80 ?)
 #   0.00000000E+00    3    1000022    12   -11  # dummy allowed decay, in order to turn on off-shell decays
-    1.00000000E+00    2    211	1000022		# x1+  -->  n1 pi+
+    1.00000000E+00    2    211  1000022         # x1+  -->  n1 pi+
 DECAY   1000025     0.00000000E+00   # neutralino3 decays
 DECAY   1000035     0.00000000E+00   # neutralino4 decays
 DECAY   1000037     0.00000000E+00   # chargino2+ decays
@@ -83,62 +83,31 @@ generator = cms.EDFilter("Pythia8GeneratorFilter",
     comEnergy = cms.double(13000.),
     RandomizedParameters = cms.VPSet(),
 )
-    
+
 model = "T2bt-LLChipm_ctau-"
+
+ctau =  {"10cm":[0.32485759,1.97327052176253113e-15],"200cm":[0.18288376,0.9866600820631833e-16]} # Tag : [dM, width]
+
 # weighted average of matching efficiencies for the full scan
 # must equal the number entered in McM generator params
-
-
-ctau =  {"10cm":[0.32485759,1.97327052176253113e-15],"50cm":[0.23638902,0.39466403282527335e-15],"200cm":[0.18288376,0.9866600820631833e-16]} # Tag : [dM, width]
-mcm_eff = 0.221
+mcm_eff = 0.2427
 
 def matchParams(mass):
-  if mass>349 and mass<699: return 64., 0.231
-  elif mass<999: return 66., 0.202
-  elif mass<1299: return 68., 0.195
-  elif mass<1599: return 72, 0.198
-  else: return 72, 0.198  # should not happen 
+    if mass>99 and mass<199: return 62., 0.498
+    elif mass<299: return 62., 0.361
+    elif mass<399: return 62., 0.302
+    elif mass<499: return 64., 0.275
+    elif mass<599: return 64., 0.254
+    elif mass<1299: return 68., 0.237
+    elif mass<1451: return 70., 0.243
+    elif mass<1801: return 74., 0.246
+    elif mass<2001: return 76., 0.267
+    elif mass<2201: return 78., 0.287
+    elif mass<2601: return 80., 0.320
+    elif mass<2801: return 84., 0.347
+    elif mass<3801: return 84., 0.347
 
-# ctau =  "50cm"
-#DeltaM = 0.23638902
-#ChiWidth = 0.39466403282527335e-15
-#mcm_eff = 0.135
-
-#def matchParams(mass):
-#  if mass>349 and mass<699: return 64., 0.138
-#  elif mass<999: return 66., 0.125
-#  elif mass<1299: return 68., 0.125
-#  elif mass<1599: return 72, 0.130
-#  else: return 72, 0.130  # should not happen 
-
-# ctau = "200cm"
-#DeltaM = 0.18288376 
-#ChiWidth = 0.9866600820631833e-16
-#mcm_eff = 0.0637
-
-#def matchParams(mass):
-#  if mass>349 and mass<699: return 64., 0.0658
-#  elif mass<999: return 66., 0.0593
-#  elif mass<1299: return 68., 0.0583
-#  elif mass<1599: return 72, 0.0593
-#  else: return 72, 0.0593  # should not happen
-
-#def matchParams(mass):
-  #if mass>99 and mass<199: return 62., 0.498
-  #elif mass<299: return 62., 0.361
-  #elif mass<399: return 62., 0.302
-  #elif mass<499: return 64., 0.275
-  #elif mass<599: return 64., 0.254
-  #elif mass<1299: return 68., 0.237
-  #elif mass<1451: return 70., 0.243
-  #elif mass<1801: return 74., 0.246
-  #elif mass<2001: return 76., 0.267
-  #elif mass<2201: return 78., 0.287
-  #elif mass<2601: return 80., 0.320
-  #elif mass<2801: return 84., 0.347
-  #else: return 84., 0.347 # should not happen 
-
-def xsec(mass):
+def xsec(mass): #Analytical fit to the xsec
   if mass < 300: return 319925471928717.38*math.pow(mass, -4.10396285974583*math.exp(mass*0.0001317804474363))
   else: return 6953884830281245*math.pow(mass, -4.7171617288678069*math.exp(mass*6.1752771466190749e-05))
 
@@ -153,15 +122,15 @@ class gridBlock:
 # Number of events: min(goalLumi*xsec, maxEvents) (always in thousands)
 goalLumi = 400
 minLumi = 1e-40 # Skip minimum lumi
-minEvents, maxEvents = 20, 1000
+minEvents, maxEvents = 20, 70 #Points that require more than 70k events for goal lumi are sure to be excluded/seen so let's cut events there
 diagStep, bandStep = 50, 50
 midDM, maxDM = 300, 700
 addDiag = [183, 167] # DeltaM for additional diagonal lines to be added
 
 scanBlocks = []
-scanBlocks.append(gridBlock(400,  1501, 50, 50))
+scanBlocks.append(gridBlock(400,  1751, 50, 50))
 minDM = 85
-ymin, ymed, ymax = 0, 0, 1400
+ymin, ymed, ymax = 0, 0, 1650
 
 # Number of events for mass point, in thousands
 def events(mass):
@@ -199,7 +168,7 @@ for block in scanBlocks:
             dm_after = mx - my
             if(dm>dm_before and dm<dm_after):
               nev = events(my+dm)
-              col.append([my+dm,my, nev, ct])
+              col.append([mx,mx-dm, nev, ct])
               Nbulk += nev
           nev = events(mx)
           col.append([mx,my, nev, ct])
@@ -215,7 +184,7 @@ for block in scanBlocks:
             dm_after = mx - my
             if(dm>dm_before and dm<dm_after):
               nev = events(my+dm)
-              col.append([my+dm,my, nev, ct])
+              col.append([mx,mx-dm, nev, ct])
               Ndiag += nev
           # Adding standard diagonal points
           nev = events(mx)
@@ -223,7 +192,6 @@ for block in scanBlocks:
           Ndiag += nev
       # Adding diagonal points in band closest to outer diagonal
       for my in range(begDiag, mx-minDM+1, diagStep):
-        if my > ymax: continue
         # Adding extra diagonals to the band
         for dm in addDiag:
           #if(len(cols)==0 and batch==1): continue # Don't add point before the beginning
@@ -231,7 +199,7 @@ for block in scanBlocks:
           dm_after = mx - my
           if(dm>dm_before and dm<dm_after):
             nev = events(my+dm)
-            col.append([my+dm,my, nev, ct])
+            col.append([mx,mx-dm, nev, ct])
             Ndiag += nev
         nev = events(mx)
         col.append([mx,my, nev, ct])
@@ -247,12 +215,13 @@ for block in scanBlocks:
 mpoints = []
 for col in cols: mpoints.extend(col)
 
+import os
 for point in mpoints:
     mstop, mlsp = point[0], point[1]
     qcut, tru_eff = matchParams(mstop)
     wgt = point[2]*(mcm_eff/tru_eff)
-    deltaM = point[3][0]
-    ChiWidth = point[3][1]
+    DeltaM = ctau[point[3]][0]
+    ChiWidth = ctau[point[3]][1]
     if mlsp==0: mlsp = 1
     mchi = mlsp + DeltaM
     slhatable = baseSLHATable.replace('%MSTOP%','%e' % mstop)
@@ -278,7 +247,7 @@ for point in mpoints:
             '6:m0 = 172.5',
             '24:mMin = 0.1',
             'Check:abortIfVeto = on',
-        ), 
+        ),
         parameterSets = cms.vstring('pythia8CommonSettings',
                                     'pythia8CP2Settings',
                                     'JetMatchingParameters'
@@ -294,3 +263,4 @@ for point in mpoints:
             PythiaParameters = basePythiaParameters,
         ),
     )
+
