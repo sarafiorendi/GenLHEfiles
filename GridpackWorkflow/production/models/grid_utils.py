@@ -289,7 +289,7 @@ def makePlot(mpoints, type, model, proc, xmin, xmax, ymin, ymax, xlabel=False,  
   xbuffer, ybuffer = 100, 100
   dx, dy = xmax-xmin, ymax-ymin
   if dx<1200: 
-    xtickstep = 20
+    xtickstep = 50
     xbuffer = 50
   if dy<1200: 
     ytickstep = 20
