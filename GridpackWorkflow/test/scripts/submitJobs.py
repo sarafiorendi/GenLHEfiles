@@ -15,7 +15,7 @@ pr.add_option("-q","--queue"  , dest="queue"     , type="string"      , default=
 pr.add_option("-j","--jobs"   , dest="jobs"      , type="int"         , default="8", help="Request this number of cores per job" )
 pr.add_option("-n","--new"    , dest="new"       , action="store_true", default=False , help="If activated, will check if gridpack already exists in destination and skip submission if it does")
 pr.add_option("-p","--pretend", dest="pretend"   , action="store_true", default=False , help="Only create folders, don't run anything")
-
+ 
 
 (options, args) = pr.parse_args()
 
@@ -23,7 +23,7 @@ pr.add_option("-p","--pretend", dest="pretend"   , action="store_true", default=
 
 print options.force
 if (os.path.isdir("tmp%s"%options.tag) or os.path.isdir("batchlogs%s"%options.tag) or os.path.isdir("exec%s"%options.tag)) and not(options.force):
-  raise RuntimeError("Warning, some temp folders exists and you are risking overwriting them. If you are sure of what you are doing run in force mode (-f).")
+  raise RuntimeError("Error: some temp folders exists and you are risking overwriting them. If you are sure of what you are doing run in force mode (-f).")
 else:
   os.system("rm -rf tmp%s"%options.tag)
   os.system("rm -rf exec%s"%options.tag)
@@ -34,7 +34,7 @@ os.system("mkdir tmp%s"%options.tag)
 os.system("mkdir exec%s"%options.tag)
 os.system("mkdir batchlogs%s"%options.tag)
 if "/afs/" in options.out and not(options.force):
-  raise RuntimeError("Warning, you are sending your final gridpacks to be copied to afs, this might be a bad idea unles you have dedicated space for them. Run with force mode (-f) to force this.")
+  raise RuntimeError("Error: you are sending your final gridpacks to be copied to afs, this might be a bad idea unles you have dedicated space for them. Run with force mode (-f) to force this.")
 elif not(os.path.isdir(options.out)):
   os.system("mkdir %s"%options.out)
 
@@ -51,7 +51,7 @@ for folder in os.listdir(options.inF):
 
     # Do some basic checks
     if not( any(["run" in f for f in files]) and any(["proc" in f for f in files])): 
-      print "Warning, input folder %s does not seem to contain a run and proc card, will skip it for submission"%(inputFolder)
+      print "Warning: input folder %s does not seem to contain a run and proc card, will skip it for submission"%(inputFolder)
       continue
     ##### creates jobs #######
     with open('exec%s/job_'%options.tag+str(x)+'.sh', 'w') as fout:
