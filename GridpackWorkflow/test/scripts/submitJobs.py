@@ -10,9 +10,10 @@ pr = OptionParser(usage="%prog [options]")
 pr.add_option("--tag"         , dest="tag"       , type="string"      , default="" , help="An identifier of the run, please take into account that the code will rewrite files by default, so change tag accordingly")
 pr.add_option("-f","--force"  , dest="force"     , action="store_true", default=False , help="Force temp folder recreation and just overall ignore warnings.")
 pr.add_option("-o","--out"    , dest="out"       , type="string"      , default=os.getcwd(), help="Output folder for gridpacks, default is running one which probably is a bad idea")
-pr.add_option("-i","--in"     , dest="inF"        , type="string"      , default=None, help="Input folder with the cards")
+pr.add_option("-i","--in"     , dest="inF"       , type="string"      , default=None, help="Input folder with the cards")
 pr.add_option("-q","--queue"  , dest="queue"     , type="string"      , default="tomorrow", help="Condor queue to be used. Default is tomorrow (1 day). Other logical options are testmatch (3 days), nextweek (1 week), workday (8 hours)" )
 pr.add_option("-j","--jobs"   , dest="jobs"      , type="int"         , default="8", help="Request this number of cores per job" )
+pr.add_option("-n","--new"    , dest="new"       , action="store_true", default=False , help="If activated, will check if gridpack already exists in destination and skip submission if it does")
 pr.add_option("-p","--pretend", dest="pretend"   , action="store_true", default=False , help="Only create folders, don't run anything")
 
 
@@ -42,9 +43,15 @@ x = 0
 for folder in os.listdir(options.inF):
     inputFolder = options.inF + "/" + folder
     files = os.listdir(inputFolder)
+    if options.new:
+      output = options.out + "/" + folder + "_slc7_amd64_gcc700_CMSSW_10_6_19_tarball.tar.xz" # TODO: automate the search for different archs/releases
+      if os.path.isfile(output): 
+        print "Gridpack at %s already exists and options.new activated, skipping it for submission"%output 
+        continue
+
     # Do some basic checks
     if not( any(["run" in f for f in files]) and any(["proc" in f for f in files])): 
-      print "Warning, folder %s does not seem to contain a run and proc card, will skip it for submission"%(inputFolder)
+      print "Warning, input folder %s does not seem to contain a run and proc card, will skip it for submission"%(inputFolder)
       continue
     ##### creates jobs #######
     with open('exec%s/job_'%options.tag+str(x)+'.sh', 'w') as fout:
@@ -54,7 +61,7 @@ for folder in os.listdir(options.inF):
       fout.write("#First we do a sparse checkout of genproductions to avoid copying the whole thing and to also have the latests set of patches available\n")
 
       fout.write("# We might want to fix a commit sha here to ensure it doesn't pull some tricks\n")
-      fout.write("git clone https://github.com/cms-sw/genproductions.git --no-checkout genproductions --depth 1\n")
+      fout.write("git clone https://github.com/cericeci/genproductions.git --branch SMS_UL2020 --no-checkout genproductions --depth 1\n")
       fout.write("cd genproductions\n")
       fout.write("git config core.sparsecheckout true\n")
       fout.write("echo Utilities/scripts/ >> .git/info/sparse-checkout\n")
