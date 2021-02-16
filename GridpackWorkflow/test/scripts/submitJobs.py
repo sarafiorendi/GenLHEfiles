@@ -14,6 +14,7 @@ pr.add_option("-i","--in"     , dest="inF"        , type="string"      , default
 pr.add_option("-q","--queue"  , dest="queue"     , type="string"      , default="tomorrow", help="Condor queue to be used. Default is tomorrow (1 day). Other logical options are testmatch (3 days), nextweek (1 week), workday (8 hours)" )
 pr.add_option("-j","--jobs"   , dest="jobs"      , type="int"         , default="8", help="Request this number of cores per job" )
 pr.add_option("-p","--pretend", dest="pretend"   , action="store_true", default=False , help="Only create folders, don't run anything")
+pr.add_option("-m","--mode"   , dest="mode"      , type="string"      , default="lxplus", help="Mode running: lxplus (default, will access the input cards through afs/eos), connect (will access and output everything through your stash area, remember to clean it afterwards!), slurm (will use slurm-like syntax)")
 
 
 (options, args) = pr.parse_args()
@@ -64,11 +65,13 @@ for folder in os.listdir(options.inF):
       fout.write("cd bin/MadGraph5_aMCatNLO/\n")
 
       fout.write("#Copy input cards\n")
-      fout.write("cp -r %s Cards\n"%inputFolder)
+      if options.mode == "lxplus": fout.write("cp -r %s Cards\n"%inputFolder)
+      elif options.mode == "connect": fout.write("xrdcp root://stash.osgconnect.net:1094/%s Cards/\n"%(inputFolder.replace("/stash","")))
       fout.write("#Run the script\n")
       fout.write("sh gridpack_generation.sh %s Cards\n"%folder)
       fout.write("#Copy the gridpack back to somewhere readable\n")
-      fout.write("mv *.tar.xz %s\n"%options.out)
+      if options.mode == "lxplus": fout.write("mv *.tar.xz %s\n"%options.out)
+      elif options.mode == "connect": fout.write("xrdcp *.tar.xz root://stash.osgconnect.net:1094/%s \n"%(options.out.replace("/stash","")))
       fout.write("#Do some cleanup just to be tidy\n")
       fout.write("cd ../../../\n")
       fout.write("rm -rf genproductions\n")
@@ -84,7 +87,7 @@ with open('submit.sub', 'w') as fout:
     fout.write("error                   = batchlogs%s/$(ClusterId).$(ProcId).err\n"%options.tag)
     fout.write("log                     = batchlogs%s/$(ClusterId).log\n"%options.tag)
     fout.write("RequestCPUs             = %s\n"%options.jobs)
-    fout.write('+JobFlavour = "%s"\n' %(options.queue))
+    if options.mode == "lxplus": fout.write('+JobFlavour = "%s"\n' %(options.queue))
     fout.write("\n")
     fout.write("queue filename matching (exec%s/job_*sh)\n"%options.tag)
     
